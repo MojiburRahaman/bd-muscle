@@ -52,6 +52,8 @@ menu-open
                             <div class="alert alert-danger">
                                 {{$message}}
                             </div>
+                            @else
+                            <span class="text-danger">*Only png formate will allow</span>
                             @enderror
                         </div>
                     </div>

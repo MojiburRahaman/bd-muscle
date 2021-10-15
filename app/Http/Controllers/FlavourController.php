@@ -14,7 +14,7 @@ class FlavourController extends Controller
      */
     public function index()
     {
-        $flavours = Flavour::latest()->paginate(15);
+        $flavours = Flavour::where('id','!=',1)->latest()->paginate(15);
         return view('backend.flavour.index', compact('flavours'));
     }
 
@@ -53,9 +53,8 @@ class FlavourController extends Controller
      */
     public function show($id)
     {
-        //
     }
-
+    
     /**
      * Show the form for editing the specified resource.
      *
@@ -64,7 +63,8 @@ class FlavourController extends Controller
      */
     public function edit($id)
     {
-        //
+        $flavour = Flavour::findorfail($id);
+        return view('backend.flavour.edit',compact('flavour'));
     }
 
     /**
@@ -76,7 +76,13 @@ class FlavourController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'flavour_name' => ['required', 'string', 'max:200', 'unique:flavours,flavour_name,'.$id]
+        ]);
+        $flavour =  Flavour::findorfail($id);
+        $flavour->flavour_name = $request->flavour_name;
+        $flavour->save();
+        return redirect()->route('flavour.index')->with('warning', 'Flavour Edited Successfully');
     }
 
     /**

@@ -16,7 +16,9 @@ class SubCatagoryController extends Controller
      */
     public function index()
     {
-        $sub_catagories = Subcatagory::with('Catagory')->select('id', 'catagory_id', 'subcatagory_name', 'created_at')->latest('id')->get();
+        $sub_catagories = Subcatagory::with('Catagory')
+            ->select('id', 'catagory_id', 'subcatagory_name', 'created_at')
+            ->latest('id')->get();
         return view('backend.subcatagory.index', [
             'subcatagories' => $sub_catagories,
         ]);
@@ -123,10 +125,10 @@ class SubCatagoryController extends Controller
     public function MarkdeleteSubCatagory(Request $request)
     {
         if ($request->filled('delete')) {
-           foreach ($request->delete as $value) {
-            Subcatagory::findorfail($value)->delete();
-           }
-           return back()->with('delete', 'Subcatagory Deleted Successfully');
+            foreach ($request->delete as $value) {
+                Subcatagory::findorfail($value)->delete();
+            }
+            return back()->with('delete', 'Subcatagory Deleted Successfully');
         } else {
             return back()->with('warning', 'No Item Selected');
         }

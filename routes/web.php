@@ -45,6 +45,7 @@
 
     // product route
 
+    Route::get('/product/get-sub-cat/{cat_id}', [ProductController::class, 'GetSubcatbyAjax'])->name('GetSubcatbyAjax');
     Route::resource('/product', ProductController::class);
 
     // brand route 

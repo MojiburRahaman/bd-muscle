@@ -58,9 +58,9 @@ menu-open
                                 </td>
                                 <td>{{$flavour->flavour_name}}</td>
                                 <td>{{$flavour->created_at->diffForHumans()}}</td>
-                                <form action="{{route('size.destroy',$flavour->id)}}" method="post">
+                                <form action="{{route('flavour.destroy',$flavour->id)}}" method="post">
                                     <td>
-                                        <a style="padding: 7px 8px" href="{{route('size.edit',$flavour->id)}}"
+                                        <a style="padding: 7px 8px" href="{{route('flavour.edit',$flavour->id)}}"
                                             class="btn-sm btn-primary">Edit</a>
                                         @csrf
                                         @method('delete')

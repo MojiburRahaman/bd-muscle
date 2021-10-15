@@ -51,12 +51,12 @@ menu-open
                                 value="{{$catagory->id}}">{{$catagory->catagory_name}}</option>
                             @endforeach
 
-                            @error('catagory_id')
-                            <div class="alert alert-danger">
-                                {{$message}}
-                            </div>
-                            @enderror
                         </select>
+                        @error('catagory_id')
+                        <div class="alert alert-danger">
+                            {{$message}}
+                        </div>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-success">Submit</button>
