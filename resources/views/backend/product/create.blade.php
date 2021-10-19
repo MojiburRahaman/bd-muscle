@@ -70,20 +70,32 @@ menu-open
                         @enderror
                     </div>
                     <div class="form-group">
+                        <label for="brand_id" class="font-weight-bold">Brands</label>
+                        <select class="form-control " name="brand_id" id="brand_id">
+                            <option value>Select One</option>
+                            @foreach ($brands as $brand)
+                            <option value="{{ $brand->id }}">{{ $brand->brand_name }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <div class="row">
                             <div class="col-lg-8 mt-4 pt-4">
                                 <label for="thumbnail_img">Thumbnail Image</label>
                                 <input class="form-control @error('thumbnail_img') is-invalid @enderror" type="file"
-                                name="thumbnail_img"
-                                onchange="document.getElementById('image_id').src = window.URL.createObjectURL(this.files[0])">
-                                
+                                    name="thumbnail_img"
+                                    onchange="document.getElementById('image_id').src = window.URL.createObjectURL(this.files[0])">
+
                                 @error('thumbnail_img')
                                 <div class="alert alert-danger">
                                     {{$message}}
                                 </div>
+                                @else
+                                <span class="text-danger">Only png formate will allow</span>
                                 @enderror
                             </div>
-                            
+
 
                             <div class="col-4 pl-4">
                                 <div>
@@ -96,17 +108,21 @@ menu-open
 
                     <div class="form-group">
                         <label for="product_img">Product Images</label>
-                        <input type="file" name="product_img[]" id="product_img" multiple class="form-control @error('product_img') is-invalid @enderror">
+                        <input type="file" name="product_img[]" id="product_img" multiple
+                            class="form-control @error('product_img.*') is-invalid @enderror">
 
-                        @error('product_img')
+                        @error('product_img>8')
                         <div class="alert alert-danger">
                             {{$message}}
                         </div>
+                        @else
+                                <span class="text-danger">Only png,jpg,jpeg formate will allow</span>
                         @enderror
                     </div>
                     <div class="form-group">
                         <label for="product_summary">Summary</label>
-                        <textarea class="form-control @error('product_summary') is-invalid @enderror" name="product_summary" id="product_summary"></textarea>
+                        <textarea class="form-control @error('product_summary') is-invalid @enderror"
+                            name="product_summary" id="product_summary"></textarea>
                         @error('product_summary')
                         <div class="alert alert-danger">
                             {{$message}}
@@ -115,7 +131,8 @@ menu-open
                     </div>
                     <div class="form-group">
                         <label for="product_description">Description</label>
-                        <textarea class="form-control @error('product_description') is-invalid @enderror" name="product_description" id="product_description"></textarea>
+                        <textarea class="form-control @error('product_description') is-invalid @enderror"
+                            name="product_description" id="product_description"></textarea>
                         @error('product_description')
                         <div class="alert alert-danger">
                             {{$message}}
@@ -128,8 +145,8 @@ menu-open
                         <label for="">Flavour Name</label>
                         <div class="input-group mb-3">
                             <input type="text" name="flavour_name[]" class="form-control m-input 
-                            @error('flavour_name[]') is-invalid @enderror"
-                                placeholder="Enter Flavour Name" autocomplete="off">
+                            @error('flavour_name[]') is-invalid @enderror" placeholder="Enter Flavour Name"
+                                autocomplete="off">
                             <div class="input-group-append">
                                 <button id="removeRow" type="button" class="btn btn-danger">Remove</button>
                             </div>
@@ -143,10 +160,9 @@ menu-open
                     <div class="form-group ">
                         <div id="dynamic-field-1" class="form-group dynamic-field mt-4">
                             <div class="row">
-                                <div class="col-lg-2 ">
+                                <div class="col-lg-3">
                                     <label for="color_id" class="font-weight-bold">Color</label>
-                                    <select
-                                        class="form-control "  name="color_id[]" id="color_id">
+                                    <select class="form-control " name="color_id[]" id="color_id">
                                         {{-- <option value>Select One</option> --}}
                                         @foreach ($colors as $color)
                                         <option value="{{ $color->id }}">{{ $color->color_name }}
@@ -154,10 +170,9 @@ menu-open
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-lg-2">
+                                <div class="col-lg-3">
                                     <label for="size_id" class="font-weight-bold">Size</label>
-                                    <select
-                                    class="form-control " name="size_id[]" id="size_id">
+                                    <select class="form-control " name="size_id[]" id="size_id">
                                         {{-- <option value>Select One</option> --}}
                                         @foreach ($sizes as $size)
                                         <option value="{{ $size->id }}">{{ $size->size_name }}
@@ -166,26 +181,19 @@ menu-open
                                     </select>
                                 </div>
                                 <div class="col-lg-2">
-                                    <label for="brand_id" class="font-weight-bold">Brands</label>
-                                    <select
-                                    class="form-control " name="brand_id" id="brand_id">
-                                    <option value>Select One</option>
-                                    @foreach ($brands as $brand)
-                                        <option value="{{ $brand->id }}">{{ $brand->brand_name }}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-lg-2">
                                     <label for="quantity" class="font-weight-bold">Quantity</label>
-                                    <input required  type="number" id="quantity" class="form-control  @error('quantity[]') is-invalid  @enderror" name="quantity[]">
+                                    <input required type="number" id="quantity"
+                                        class="form-control col-1 @error('quantity[]') is-invalid  @enderror"
+                                        name="quantity[]">
                                     @error('quantity[]')
                                     <span style="color: red">*{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-lg-2">
                                     <label for="regular_price" class="font-weight-bold ">Regular Price</label>
-                                    <input required type="number" id="regular_price" class="form-control  @error('regular_price[]') is-invalid  @enderror" name="regular_price[]">
+                                    <input required type="number" id="regular_price"
+                                        class="form-control required  @error('regular_price[]') is-invalid  @enderror"
+                                        name="regular_price[]">
                                     @error('regular_price[]')
                                     <span style="color: red">*{{ $message }}</span>
                                     @enderror

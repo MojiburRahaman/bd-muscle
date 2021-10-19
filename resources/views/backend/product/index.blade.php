@@ -2,7 +2,7 @@
 @section('product_active')
 active
 @endsection
-@section('product_add-active')
+@section('product_view-active')
 active
 @endsection
 @section('product_dropdown_active')
@@ -40,26 +40,22 @@ menu-open
                         <label for="select_all">Select All</label> &nbsp; &nbsp;
                         <button class="btn btn-link" type="submit" disabled id="select_btn"><i
                                 style="color: white;border-radius:50%;background-color:#bf3232;font-size:smaller;padding:1px 2px"
-                                class="fa fa-minus"></i> Delete All </button>
+                                class="fa fa-minus"></i> Delete All
+                        </button>
                     </div>
                     <div class="card-body table-responsive p-0">
-                        <table class="table table-hover  text-nowrap">
+                        <table class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th>SL</th>
+                                    {{-- <th>thumbnail</th> --}}
                                     <th>Product Name</th>
-                                    <th>thumbnail</th>
-                                    <th>Catagory Name</th>
-                                    <th>SubCatagory Name</th>
-                                    <th>Summary</th>
-                                    <th>Description</th>
-                                    <th>Created At</th>
+                                    <th>Stock</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($products as $product)
-
                                 <tr>
                                     <td>
                                         <input type="checkbox" class="checkbox" name="delete[]"
@@ -68,31 +64,48 @@ menu-open
                                         {{$loop->index+1}}
                                     </td>
                 </form>
-                <td>{{$product->title}}</td>
-                <td>
-                    <img src="{{asset('thumbnail_img/' . $product->thumbnail_img)}}" width="60" height="60" alt="">
-                </td>
-                <td>{{$product->catagory_id}}</td>
-                <td>{{$product->subcatagory_id}}</td>
-                <td>{{$product->product_summary}}</td>
-                <td>{{$product->product_description}}</td>
 
+                <td>
+                    <img src="{{asset('thumbnail_img/' . $product->thumbnail_img)}}" width="60" height="60"
+                        alt="{{$product->title}}">
+                    &nbsp;&nbsp;{{$product->title}}
+                </td>
+                <td>
+                    @foreach ($product->Attribute as $item)
+                    <li>
+                        @if ($item->Color->color_name != 'None')
+
+                        {{ $item->Color->color_name }} -
+                        @endif
+                        @if ($item->Size->size_name != 'None')
+
+                        {{ $item->Size->size_name }} -
+                        @endif
+                        {{$item->quantity}}
+                    </li>
+                    @endforeach
+
+                </td>
                 <form action="{{route('product.destroy',$product->id)}}" method="post">
-                    <td>{{$product->created_at->diffForHumans()}}</td>
                     <td>
-                        <a style="padding: 7px 8px" href="{{route('product.edit',$product->id)}}"
-                            class="btn-sm btn-primary">Edit</a>
+                        <a title="Edit Product" style="padding: 7px 8px" href="{{route('product.edit',$product->id)}}"
+                            class="btn-sm btn-primary"><i class="fa fa-edit"></i></a>
+                        <br>
                         @csrf
                         @method('delete')
-                        <button class="btn-sm btn-danger" type="submit">Delete</button>
+                        <button title="delete product" class="btn-sm btn-danger mt-2" type="submit"><i
+                                class="fa fa-trash"></i></button>
+                    </td>
                 </form>
-                </td>
                 </tr>
                 @empty
                 <td class="text-center" colspan="10">No Data Available</td>
                 @endforelse
                 </tbody>
                 </table>
+            </div>
+            <div class="text-right mt-2">
+                {{$products->links()}}
             </div>
             <!-- /.card -->
         </div>

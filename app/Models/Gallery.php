@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Gallery extends Model
 {
     use HasFactory;
+    function Product(){
+        return $this->belongsTo(Product::class, 'product_id');
+    }
 }
