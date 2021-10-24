@@ -21,6 +21,7 @@ class CreateProductsTable extends Migration
             $table->foreignId('subcatagory_id');
             $table->foreignId('brand_id')->nullable();
             $table->string('thumbnail_img');
+            $table->string('status')->default(1)->comment('1=active , 2=Inactive');
             $table->text('product_summary');
             $table->text('product_description');
             $table->timestamps();

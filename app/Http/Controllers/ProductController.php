@@ -62,7 +62,7 @@ class ProductController extends Controller
             'product_name' => ['required', 'string', 'max:250', 'unique:products,title,'],
             'catagory_name' => ['required'],
             'subcatagory_name' => ['required'],
-            'thumbnail_img' => ['required', 'mimes:png,jpeg,jpg', 'dimensions:max_width=300,max_height=300'],
+            'thumbnail_img' => ['required', 'mimes:png,jpeg,jpg', 'dimensions:max_width=300,max_height=200'],
             'product_img.*' => ['required', 'mimes:png,jpeg,jpg'],
             'product_summary' => ['required'],
             'product_description' => ['required'],
@@ -84,7 +84,7 @@ class ProductController extends Controller
         if ($request->hasFile('thumbnail_img')) {
             $product_thumbnail = $request->file('thumbnail_img');
             $extension = Str::slug($request->product_name) . '-' . Str::random(1) . '.' . $product_thumbnail->getClientOriginalExtension();
-            Image::make($product_thumbnail)->save(public_path('thumbnail_img/' . $extension), 70);
+            Image::make($product_thumbnail)->save(public_path('thumbnail_img/' . $extension), 80);
         }
         $product->thumbnail_img = $extension;
         $product->save();
@@ -98,7 +98,7 @@ class ProductController extends Controller
                 $product_img = Str::slug($request->product_name) . '-' . Str::random(2) . '.' .
                     $value->getClientOriginalExtension();
 
-                Image::make($value)->save(public_path('product_image/' . $product_img), 70);
+                Image::make($value)->save(public_path('product_image/' . $product_img), 95);
                 $gallery = new Gallery;
                 $gallery->product_img = $product_img;
                 $gallery->product_id = $product->id;
@@ -180,9 +180,9 @@ class ProductController extends Controller
             'product_name' => ['required', 'string', 'max:250', 'unique:products,title,' . $id],
             'catagory_name' => ['required'],
             'subcatagory_name' => ['required'],
-            'thumbnail_img' => ['mimes:png,jpeg,jpg', 'dimensions:max_width=300,max_height=300'],
-            'product_img.*' => ['mimes:png'],
-            'product_img_new.*' => ['mimes:png'],
+            'thumbnail_img' => ['mimes:png,', 'dimensions:max_width=300,max_height=200'],
+            'product_img.*' => ['mimes:png,jpeg,jpg'],
+            'product_img_new.*' => ['mimes:png,jpeg,jpg'],
             'product_summary' => ['required'],
             'product_description' => ['required'],
             // 'quantity[]' => ['required'],
@@ -227,7 +227,7 @@ class ProductController extends Controller
                     $product_img = Str::slug($request->product_name) . '-' . Str::random(3) . '.' .
                         $gallery_image->getClientOriginalExtension();
 
-                    Image::make($gallery_image)->save(public_path('product_image/' . $product_img), 70);
+                    Image::make($gallery_image)->save(public_path('product_image/' . $product_img), 95);
                     $gallery->product_img = $product_img;
                     $gallery->product_id = $product->id;
                     $gallery->save();
@@ -241,7 +241,7 @@ class ProductController extends Controller
                 $product_img = Str::slug($request->product_name) . '-' . Str::random(2) . '.' .
                     $value->getClientOriginalExtension();
 
-                Image::make($value)->save(public_path('product_image/' . $product_img), 70);
+                Image::make($value)->save(public_path('product_image/' . $product_img), 95);
                 $gallery = new Gallery;
                 $gallery->product_img = $product_img;
                 $gallery->product_id = $product->id;
@@ -351,5 +351,59 @@ class ProductController extends Controller
         $Attribute = Attribute::findorfail($id);
         $Attribute->delete();
         return back();
+    }
+    public function MarkdeleteProduct(Request $request)
+    {
+        // return $request;
+        if ($request->filled('delete')) {
+            foreach ($request->delete as $key => $id) {
+
+                $product = Product::findorfail($id);
+                // product thumbnail delete 
+                $old_img = public_path('thumbnail_img/' . $product->thumbnail_img);
+                if (file_exists($old_img)) {
+                    unlink($old_img);
+                }
+                // product image delete 
+                $gallerys = $product->Gallery;
+                foreach ($gallerys as  $gallery) {
+                    $old_img = public_path('product_image/' . $gallery->product_img);
+                    if (file_exists($old_img)) {
+                        unlink($old_img);
+                    }
+                    $gallery->delete();
+                }
+                // product attribute delete 
+                $attributes = $product->Attribute;
+                foreach ($attributes as  $attribute) {
+                    $attribute->delete();
+                }
+                // product flavour delete 
+                $flavours = $product->Flavour;
+                foreach ($flavours as  $flavour) {
+                    $flavour->delete();
+                }
+
+                $product->delete();
+                return back()->with('delete', 'Product Deleted Successfully');
+            }
+        } else {
+            return back()->with('warning', 'No Item Selected');
+        }
+    }
+    public function ProductStaus($id)
+    {
+        $product = Product::findorfail($id);
+        if ($product->status == 1) {
+            $product->status = 2;
+            $product->save();
+
+            return back()->with('warning', 'Product Inactive Successfully');
+        } else {
+            $product->status = 1;
+            $product->save();
+
+            return back()->with('success', 'Product Active Successfully');
+        }
     }
 }

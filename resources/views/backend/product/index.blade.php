@@ -33,7 +33,7 @@ menu-open
     <section class="content">
         <div class="container-fluid">
             <div class="col-12">
-                <form action="" method="post">
+                <form action="{{route('MarkdeleteProduct')}}" method="post">
                     @csrf
                     <div>
                         <input type="checkbox" id="select_all"> &nbsp;
@@ -48,15 +48,17 @@ menu-open
                             <thead>
                                 <tr>
                                     <th>SL</th>
-                                    {{-- <th>thumbnail</th> --}}
                                     <th>Product Name</th>
                                     <th>Stock</th>
-                                    <th>Action</th>
+                                    <th class="text-center">Status</th>
+                                    <th >Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($products as $product)
-                                <tr>
+                                <tr @if ($product->status == 2)
+                                    style="background-color:#ccc"
+                                @endif>
                                     <td>
                                         <input type="checkbox" class="checkbox" name="delete[]"
                                             value="{{$product->id}}">
@@ -84,7 +86,15 @@ menu-open
                         {{$item->quantity}}
                     </li>
                     @endforeach
+                </td>
+                <td class="text-center" >
+                    @if ($product->status == 1)
+                        
+                    <a href="{{route('ProductStaus',$product->id)}}" class="btn-sm btn-success">Active</a>
+                    @else
+                    <a href="{{route('ProductStaus',$product->id)}}" class="btn-sm btn-danger">Inactive</a>
 
+                    @endif
                 </td>
                 <form action="{{route('product.destroy',$product->id)}}" method="post">
                     <td>

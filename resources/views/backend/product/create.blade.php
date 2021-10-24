@@ -160,7 +160,7 @@ menu-open
                     <div class="form-group ">
                         <div id="dynamic-field-1" class="form-group dynamic-field mt-4">
                             <div class="row">
-                                <div class="col-lg-3">
+                                <div class="col-lg-3 col-6">
                                     <label for="color_id" class="font-weight-bold">Color</label>
                                     <select class="form-control " name="color_id[]" id="color_id">
                                         {{-- <option value>Select One</option> --}}
@@ -170,7 +170,7 @@ menu-open
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-lg-3">
+                                <div class="col-lg-3 col-6">
                                     <label for="size_id" class="font-weight-bold">Size</label>
                                     <select class="form-control " name="size_id[]" id="size_id">
                                         {{-- <option value>Select One</option> --}}
@@ -180,16 +180,16 @@ menu-open
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-lg-2">
+                                <div class="col-lg-2 col-4">
                                     <label for="quantity" class="font-weight-bold">Quantity</label>
                                     <input required type="number" id="quantity"
-                                        class="form-control col-1 @error('quantity[]') is-invalid  @enderror"
+                                        class="form-control @error('quantity[]') is-invalid  @enderror"
                                         name="quantity[]">
                                     @error('quantity[]')
                                     <span style="color: red">*{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-lg-2">
+                                <div class="col-lg-2 col-4">
                                     <label for="regular_price" class="font-weight-bold ">Regular Price</label>
                                     <input required type="number" id="regular_price"
                                         class="form-control required  @error('regular_price[]') is-invalid  @enderror"
@@ -198,7 +198,7 @@ menu-open
                                     <span style="color: red">*{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-lg-2">
+                                <div class="col-lg-2 col-4">
                                     <label for="selling_price" class="font-weight-bold">Selling Price</label>
                                     <input type="number" id="selling_price" class="form-control" name="selling_price[]">
                                 </div>
