@@ -29,7 +29,7 @@ menu-open
     <section class="content">
         <div class="container-fluid">
             <div class="col-12">
-                <form enctype="multipart/form-data" action="{{route('product.store')}}" method="POST">
+                <form enctype="multipart/form-data" action="{{route('products.store')}}" method="POST">
                     @csrf
                     <div class="form-group">
                         <label for="catagory_id">Product name</label>

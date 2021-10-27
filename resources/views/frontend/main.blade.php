@@ -118,7 +118,7 @@ BD Muscle - Home
                             <div class="featured-img">
                                 <img src="{{asset('thumbnail_img/'.$Product->thumbnail_img)}}" alt="">
                                 <div   class="featured-content">
-                                    <a style="padding: 12px 15px" href="{{route('Frontendshop')}}">{{$Product->Catagory->catagory_name}}</a>
+                                    <a style="padding: 12px 15px" href="{{route('CategorySearch',$Product->Catagory->slug)}}">{{$Product->Catagory->catagory_name}}</a>
                                 </div>
                             </div>
                         </div>

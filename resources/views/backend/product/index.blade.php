@@ -96,9 +96,9 @@ menu-open
 
                     @endif
                 </td>
-                <form action="{{route('product.destroy',$product->id)}}" method="post">
+                <form action="{{route('products.destroy',$product->id)}}" method="post">
                     <td>
-                        <a title="Edit Product" style="padding: 7px 8px" href="{{route('product.edit',$product->id)}}"
+                        <a title="Edit Product" style="padding: 7px 8px" href="{{route('products.edit',$product->id)}}"
                             class="btn-sm btn-primary"><i class="fa fa-edit"></i></a>
                         <br>
                         @csrf

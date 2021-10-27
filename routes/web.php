@@ -1,6 +1,7 @@
  <?php
 
     use App\Http\Controllers\BrandController;
+    use App\Http\Controllers\CartController;
     use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\DashboardController;
     use App\Http\Controllers\CatagoryController;
@@ -9,6 +10,7 @@
     use App\Http\Controllers\FrontendController;
     use App\Http\Controllers\ProductController;
     use App\Http\Controllers\ProductViewController;
+    use App\Http\Controllers\SearchController;
     use App\Http\Controllers\SizeController;
     use App\Http\Controllers\SubCatagoryController;
 
@@ -37,6 +39,16 @@
     Route::post('/product/get-size', [ProductViewController::class, 'GetSizeByColor'])->name('GetSizeByColor');
     Route::post('/product/get-pricebysize', [ProductViewController::class, 'GetPriceBySize'])->name('GetPriceBySize');
     Route::get('/shop', [FrontendController::class, 'Frontendshop'])->name('Frontendshop');
+
+    // search route start
+    Route::get('/product-category/{slug}', [SearchController::class, 'CategorySearch'])->name('CategorySearch');
+    // search route end
+    // cart route start
+    Route::post('/cartpost', [CartController::class, 'CartPost'])->name('CartPost');
+
+    // cart route end
+
+
     // frontend route end
 
 
@@ -55,13 +67,13 @@
 
     // product route
 
-    Route::get('/product/status/{id}', [ProductController::class, 'ProductStaus'])->name('ProductStaus');
-    Route::post('/product/mark-delete/', [ProductController::class, 'MarkdeleteProduct'])->name('MarkdeleteProduct');
-    Route::get('/product/edit/product-attribute-delete/{id}', [ProductController::class, 'ProducvtAtributeDelete'])->name('ProducvtAtributeDelete');
-    Route::get('/product/edit/product-flavour-delete/{id}', [ProductController::class, 'ProductFlavourDelete'])->name('ProductFlavourDelete');
-    Route::get('/product/edit/product-image-delete/{id}', [ProductController::class, 'ProductImagesDelete'])->name('ProductImagesDelete');
-    Route::get('/product/get-sub-cat/{cat_id}', [ProductController::class, 'GetSubcatbyAjax'])->name('GetSubcatbyAjax');
-    Route::resource('/product', ProductController::class);
+    Route::get('/products/status/{id}', [ProductController::class, 'ProductStaus'])->name('ProductStaus');
+    Route::post('/products/mark-delete/', [ProductController::class, 'MarkdeleteProduct'])->name('MarkdeleteProduct');
+    Route::get('/products/edit/product-attribute-delete/{id}', [ProductController::class, 'ProducvtAtributeDelete'])->name('ProducvtAtributeDelete');
+    Route::get('/products/edit/product-flavour-delete/{id}', [ProductController::class, 'ProductFlavourDelete'])->name('ProductFlavourDelete');
+    Route::get('/products/edit/product-image-delete/{id}', [ProductController::class, 'ProductImagesDelete'])->name('ProductImagesDelete');
+    Route::get('/products/get-sub-cat/{cat_id}', [ProductController::class, 'GetSubcatbyAjax'])->name('GetSubcatbyAjax');
+    Route::resource('/products', ProductController::class);
 
     // brand route 
     Route::post('/brand/mark-delete', [BrandController::class, 'Markdeletebrand'])->name('Markdeletebrand');

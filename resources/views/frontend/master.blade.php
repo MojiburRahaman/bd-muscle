@@ -36,6 +36,33 @@
     </head>
 
     <body>
+      <!-- Messenger Chat plugin Code -->
+    {{-- <div id="fb-root"></div>
+
+    <!-- Your Chat plugin code -->
+    <div id="fb-customer-chat" class="fb-customerchat">
+    </div>
+
+    <script>
+      var chatbox = document.getElementById('fb-customer-chat');
+      chatbox.setAttribute("page_id", "181003548728126");
+      chatbox.setAttribute("attribution", "biz_inbox");
+
+      window.fbAsyncInit = function() {
+        FB.init({
+          xfbml            : true,
+          version          : 'v12.0'
+        });
+      };
+
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    </script> --}}
         <!--Start Preloader-->
         {{-- <div class="preloader-wrap">
         <div class="spinner"></div>
@@ -75,7 +102,8 @@
                                             class="fa fa-angle-down"></i></a>
                                     <ul class="dropdown_style">
                                         @auth
-                                        <li><a target="_blank" href="{{ route('dashboard.index') }}"> Dashboard </a></li>
+                                        <li><a target="_blank" href="{{ route('dashboard.index') }}"> Dashboard </a>
+                                        </li>
                                         @else
                                         <li><a href="{{ route('login') }}"> Login/Register </a></li>
 
@@ -91,7 +119,7 @@
                                 @if (Auth::user()->roles()->first()->name == 'Customer')
 
                                 <li><a href="{{route('frontendProfile')}}"> <i class="fa fa-user "><span
-                                                class="pl-2">Profile</span></i> </a></li>
+                                        class="pl-2">Profile</span></i> </a></li>
                                 @else
                                 <li><a href="{{ route('login') }}"> Login/Register </a></li>
                                 @endif
@@ -101,8 +129,8 @@
                                 @endauth --}}
                                 @auth
                                 <li><a href="{{ route('dashboard.index') }}"> Login/Register </a></li>
-                                    @else
-                                    <li><a href="{{ route('login') }}"> Login/Register </a></li>
+                                @else
+                                <li><a href="{{ route('login') }}"> Login/Register </a></li>
                                 @endauth
                             </ul>
                         </div>
@@ -404,6 +432,10 @@
                 </div>
             </div>
         </div>
+        <!-- Messenger Chat plugin Code -->
+      
+        <!-- Your Chat plugin code -->
+
         <!-- .footer-area end -->
 
         <!-- jquery latest version -->
@@ -438,7 +470,37 @@
         <script src="{{ asset('front/js/scripts.js') }}"></script>
 
         @yield('script_js')
-        < </body> <!-- Mirrored from themepresss.com/tf/html/tohoney/index.html by HTTrack Website Copier/3.x
+    
+    
+      <!-- Messenger Chat plugin Code -->
+    {{-- <div id="fb-root"></div>
+
+    <!-- Your Chat plugin code -->
+    <div id="fb-customer-chat" class="fb-customerchat">
+    </div> --}}
+
+    {{-- <script>
+      var chatbox = document.getElementById('fb-customer-chat');
+      chatbox.setAttribute("page_id", "181003548728126");
+      chatbox.setAttribute("attribution", "biz_inbox");
+
+      window.fbAsyncInit = function() {
+        FB.init({
+          xfbml            : true,
+          version          : 'v12.0'
+        });
+      };
+
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    </script> --}}
+    </body>
+    <!-- Mirrored from themepresss.com/tf/html/tohoney/index.html by HTTrack Website Copier/3.x
             [XR&CO'2014], Fri, 13 Mar 2020 03:33:34 GMT -->
 
 </html>

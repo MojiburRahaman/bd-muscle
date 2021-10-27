@@ -26,7 +26,7 @@ menu-open
     <section class="content">
         <div class="container-fluid">
             <div class="col-12">
-                <form enctype="multipart/form-data" action="{{route('product.update',$product->id)}}" method="POST">
+                <form enctype="multipart/form-data" action="{{route('products.update',$product->id)}}" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="form-group">
@@ -281,7 +281,7 @@ menu-open
 
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success">Submit</button>
-                                <a href="{{route('product.index')}}" class="btn btn-primary">Cancel</a>
+                                <a href="{{route('products.index')}}" class="btn btn-primary">Cancel</a>
                             </div>
                 </form>
             </div>

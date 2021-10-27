@@ -127,7 +127,7 @@ class ProductController extends Controller
             $attribute->save();
         }
 
-        return redirect()->route('product.index')->with('success', 'Product Added Successfully');
+        return redirect()->route('products.index')->with('success', 'Product Added Successfully');
     }
 
 
@@ -248,21 +248,35 @@ class ProductController extends Controller
                 $gallery->save();
             }
         }
-        foreach ($request->flavour_name as $key => $flavour) {
-            if ($flavour != '') {
-                if ($request->flavour_id[$key] != '') {
-                    $flavours = Flavour::findorfail($request->flavour_id[$key]);
-                    $flavours->product_id = $product->id;
-                    $flavours->flavour_name = $flavour;
-                    $flavours->save();
-                } else {
+        if ($request->flavour_id == '') {
+            foreach ($request->flavour_name as $flavour) {
+                if ($flavour == '') {
+                    // dd('ok');
                     $flavours = new Flavour;
                     $flavours->product_id = $product->id;
                     $flavours->flavour_name = $flavour;
                     $flavours->save();
                 }
             }
+        } else {
+            foreach ($request->flavour_name as $key => $flavour) {
+                if ($flavour != '') {
+                    if ($request->flavour_id[$key] == '') {
+                        $flavours = new Flavour;
+                        $flavours->product_id = $product->id;
+                        $flavours->flavour_name = $flavour;
+                        $flavours->save();
+                    } else {
+                        $flavours = Flavour::findorfail($request->flavour_id[$key]);
+                        $flavours->product_id = $product->id;
+                        $flavours->flavour_name = $flavour;
+                        $flavours->save();
+                    }
+                }
+            }
         }
+
+
         foreach ($request->color_id as $key => $color_id) {
             if ($request->attribute_id[$key] != '') {
                 $attribute = Attribute::findorfail($request->attribute_id[$key]);
@@ -284,7 +298,7 @@ class ProductController extends Controller
                 $attribute->save();
             }
         }
-        return redirect()->route('product.index')->with('warning', 'Product Edited Successfully');
+        return redirect()->route('products.index')->with('warning', 'Product Edited Successfully');
     }
 
     /**

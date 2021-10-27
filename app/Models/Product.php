@@ -28,5 +28,9 @@ class Product extends Model
     {
         return $this->hasMany(Flavour::class, 'product_id');
     }
+    function Brand()
+    {
+        return $this->belongsTo(Brand::class, 'brand_id');
+    }
    
 }
