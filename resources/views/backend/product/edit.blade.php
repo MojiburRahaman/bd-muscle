@@ -299,7 +299,7 @@ menu-open
             if ($catagory_id) {
                 $.ajax({
                     type: "GET",
-                    url: "{{ url('/product/get-sub-cat/') }}/" + $catagory_id,
+                    url: "{{ url('/products/get-sub-cat/') }}/" + $catagory_id,
                     //  url: "{{ url('get/size/price') }}/" + color_id + '/' + product_id,
 
                     success: function(res) {

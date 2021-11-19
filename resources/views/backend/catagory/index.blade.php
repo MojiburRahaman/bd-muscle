@@ -35,6 +35,8 @@ menu-open
             <div class="col-12">
                 <form action="{{route('MarkdeleteCatagory')}}" method="post">
                     @csrf
+                    @can('Delete Category')
+
                     <div>
                         <input type="checkbox" id="select_all"> &nbsp;
                         <label for="select_all">Select All</label> &nbsp; &nbsp;
@@ -42,6 +44,7 @@ menu-open
                                 style="color: white;border-radius:50%;background-color:#bf3232;font-size:smaller;padding:1px 2px"
                                 class="fa fa-minus"></i> Delete All </button>
                     </div>
+                    @endcan
                     <div class="card-body table-responsive p-0">
                         <table class="table table-hover text-nowrap">
                             <thead>
@@ -49,7 +52,10 @@ menu-open
                                     <th>SL</th>
                                     <th>Catagory Name</th>
                                     <th>Created At</th>
-                                    <th>Action</th>
+                                    @if (auth()->user()->can('Delete Category') || auth()->user()->can('Edit Category'))
+
+                                    <th>Action</th>s
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -57,22 +63,32 @@ menu-open
 
                                 <tr>
                                     <td>
+                                        @can('Delete Category')
+
                                         <input type="checkbox" class="checkbox" name="delete[]" value="{{$item->id}}">
                                         &nbsp;
-                                        {{$loop->index+1}}</td>
+                                        @endcan
+                                        {{$loop->index+1}}
+                                    </td>
                 </form>
 
                 <td>{{$item->catagory_name}}</td>
                 <form action="{{route('catagory.destroy',$item->id)}}" method="post">
                     <td>{{$item->created_at->diffForHumans()}}</td>
+                    @if (auth()->user()->can('Delete Category') || auth()->user()->can('Edit Category'))
                     <td>
+                        @can('Edit Category')
                         <a style="padding: 7px 8px" href="{{route('catagory.edit',$item->id)}}"
                             class="btn-sm btn-primary">Edit</a>
+                        @endcan
+                        @can('Delete Category')
                         @csrf
                         @method('delete')
                         <button class="btn-sm btn-danger" type="submit">Delete</button>
+                        @endcan
                 </form>
                 </td>
+                @endif
                 </tr>
                 @empty
                 <td class="text-center" colspan="10">No Data Available</td>

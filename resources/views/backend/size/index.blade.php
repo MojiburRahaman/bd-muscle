@@ -36,8 +36,10 @@ menu-open
                 {{-- <form action="{{route('Markdeletebrand')}}" method="post"> --}}
                 @csrf
                 <div class="text-right">
+                    @can('Create Size')
 
-                    <a href="{{route('size.create')}}" class="btn-sm btn-info">Add Color</a>
+                    <a href="{{route('size.create')}}" class="btn-sm btn-info">Add Size</a>
+                    @endcan
                 </div>
                 <div class="card-body table-responsive p-0">
                     <table class="table table-hover text-nowrap">
@@ -46,7 +48,9 @@ menu-open
                                 <th>SL</th>
                                 <th>Size Name</th>
                                 <th>Created At</th>
+                                @if (auth()->user()->can('Delete Size') || auth()->user()->can('Edit Size'))
                                 <th>Action</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -58,15 +62,22 @@ menu-open
                                 </td>
                                 <td>{{$size->size_name}}</td>
                                 <td>{{$size->created_at->diffForHumans()}}</td>
+                                @if (auth()->user()->can('Delete Size') || auth()->user()->can('Edit Size'))
                                 <form action="{{route('size.destroy',$size->id)}}" method="post">
                                     <td>
+                                        @can('Edit Size')
                                         <a style="padding: 7px 8px" href="{{route('size.edit',$size->id)}}"
                                             class="btn-sm btn-primary">Edit</a>
+                                        @endcans
                                         @csrf
+                                        @can('Delete Size')
                                         @method('delete')
                                         <button class="btn-sm btn-danger" type="submit">Delete</button>
+
+                                        @endcan
                                 </form>
                                 </td>
+                                @endif
                             </tr>
                             @empty
                             <td class="text-center" colspan="10">No Data Available</td>

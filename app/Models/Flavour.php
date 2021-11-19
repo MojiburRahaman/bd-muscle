@@ -12,4 +12,8 @@ class Flavour extends Model
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+    function Cart()
+    {
+       return $this->hasMany(Cart::class, 'flavour_id');
+    }
 }

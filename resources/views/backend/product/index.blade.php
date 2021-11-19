@@ -35,6 +35,8 @@ menu-open
             <div class="col-12">
                 <form action="{{route('MarkdeleteProduct')}}" method="post">
                     @csrf
+                    @can('Delete Product')
+
                     <div>
                         <input type="checkbox" id="select_all"> &nbsp;
                         <label for="select_all">Select All</label> &nbsp; &nbsp;
@@ -43,6 +45,7 @@ menu-open
                                 class="fa fa-minus"></i> Delete All
                         </button>
                     </div>
+                    @endcan
                     <div class="card-body table-responsive p-0">
                         <table class="table table-bordered table-hover">
                             <thead>
@@ -51,18 +54,22 @@ menu-open
                                     <th>Product Name</th>
                                     <th>Stock</th>
                                     <th class="text-center">Status</th>
-                                    <th >Action</th>
+                                    @if (auth()->user()->can('Edit Product') || auth()->user()->can('Delete Product'))
+                                    <th>Action</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($products as $product)
                                 <tr @if ($product->status == 2)
                                     style="background-color:#ccc"
-                                @endif>
+                                    @endif>
                                     <td>
+                                        @can('Delete Product')
                                         <input type="checkbox" class="checkbox" name="delete[]"
                                             value="{{$product->id}}">
                                         &nbsp;
+                                        @endcan
                                         {{$loop->index+1}}
                                     </td>
                 </form>
@@ -87,9 +94,9 @@ menu-open
                     </li>
                     @endforeach
                 </td>
-                <td class="text-center" >
+                <td class="text-center">
                     @if ($product->status == 1)
-                        
+
                     <a href="{{route('ProductStaus',$product->id)}}" class="btn-sm btn-success">Active</a>
                     @else
                     <a href="{{route('ProductStaus',$product->id)}}" class="btn-sm btn-danger">Inactive</a>
@@ -97,15 +104,23 @@ menu-open
                     @endif
                 </td>
                 <form action="{{route('products.destroy',$product->id)}}" method="post">
+                    @if (auth()->user()->can('Edit Product') || auth()->user()->can('Delete Product'))
+
                     <td>
+                        @can('Edit Product')
                         <a title="Edit Product" style="padding: 7px 8px" href="{{route('products.edit',$product->id)}}"
                             class="btn-sm btn-primary"><i class="fa fa-edit"></i></a>
                         <br>
+                        @endcan
                         @csrf
+                        @can('Delete Product')
+
                         @method('delete')
                         <button title="delete product" class="btn-sm btn-danger mt-2" type="submit"><i
                                 class="fa fa-trash"></i></button>
+                        @endcan
                     </td>
+                    @endif
                 </form>
                 </tr>
                 @empty

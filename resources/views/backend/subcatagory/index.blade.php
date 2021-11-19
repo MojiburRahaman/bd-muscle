@@ -35,6 +35,7 @@ menu-open
             <div class="col-12">
                 <form action="{{route('MarkdeleteSubCatagory')}}" method="post">
                     @csrf
+                    @can('Delete Sub-Category')
                     <div>
                         <input type="checkbox" id="select_all"> &nbsp;
                         <label for="select_all">Select All</label> &nbsp; &nbsp;
@@ -42,6 +43,7 @@ menu-open
                                 style="color: white;border-radius:50%;background-color:#bf3232;font-size:smaller;padding:1px 2px"
                                 class="fa fa-minus"></i> Delete All </button>
                     </div>
+                    @endcan
                     <div class="card-body table-responsive p-0">
                         <table class="table table-hover text-nowrap">
                             <thead>
@@ -50,7 +52,11 @@ menu-open
                                     <th>Sub Catagory Name</th>
                                     <th>Catagory Name</th>
                                     <th>Created At</th>
+                                    @if (auth()->user()->can('Edit Sub-Category') || auth()->user()->can('Delete
+                                    Sub-Category'))
+
                                     <th>Action</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -58,23 +64,33 @@ menu-open
 
                                 <tr>
                                     <td>
+                                        @can('Delete Sub-Category')
                                         <input type="checkbox" class="checkbox" name="delete[]" value="{{$item->id}}">
                                         &nbsp;
-                                        {{$loop->index+1}}</td>
+                                        @endcan
+                                        {{$loop->index+1}}
+                                    </td>
                 </form>
 
                 <td>{{$item->subcatagory_name}}</td>
                 <td>{{$item->Catagory->catagory_name}}</td>
                 <form action="{{route('subcatagory.destroy',$item->id)}}" method="post">
                     <td>{{$item->created_at->diffForHumans()}}</td>
+                    @if (auth()->user()->can('Edit Sub-Category') || auth()->user()->can('Delete
+                    Sub-Category'))
                     <td>
+                        @can('Edit Sub-Category')
                         <a style="padding: 7px 8px" href="{{route('subcatagory.edit',$item->id)}}"
                             class="btn-sm btn-primary">Edit</a>
+                        @endcan
                         @csrf
+                        @can('Delete Sub-Category')
                         @method('delete')
                         <button class="btn-sm btn-danger" type="submit">Delete</button>
+                        @endcan
                 </form>
                 </td>
+                @endif
                 </tr>
                 @empty
                 <td class="text-center" colspan="10">No Data Available</td>
@@ -82,6 +98,7 @@ menu-open
                 </tbody>
                 </table>
             </div>
+            {{$subcatagories->links()}}
             <!-- /.card -->
         </div>
 </div>

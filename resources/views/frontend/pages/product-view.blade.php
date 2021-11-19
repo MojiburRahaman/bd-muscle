@@ -84,361 +84,354 @@
                             {{-- quantity section --}}
                             (<span class="available">{{ $product->Attribute->sum('quantity') }}</span> &nbsp;Product
                             Available)
-                            {{-- quantity section --}}
-                            {{-- <ul class="rating pull-right">
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li>(05 Customar Review)</li>
-                        </ul> --}}
-                            {{-- <div class="pull-right" style="margin-left: 100px"> 
-                       
-                        <img width="60" src="{{asset('brand_img/'.$product->Brand->brand_img)}}" alt="">
-                    </div> --}}
-                </div>
-                <form action="{{route('CartPost')}}" method="POST">
-                    @csrf
-                    <p>{{$product->product_summary}}</p>
-                    <ul class="input-style">
-                        <li class="quantity cart-plus-minus">
-                            <input type="text" value="1" />
-                        </li>
-                        <li>
-                            <button type="submit"
-                                style="padding:5px 7px;border:none;background:#ef4836;color:white;border-radius:5%">
-                                Add to Cart
-                            </button>
-                        </li>
-                    </ul>
-                    @if ($color != '')
-                    <ul class="cetagory">
-                        @php
-                        $attribute = collect($product->Attribute);
-                        $group = $attribute->unique('color_id')
-                        @endphp
-
-                        <li>Color:</li>
-                        @foreach ($group as $color)
-                        @if ($color->color_id != 1)
-                        <input class=" {{($size == '')? 'no_size_color' : 'color_name'}}" type="radio" name="color_id"
-                            id="color_id{{$color->Color->id}}" value="{{$color->Color->id}}"
-                            data-product="{{$product->id}}">
-                        <label for="color_id{{$color->Color->id}}">{{$color->Color->color_name}}</label>&nbsp;
-                        @endif
-                        @endforeach
-                    </ul>
-                    @if ($size != '')
-
-                    <ul class="cetagory">
-                        <li>Size:</li>
-                        <li class="size_add"></li>
-                    </ul>
-                    @else
-                    <input type="hidden" name="size_id" value="1">
-                    @endif
-
-                    @else
-
-                    @if ($size != '')
-                    <ul class="cetagory">
-
-                        <li>Size:</li>
-                        @foreach ($product->Attribute as $Attribute)
-                        <input class="form-group SizebyPrice" type="radio" name="size_id"
-                            data-product="{{$product->id}}" id="size_id{{$Attribute->Size->id}}"
-                            value="{{$Attribute->Size->id}}">
-                        <label class="form-group"
-                            for="size_id{{$Attribute->Size->id}}">{{$Attribute->Size->size_name}}</label> &nbsp;
-                        @endforeach
-                    </ul>
-                    <input type="hidden" name="color_id" value="1">
-                    @endif
-
-                    @endif
-                    @if ($color == '')
-
-                    <input type="hidden" name="color_id" value="1">
-                    @endif
-                    @if ($size == '')
-
-                    <input type="hidden" name="size_id" value="1">
-                    @endif
-                    @if (count($product->Flavour) != 0)
-
-                    <ul class="cetagory" style="margin-bottom: 10px">
-                        <li>Flavour:</p>
-                        <li>
-                            <select name="" id="" class="form-control ml-2">
-                                <option value="">Select One</option>
-                                <option value="">{{$flavour_count}}</option>
-                            </select>
-                        </li>
-                    </ul>
-                    @endif
-                    @if ($product->brand_id != '')
-
-                    <ul class="cetagory" style="margin-bottom: 10px">
-                        <li>Brand:</p>
-                        <li>
-                            <a href="">
-                                <img width="60" src="{{asset('brand_img/'.$product->Brand->brand_img)}}"
-                                    title="{{$product->Brand->brand_name}}" alt="{{$product->Brand->brand_name}}">
-                            </a>
-                        </li>
-                    </ul>
-                    @endif
-                    <ul class="cetagory">
-                        <li>Categories:</li>
-                        <li><a href="#">{{$product->Catagory->catagory_name}}</a></li>
-                    </ul>
-                    <ul class="socil-icon">
-                        <li>Share :</li>
-                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                    </ul>
-
-            </div>
-            </form>
-        </div>
-    </div>
-    <div class="row mt-60">
-        <div class="col-12">
-            <div class="single-product-menu">
-                <ul class="nav">
-                    <li><a class="active" data-toggle="tab" href="#description">Description</a> </li>
-                    <li><a data-toggle="tab" href="#tag">Faq</a></li>
-                    <li><a data-toggle="tab" href="#review">Review</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="tab-content">
-                <div class="tab-pane active" id="description">
-                    <div class="description-wrap">
-                        <p>{{$product->product_description}}</p>
                     </div>
-                </div>
-                <div class="tab-pane" id="tag">
-                    <div class="faq-wrap" id="accordion">
-                        <div class="card">
-                            <div class="card-header" id="headingOne">
-                                <h5><button data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
-                                        aria-controls="collapseOne">General Inquiries ?</button> </h5>
-                            </div>
-                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
-                                data-parent="#accordion">
-                                <div class="card-body">
-                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                                    richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
-                                    brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-                                    sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
-                                    shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-                                    cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-                                    Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
-                                    you probably haven't heard of them accusamus labore sustainable VHS.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header" id="headingTwo">
-                                <h5><button class="collapsed" data-toggle="collapse" data-target="#collapseTwo"
-                                        aria-expanded="false" aria-controls="collapseTwo">How To Use ?</button></h5>
-                            </div>
-                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
-                                data-parent="#accordion">
-                                <div class="card-body">
-                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                                    richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
-                                    brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-                                    sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
-                                    shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-                                    cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-                                    Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
-                                    you probably haven't heard of them accusamus labore sustainable VHS.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header" id="headingThree">
-                                <h5><button class="collapsed" data-toggle="collapse" data-target="#collapseThree"
-                                        aria-expanded="false" aria-controls="collapseThree">Shipping & Delivery
-                                        ?</button></h5>
-                            </div>
-                            <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
-                                data-parent="#accordion">
-                                <div class="card-body">
-                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                                    richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
-                                    brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-                                    sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
-                                    shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-                                    cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-                                    Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
-                                    you probably haven't heard of them accusamus labore sustainable VHS.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header" id="headingfour">
-                                <h5><button class="collapsed" data-toggle="collapse" data-target="#collapsefour"
-                                        aria-expanded="false" aria-controls="collapsefour">Additional Information
-                                        ?</button></h5>
-                            </div>
-                            <div id="collapsefour" class="collapse" aria-labelledby="headingfour"
-                                data-parent="#accordion">
-                                <div class="card-body">
-                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                                    richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
-                                    brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-                                    sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
-                                    shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-                                    cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-                                    Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
-                                    you probably haven't heard of them accusamus labore sustainable VHS.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header" id="headingfive">
-                                <h5><button class="collapsed" data-toggle="collapse" data-target="#collapsefive"
-                                        aria-expanded="false" aria-controls="collapsefive">Return Policy ?</button>
-                                </h5>
-                            </div>
-                            <div id="collapsefive" class="collapse" aria-labelledby="headingfive"
-                                data-parent="#accordion">
-                                <div class="card-body">
-                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                                    richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
-                                    brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-                                    sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
-                                    shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-                                    cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-                                    Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
-                                    you probably haven't heard of them accusamus labore sustainable VHS.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane" id="review">
-                    <div class="review-wrap">
-                        <ul>
-                            <li class="review-items">
-                                <div class="review-img">
-                                    <img src="assets/images/comment/1.png" alt="">
-                                </div>
-                                <div class="review-content">
-                                    <h3><a href="#">GERALD BARNES</a></h3>
-                                    <span>27 Jun, 2019 at 2:30pm</span>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan
-                                        egestas elese ifend. Phasellus a felis at estei to bibendum feugiat ut eget
-                                        eni Praesent et messages in con sectetur posuere dolor non.</p>
-                                    <ul class="rating">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
+                    <form action="{{route('CartPost')}}" method="POST">
+                        @csrf
+                        <p>{{$product->product_summary}}</p>
+                        <ul class="input-style">
+                            <li class="quantity cart-plus-minus">
+                                <input name="cart_quantity" type="text" value="1" />
                             </li>
-                            <li class="review-items">
-                                <div class="review-img">
-                                    <img src="assets/images/comment/2.png" alt="">
-                                </div>
-                                <div class="review-content">
-                                    <h3><a href="#">Olive Oil</a></h3>
-                                    <span>15 may, 2019 at 2:30pm</span>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan
-                                        egestas elese ifend. Phasellus a felis at estei to bibendum feugiat ut eget
-                                        eni Praesent et messages in con sectetur posuere dolor non.</p>
-                                    <ul class="rating">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star-half-o"></i></li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="review-items">
-                                <div class="review-img">
-                                    <img src="assets/images/comment/3.png" alt="">
-                                </div>
-                                <div class="review-content">
-                                    <h3><a href="#">Nature Honey</a></h3>
-                                    <span>14 janu, 2019 at 2:30pm</span>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan
-                                        egestas elese ifend. Phasellus a felis at estei to bibendum feugiat ut eget
-                                        eni Praesent et messages in con sectetur posuere dolor non.</p>
-                                    <ul class="rating">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star-o"></i></li>
-                                    </ul>
-                                </div>
+                            <li>
+                                <button type="submit"
+                                    style="padding:5px 7px;border:none;background:#ef4836;color:white;border-radius:5%">
+                                    Add to Cart
+                                </button>
                             </li>
                         </ul>
-                    </div>
-                    <div class="add-review">
-                        <h4>Add A Review</h4>
-                        <div class="ratting-wrap">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>task</th>
-                                        <th>1 Star</th>
-                                        <th>2 Star</th>
-                                        <th>3 Star</th>
-                                        <th>4 Star</th>
-                                        <th>5 Star</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>How Many Stars?</td>
-                                        <td>
-                                            <input type="radio" name="a" />
-                                        </td>
-                                        <td>
-                                            <input type="radio" name="a" />
-                                        </td>
-                                        <td>
-                                            <input type="radio" name="a" />
-                                        </td>
-                                        <td>
-                                            <input type="radio" name="a" />
-                                        </td>
-                                        <td>
-                                            <input type="radio" name="a" />
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <input type="hidden" value="{{$product->id}}" name="product_id">
+                        @if ($color != '')
+                        <ul class="cetagory">
+                            @php
+                            $attribute = collect($product->Attribute);
+                            $group = $attribute->unique('color_id')
+                            @endphp
+
+                            <li>Color:</li>
+                            @foreach ($group as $color)
+                            @if ($color->color_id != 1)
+                            <input class=" {{($size == '')? 'no_size_color' : 'color_name'}}" type="radio"
+                                name="color_id" id="color_id{{$color->Color->id}}" value="{{$color->Color->id}}"
+                                data-product="{{$product->id}}">
+                            <label for="color_id{{$color->Color->id}}">{{$color->Color->color_name}}</label>&nbsp;
+                            @endif
+                            @endforeach
+                        </ul>
+                        @if ($size != '')
+
+                        <ul class="cetagory">
+                            <li>Size:</li>
+                            <li class="size_add"></li>
+                        </ul>
+                        @else
+                        <input type="hidden" name="size_id" value="1">
+                        @endif
+
+                        @else
+
+                        @if ($size != '')
+                        <ul class="cetagory">
+
+                            <li>Size:</li>
+                            @foreach ($product->Attribute as $Attribute)
+                            <input class="form-group SizebyPrice" type="radio" name="size_id"
+                                data-product="{{$product->id}}" id="size_id{{$Attribute->Size->id}}"
+                                value="{{$Attribute->Size->id}}">
+                            <label class="form-group"
+                                for="size_id{{$Attribute->Size->id}}">{{$Attribute->Size->size_name}}</label> &nbsp;
+                            @endforeach
+                        </ul>
+                        <input type="hidden" name="color_id" value="1">
+                        @endif
+
+                        @endif
+                        @if ($color == '')
+
+                        <input type="hidden" name="color_id" value="1">
+                        @endif
+                        @if ($size == '')
+
+                        <input type="hidden" name="size_id" value="1">
+                        @endif
+                        @if ($product->flavour_count != 0)
+
+                        <ul class="cetagory" style="margin-bottom: 10px">
+                            <li>Flavour:</p>
+                            <li>
+                                <select name="flavour_id" class="form-control ml-2 @error('flavour_id') is-invalid
+                                    
+                                @enderror">
+                                    <option value="">Select One</option>
+                                    @foreach ($product->Flavour as $Flavour)
+                                    <option value="{{$Flavour->id}}">{{$Flavour->flavour_name}}</option>
+                                    @endforeach
+                                </select>
+                            </li>
+                        </ul>
+                        @endif
+                        @if ($product->brand_id != '')
+
+                        <ul class="cetagory" style="margin-bottom: 10px">
+                            <li>Brand:</p>
+                            <li>
+                                <a href="">
+                                    <img width="60" src="{{asset('brand_img/'.$product->Brand->brand_img)}}"
+                                        title="{{$product->Brand->brand_name}}" alt="{{$product->Brand->brand_name}}">
+                                </a>
+                            </li>
+                        </ul>
+                        @endif
+                        <ul class="cetagory">
+                            <li>Categories:</li>
+                            <li><a href="#">{{$product->Catagory->catagory_name}}</a></li>
+                        </ul>
+                        <ul class="socil-icon">
+                            <li>Share :</li>
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                            <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                        </ul>
+
+                </div>
+                </form>
+            </div>
+        </div>
+        <div class="row mt-60">
+            <div class="col-12">
+                <div class="single-product-menu">
+                    <ul class="nav">
+                        <li><a class="active" data-toggle="tab" href="#description">Description</a> </li>
+                        <li><a data-toggle="tab" href="#tag">Faq</a></li>
+                        <li><a data-toggle="tab" href="#review">Review</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="description">
+                        <div class="description-wrap">
+                            <p>{{$product->product_description}}</p>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6 col-12">
-                                <h4>Name:</h4>
-                                <input type="text" placeholder="Your name here..." />
+                    </div>
+                    <div class="tab-pane" id="tag">
+                        <div class="faq-wrap" id="accordion">
+                            <div class="card">
+                                <div class="card-header" id="headingOne">
+                                    <h5><button data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                                            aria-controls="collapseOne">General Inquiries ?</button> </h5>
+                                </div>
+                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                                    data-parent="#accordion">
+                                    <div class="card-body">
+                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
+                                        richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
+                                        brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                                        sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
+                                        shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson
+                                        cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                                        Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
+                                        you probably haven't heard of them accusamus labore sustainable VHS.
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-6 col-12">
-                                <h4>Email:</h4>
-                                <input type="email" placeholder="Your Email here..." />
+                            <div class="card">
+                                <div class="card-header" id="headingTwo">
+                                    <h5><button class="collapsed" data-toggle="collapse" data-target="#collapseTwo"
+                                            aria-expanded="false" aria-controls="collapseTwo">How To Use ?</button></h5>
+                                </div>
+                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                    data-parent="#accordion">
+                                    <div class="card-body">
+                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
+                                        richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
+                                        brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                                        sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
+                                        shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson
+                                        cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                                        Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
+                                        you probably haven't heard of them accusamus labore sustainable VHS.
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-12">
-                                <h4>Your Review:</h4>
-                                <textarea name="massage" id="massage" cols="30" rows="10"
-                                    placeholder="Your review here..."></textarea>
+                            <div class="card">
+                                <div class="card-header" id="headingThree">
+                                    <h5><button class="collapsed" data-toggle="collapse" data-target="#collapseThree"
+                                            aria-expanded="false" aria-controls="collapseThree">Shipping & Delivery
+                                            ?</button></h5>
+                                </div>
+                                <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                                    data-parent="#accordion">
+                                    <div class="card-body">
+                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
+                                        richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
+                                        brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                                        sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
+                                        shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson
+                                        cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                                        Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
+                                        you probably haven't heard of them accusamus labore sustainable VHS.
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-12">
-                                <button class="btn-style">Submit</button>
+                            <div class="card">
+                                <div class="card-header" id="headingfour">
+                                    <h5><button class="collapsed" data-toggle="collapse" data-target="#collapsefour"
+                                            aria-expanded="false" aria-controls="collapsefour">Additional Information
+                                            ?</button></h5>
+                                </div>
+                                <div id="collapsefour" class="collapse" aria-labelledby="headingfour"
+                                    data-parent="#accordion">
+                                    <div class="card-body">
+                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
+                                        richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
+                                        brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                                        sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
+                                        shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson
+                                        cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                                        Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
+                                        you probably haven't heard of them accusamus labore sustainable VHS.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" id="headingfive">
+                                    <h5><button class="collapsed" data-toggle="collapse" data-target="#collapsefive"
+                                            aria-expanded="false" aria-controls="collapsefive">Return Policy ?</button>
+                                    </h5>
+                                </div>
+                                <div id="collapsefive" class="collapse" aria-labelledby="headingfive"
+                                    data-parent="#accordion">
+                                    <div class="card-body">
+                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
+                                        richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
+                                        brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                                        sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
+                                        shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson
+                                        cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                                        Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
+                                        you probably haven't heard of them accusamus labore sustainable VHS.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="review">
+                        <div class="review-wrap">
+                            <ul>
+                                <li class="review-items">
+                                    <div class="review-img">
+                                        <img src="assets/images/comment/1.png" alt="">
+                                    </div>
+                                    <div class="review-content">
+                                        <h3><a href="#">GERALD BARNES</a></h3>
+                                        <span>27 Jun, 2019 at 2:30pm</span>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan
+                                            egestas elese ifend. Phasellus a felis at estei to bibendum feugiat ut eget
+                                            eni Praesent et messages in con sectetur posuere dolor non.</p>
+                                        <ul class="rating">
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="review-items">
+                                    <div class="review-img">
+                                        <img src="assets/images/comment/2.png" alt="">
+                                    </div>
+                                    <div class="review-content">
+                                        <h3><a href="#">Olive Oil</a></h3>
+                                        <span>15 may, 2019 at 2:30pm</span>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan
+                                            egestas elese ifend. Phasellus a felis at estei to bibendum feugiat ut eget
+                                            eni Praesent et messages in con sectetur posuere dolor non.</p>
+                                        <ul class="rating">
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star-half-o"></i></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="review-items">
+                                    <div class="review-img">
+                                        <img src="assets/images/comment/3.png" alt="">
+                                    </div>
+                                    <div class="review-content">
+                                        <h3><a href="#">Nature Honey</a></h3>
+                                        <span>14 janu, 2019 at 2:30pm</span>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan
+                                            egestas elese ifend. Phasellus a felis at estei to bibendum feugiat ut eget
+                                            eni Praesent et messages in con sectetur posuere dolor non.</p>
+                                        <ul class="rating">
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star-o"></i></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="add-review">
+                            <h4>Add A Review</h4>
+                            <div class="ratting-wrap">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>task</th>
+                                            <th>1 Star</th>
+                                            <th>2 Star</th>
+                                            <th>3 Star</th>
+                                            <th>4 Star</th>
+                                            <th>5 Star</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>How Many Stars?</td>
+                                            <td>
+                                                <input type="radio" name="a" />
+                                            </td>
+                                            <td>
+                                                <input type="radio" name="a" />
+                                            </td>
+                                            <td>
+                                                <input type="radio" name="a" />
+                                            </td>
+                                            <td>
+                                                <input type="radio" name="a" />
+                                            </td>
+                                            <td>
+                                                <input type="radio" name="a" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-12">
+                                    <h4>Name:</h4>
+                                    <input type="text" placeholder="Your name here..." />
+                                </div>
+                                <div class="col-md-6 col-12">
+                                    <h4>Email:</h4>
+                                    <input type="email" placeholder="Your Email here..." />
+                                </div>
+                                <div class="col-12">
+                                    <h4>Your Review:</h4>
+                                    <textarea name="massage" id="massage" cols="30" rows="10"
+                                        placeholder="Your review here..."></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn-style">Submit</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -446,7 +439,6 @@
             </div>
         </div>
     </div>
-</div>
 </div>
 <!-- single-product-area end-->
 <!-- featured-product-area start -->
@@ -551,7 +543,6 @@
     // if therese color available end
 
     // if therese color but no size available start
-
     $('.no_size_color').change(function() {
             var color_id = $(this).val();
             var product_id = $(this).attr('data-product');

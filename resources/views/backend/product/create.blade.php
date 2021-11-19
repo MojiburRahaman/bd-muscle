@@ -116,7 +116,7 @@ menu-open
                             {{$message}}
                         </div>
                         @else
-                                <span class="text-danger">Only png,jpg,jpeg formate will allow</span>
+                        <span class="text-danger">Only png,jpg,jpeg formate will allow</span>
                         @enderror
                     </div>
                     <div class="form-group">
@@ -234,11 +234,10 @@ menu-open
 <script>
     $('#catagory_id').change(function() {
             $catagory_id = $(this).val();
-            // alert($catagory_id);
             if ($catagory_id) {
                 $.ajax({
                     type: "GET",
-                    url: "{{ url('/product/get-sub-cat/') }}/" + $catagory_id,
+                    url: "{{ url('/products/get-sub-cat/') }}/" + $catagory_id,
                     //  url: "{{ url('get/size/price') }}/" + color_id + '/' + product_id,
 
                     success: function(res) {

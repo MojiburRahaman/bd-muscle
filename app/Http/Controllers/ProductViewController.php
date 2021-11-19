@@ -15,9 +15,8 @@ class ProductViewController extends Controller
             ->where('slug', $slug)
             ->where('status', 1)
             ->select('id', 'brand_id', 'title', 'product_summary', 'product_description', 'slug', 'catagory_id')
+            ->withCount('Flavour')
             ->first();
-        // return $Product->Flavour_count == 0 ? 'khali' : 'khali_na';
-        // return $Product->flavour_Count;
         $color = $Product->Attribute->where('color_id', '!=', 1)->count();
         $size = $Product->Attribute->where('size_id', '!=', 1)->count();
         return view('frontend.pages.product-view', [

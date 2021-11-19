@@ -98,7 +98,7 @@ class ProductController extends Controller
                 $product_img = Str::slug($request->product_name) . '-' . Str::random(2) . '.' .
                     $value->getClientOriginalExtension();
 
-                Image::make($value)->save(public_path('product_image/' . $product_img), 95);
+                Image::make($value)->save(public_path('product_image/' . $product_img), 100);
                 $gallery = new Gallery;
                 $gallery->product_img = $product_img;
                 $gallery->product_id = $product->id;
@@ -180,7 +180,7 @@ class ProductController extends Controller
             'product_name' => ['required', 'string', 'max:250', 'unique:products,title,' . $id],
             'catagory_name' => ['required'],
             'subcatagory_name' => ['required'],
-            'thumbnail_img' => ['mimes:png,', 'dimensions:max_width=300,max_height=200'],
+            // 'thumbnail_img' => ['mimes:png,', 'dimensions:max_width=300,max_height=200'],
             'product_img.*' => ['mimes:png,jpeg,jpg'],
             'product_img_new.*' => ['mimes:png,jpeg,jpg'],
             'product_summary' => ['required'],
@@ -209,7 +209,7 @@ class ProductController extends Controller
             }
             $product_thumbnail = $request->file('thumbnail_img');
             $extension = Str::slug($request->product_name) . '-' . Str::random(1) . '.' . $product_thumbnail->getClientOriginalExtension();
-            Image::make($product_thumbnail)->save(public_path('thumbnail_img/' . $extension), 70);
+            Image::make($product_thumbnail)->save(public_path('thumbnail_img/' . $extension), 80);
 
             $product->thumbnail_img = $extension;
         }
@@ -227,7 +227,7 @@ class ProductController extends Controller
                     $product_img = Str::slug($request->product_name) . '-' . Str::random(3) . '.' .
                         $gallery_image->getClientOriginalExtension();
 
-                    Image::make($gallery_image)->save(public_path('product_image/' . $product_img), 95);
+                    Image::make($gallery_image)->save(public_path('product_image/' . $product_img), 100);
                     $gallery->product_img = $product_img;
                     $gallery->product_id = $product->id;
                     $gallery->save();
