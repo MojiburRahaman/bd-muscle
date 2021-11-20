@@ -68,7 +68,7 @@ menu-open
                                         @can('Edit Size')
                                         <a style="padding: 7px 8px" href="{{route('size.edit',$size->id)}}"
                                             class="btn-sm btn-primary">Edit</a>
-                                        @endcans
+                                        @endcan
                                         @csrf
                                         @can('Delete Size')
                                         @method('delete')
@@ -76,8 +76,8 @@ menu-open
 
                                         @endcan
                                 </form>
-                                </td>
                                 @endif
+                                </td>
                             </tr>
                             @empty
                             <td class="text-center" colspan="10">No Data Available</td>
@@ -88,7 +88,6 @@ menu-open
                 <div class="mt-4">
                     {{$sizes->links()}}
                 </div>
-                <!-- /.card -->
             </div>
         </div>
     </section>

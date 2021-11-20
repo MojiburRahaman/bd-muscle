@@ -131,7 +131,7 @@ menu-open
                     </div>
                     <div class="form-group">
                         <label for="product_description">Description</label>
-                        <textarea class="form-control @error('product_description') is-invalid @enderror"
+                        <textarea id="product_description" class="form-control @error('product_description') is-invalid @enderror"
                             name="product_description" id="product_description"></textarea>
                         @error('product_description')
                         <div class="alert alert-danger">
@@ -237,9 +237,7 @@ menu-open
             if ($catagory_id) {
                 $.ajax({
                     type: "GET",
-                    url: "{{ url('/products/get-sub-cat/') }}/" + $catagory_id,
-                    //  url: "{{ url('get/size/price') }}/" + color_id + '/' + product_id,
-
+                    url: "{{ url('admin/products/get-sub-cat/') }}/" + $catagory_id,
                     success: function(res) {
                         if (res) {
                             $('#subcatagory_id').removeAttr('disabled');
@@ -353,7 +351,14 @@ menu-open
         });
 
 
-
+        ClassicEditor
+            .create( document.querySelector( '#product_description' ) )
+            .then( editor => {
+                    console.log( editor );
+            } )
+            .catch( error => {
+                    console.error( error );
+            } );
 
 
 </script>

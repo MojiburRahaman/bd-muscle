@@ -14,8 +14,12 @@ class SizeController extends Controller
      */
     public function index()
     {
-        $sizes = Size::where('id', '!=', 1)->latest()->paginate(15  );
-        return view('backend.size.index', compact('sizes'));
+        if (auth()->user()->can('View Size')) {
+            $sizes = Size::where('id', '!=', 1)->latest()->paginate(15);
+            return view('backend.size.index', compact('sizes'));
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -25,7 +29,11 @@ class SizeController extends Controller
      */
     public function create()
     {
-        return view('backend.size.create');
+        if (auth()->user()->can('Create Size')) {
+            return view('backend.size.create');
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -36,13 +44,17 @@ class SizeController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'size_name' => ['required', 'string', 'max:200', 'unique:sizes,size_name']
-        ]);
-        $size = new Size;
-        $size->size_name = $request->size_name;
-        $size->save();
-        return redirect()->route('size.index')->with('success', 'Size Added Successfully');
+        if (auth()->user()->can('Create Size')) {
+            $request->validate([
+                'size_name' => ['required', 'string', 'max:200', 'unique:sizes,size_name']
+            ]);
+            $size = new Size;
+            $size->size_name = $request->size_name;
+            $size->save();
+            return redirect()->route('size.index')->with('success', 'Size Added Successfully');
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -64,8 +76,12 @@ class SizeController extends Controller
      */
     public function edit($id)
     {
-        $size = Size::findorfail($id);
-        return view('backend.size.edit', compact('size'));
+        if (auth()->user()->can('Edit Size')) {
+            $size = Size::findorfail($id);
+            return view('backend.size.edit', compact('size'));
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -77,13 +93,17 @@ class SizeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'size_name' => ['required', 'string', 'max:200', 'unique:sizes,size_name,' . $id]
-        ]);
-        $size = Size::findorfail($id);
-        $size->size_name = $request->size_name;
-        $size->save();
-        return redirect()->route('size.index')->with('warning', 'Size Edited Successfully');
+        if (auth()->user()->can('Edit Size')) {
+            $request->validate([
+                'size_name' => ['required', 'string', 'max:200', 'unique:sizes,size_name,' . $id]
+            ]);
+            $size = Size::findorfail($id);
+            $size->size_name = $request->size_name;
+            $size->save();
+            return redirect()->route('size.index')->with('warning', 'Size Edited Successfully');
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -94,7 +114,11 @@ class SizeController extends Controller
      */
     public function destroy($id)
     {
-        Size::findorfail($id)->delete();
-        return back()->with('delete', 'Size Deleted Successfully');
+        if (auth()->user()->can('Delete Size')) {
+            Size::findorfail($id)->delete();
+            return back()->with('delete', 'Size Deleted Successfully');
+        } else {
+            abort('404');
+        }
     }
 }

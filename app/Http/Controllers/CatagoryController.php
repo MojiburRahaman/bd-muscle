@@ -16,12 +16,14 @@ class CatagoryController extends Controller
      */
     public function index()
     {
-        $catagoreis = Catagory::select('id', 'catagory_name', 'created_at')->latest('id')->get();
-        // $catagoreis = Catagory::latest('id')->get();
-        // return $catagoreis;
-        return view('backend.catagory.index', [
-            'catagoreis' => $catagoreis,
-        ]);
+        if (auth()->user()->can('View Category')) {
+            $catagoreis = Catagory::select('id', 'catagory_name', 'created_at')->latest('id')->paginate();
+            return view('backend.catagory.index', [
+                'catagoreis' => $catagoreis,
+            ]);
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -31,7 +33,12 @@ class CatagoryController extends Controller
      */
     public function create()
     {
-        return view("backend.catagory.create");
+        if (auth()->user()->can('Create Category')) {
+
+            return view("backend.catagory.create");
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -42,17 +49,21 @@ class CatagoryController extends Controller
      */
     public function store(Request $request)
     {
-       
-        $request->validate([
-            'catagory_name' => ['required', 'string', 'unique:catagories,catagory_name']
-        ]);
+        if (auth()->user()->can('Create Category')) {
 
-        // return 1;
-        $catagory = new Catagory;
-        $catagory->catagory_name = strip_tags($request->catagory_name);
-        $catagory->slug = strip_tags(Str::slug($request->catagory_name));
-        $catagory->save();
-        return redirect()->route('catagory.index')->with('success', 'Catagory Added Succesfully');
+            $request->validate([
+                'catagory_name' => ['required', 'string', 'unique:catagories,catagory_name']
+            ]);
+
+            // return 1;
+            $catagory = new Catagory;
+            $catagory->catagory_name = strip_tags($request->catagory_name);
+            $catagory->slug = strip_tags(Str::slug($request->catagory_name));
+            $catagory->save();
+            return redirect()->route('catagory.index')->with('success', 'Catagory Added Succesfully');
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -74,11 +85,14 @@ class CatagoryController extends Controller
      */
     public function edit($id)
     {
-
-        $catagory = Catagory::findorfail($id);
-        return view('backend.catagory.show', [
-            "catagory" => $catagory,
-        ]);
+        if (auth()->user()->can('Edit Category')) {
+            $catagory = Catagory::findorfail($id);
+            return view('backend.catagory.show', [
+                "catagory" => $catagory,
+            ]);
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -90,15 +104,18 @@ class CatagoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // return $id;
-        $request->validate([
-            'catagory_name' => ['required', 'string', 'unique:catagories,catagory_name,' . $id],
-        ]);
-        $catagory =  Catagory::findorfail($id);
-        $catagory->catagory_name = $request->catagory_name;
-        $catagory->slug = Str::slug($request->catagory_name);
-        $catagory->save();
-        return redirect()->route('catagory.index')->with('warning', 'Catagory Updated Succesfully');
+        if (auth()->user()->can('Edit Category')) {
+            $request->validate([
+                'catagory_name' => ['required', 'string', 'unique:catagories,catagory_name,' . $id],
+            ]);
+            $catagory =  Catagory::findorfail($id);
+            $catagory->catagory_name = $request->catagory_name;
+            $catagory->slug = Str::slug($request->catagory_name);
+            $catagory->save();
+            return redirect()->route('catagory.index')->with('warning', 'Catagory Updated Succesfully');
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -109,34 +126,43 @@ class CatagoryController extends Controller
      */
     public function destroy($id)
     {
-        $subcatagory = Subcatagory::where('catagory_id', $id)->get()->count();
-        if ($subcatagory > 0) {
-            return back()->with('warning', "There's a Subcatagory Under This Catagory");
+        if (auth()->user()->can('Delete Category')) {
+
+            $subcatagory = Subcatagory::where('catagory_id', $id)->get()->count();
+            if ($subcatagory > 0) {
+                return back()->with('warning', "There's a Subcatagory Under This Catagory");
+            } else {
+                Catagory::findorfail($id)->delete();
+                return back()->with('delete', 'Catagory Deleted Succesfully');
+            }
         } else {
-            Catagory::findorfail($id)->delete();
-            return back()->with('delete', 'Catagory Deleted Succesfully');
+            abort('404');
         }
     }
     public function MarkdeleteCatagory(Request $request)
     {
-        // return $request;
-        if ($request->filled('delete')) {
-            foreach ($request->delete as  $value) {
-                
-                // if theres subcatagory under this catafory id
-                $subcatagory = Subcatagory::where('catagory_id', $value)->get()->count();
-                if ($subcatagory > 0) {
-                    // it will return back
-                    return back()->with('warning', "There's a Subcatagory Under A Catagory");
-                } else {
-                // if theres no subcatagory under this catafory id
+        if (auth()->user()->can('Delete Category')) {
 
-                    Catagory::findorfail($value)->delete();
+            if ($request->filled('delete')) {
+                foreach ($request->delete as  $value) {
+
+                    // if theres subcatagory under this catafory id
+                    $subcatagory = Subcatagory::where('catagory_id', $value)->get()->count();
+                    if ($subcatagory > 0) {
+                        // it will return back
+                        return back()->with('warning', "There's a Subcatagory Under A Catagory");
+                    } else {
+                        // if theres no subcatagory under this catafory id
+
+                        Catagory::findorfail($value)->delete();
+                    }
                 }
+                return back()->with('delete', 'Catagory Deleted Succesfully');
+            } else {
+                return back();
             }
-            return back()->with('delete', 'Catagory Deleted Succesfully');
         } else {
-            return back();
+            abort('404');
         }
     }
 }

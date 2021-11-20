@@ -15,6 +15,7 @@
     use App\Http\Controllers\SubCatagoryController;
     use App\Http\Controllers\RoleController;
     use App\Http\Controllers\CouponController;
+    use App\Http\Controllers\WishlistController;
     use App\Http\Controllers\BlogController;
 
     /*

@@ -13,8 +13,13 @@ class ColorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {$colors= Color::where('id', '!=' ,1)->select('id','color_name','created_at')->latest()->simplepaginate(10);
-        return view('backend.color.index',compact('colors'));
+    {
+        if (auth()->user()->can('View Color')) {
+            $colors = Color::where('id', '!=', 1)->select('id', 'color_name', 'created_at')->latest()->simplepaginate(10);
+            return view('backend.color.index', compact('colors'));
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -24,7 +29,11 @@ class ColorController extends Controller
      */
     public function create()
     {
-        return view('backend.color.create');
+        if (auth()->user()->can('Create Color')) {
+            return view('backend.color.create');
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -35,13 +44,17 @@ class ColorController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'color_name' => ['required', 'string', 'max:150','unique:colors,color_name']
-        ]);
-        $color = new Color;
-        $color->color_name = $request->color_name;
-        $color->save();
-        return redirect()->route('color.index')->with('success', 'Color Added Successfully');
+        if (auth()->user()->can('Create Color')) {
+            $request->validate([
+                'color_name' => ['required', 'string', 'max:150', 'unique:colors,color_name']
+            ]);
+            $color = new Color;
+            $color->color_name = $request->color_name;
+            $color->save();
+            return redirect()->route('color.index')->with('success', 'Color Added Successfully');
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -63,8 +76,12 @@ class ColorController extends Controller
      */
     public function edit($id)
     {
-        $color= Color::findorfail($id);
-      return view('backend.color.edit',compact('color'));
+        if (auth()->user()->can('Edit Color')) {
+            $color = Color::findorfail($id);
+            return view('backend.color.edit', compact('color'));
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -76,13 +93,17 @@ class ColorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'color_name' => ['required', 'string', 'max:150','unique:colors,color_name,'.$id]
-        ]);
-        $color =Color::findorfail($id);
-        $color->color_name = $request->color_name;
-        $color->save();
-        return redirect()->route('color.index')->with('warning', 'Color Edited Successfully');
+        if (auth()->user()->can('Edit Color')) {
+            $request->validate([
+                'color_name' => ['required', 'string', 'max:150', 'unique:colors,color_name,' . $id]
+            ]);
+            $color = Color::findorfail($id);
+            $color->color_name = $request->color_name;
+            $color->save();
+            return redirect()->route('color.index')->with('warning', 'Color Edited Successfully');
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -93,7 +114,11 @@ class ColorController extends Controller
      */
     public function destroy($id)
     {
-        Color::findorfail($id)->delete();
-        return back()->with('delete', 'Color Deleted Succcessfully');
+        if (auth()->user()->can('Delete Color')) {
+            Color::findorfail($id)->delete();
+            return back()->with('delete', 'Color Deleted Succcessfully');
+        } else {
+            abort('404');
+        }
     }
 }

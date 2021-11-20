@@ -15,13 +15,10 @@ class CartController extends Controller
 {
     function CartView($coupon_name = '')
     {
-        $Carts = Cart::with(['Product.Attribute', 'Color', 'Size', 'Flavour'])
+        $Carts = Cart::with(['Product.Attribute', 'Color:id,color_name', 'Size:id,size_name', 'Flavour:flavour_name,id'])
             ->Where('cookie_id', Cookie::get('cookie_id'))->withcount('Flavour')->get();
         $coupon = Coupon::where('coupon_name', $coupon_name)->first();
-        // $cou = Coupon::where('coupon_name', $coupon_name)->coupon_expire_date;
-        // return $coupon->coupon_expire_date;
         $current_date = Carbon::today()->format('Y-m-d');
-        // return $coupon->exists();
         if ($coupon_name == '') {
             $discount = 0;
         } else {
@@ -34,7 +31,7 @@ class CartController extends Controller
             } elseif ($current_date > $coupon->coupon_expire_date) {
                 // coupon expire date checking
                 return redirect('/cart/#coupon_section')->with('coupon_invalid', "Coupon Date Expired");
-            } elseif ($coupon->exists()) {
+            } elseif ($coupon != '') {
                 // if theres coupon name exist 
                 $discount = $coupon->coupon_amount;
             }
@@ -44,6 +41,7 @@ class CartController extends Controller
 
     function CartPost(Request $request)
     {
+        // return $request;
         session()->forget('cart_total');
         $request->validate([
             'color_id' => ['required',],
@@ -54,15 +52,19 @@ class CartController extends Controller
             'color_id.required' => 'Please Choose a Color',
             'size_id.required' => 'Please Choose a Size'
         ]);
-        // return $request;
         if ($request->has('flavour_id')) {
             $request->validate([
                 'flavour_id' => ['required'],
             ]);
         }
 
-        if ($request->wish_list_id != '') {
-            Wishlist::findorfail($request->wish_list_id)->delete();
+        if ($request->has('wish_list_id')) {
+            $request->validate([
+                'wish_list_id' => ['required'],
+            ]);
+            if ($request->wish_list_id != '') {
+                Wishlist::findorfail($request->wish_list_id)->delete();
+            }
         }
 
         if ($request->hasCookie('cookie_id')) {
@@ -101,7 +103,10 @@ class CartController extends Controller
     }
     function CartUpdate(Request $request)
     {
-        // return $request;
+        $request->validate([
+            'cart_quantity' => ['required', 'numeric', 'min:1'],
+            'cart_id' => ['required', 'numeric',]
+        ]);
         $cart = Cart::findorfail($request->cart_id);
         $cart->quantity = $request->cart_quantity;
         $cart->save();
@@ -110,12 +115,12 @@ class CartController extends Controller
             ->where('color_id', $cart->color_id)
             ->where('size_id', $cart->size_id)
             ->select('regular_price', 'sell_price')->first();
-        if ($Attr->selling_price != '') {
-            $price = $Attr->selling_price;
+        if ($Attr->sell_price != '') {
+            $price = $Attr->sell_price;
         } else {
             $price = $Attr->regular_price;
         }
-        $html = '<span class="singlesub_price" data-quantity="' . $request->cart_quantity . '">' . $price * $request->cart_quantity . '</span>';
+        $html = '<span class="singlesub_price" >' . $price * $request->cart_quantity . '</span>';
         return response()->json($html);
     }
     function CartDelete($id)

@@ -47,13 +47,13 @@
 
                         <tr style="border-bottom: 1px solid rgb(211, 211, 211)">
                             <td style="border:none" class="images">
-                                <a href="{{ route('SingleProductView', $item->product->slug) }}">
+                                <a href="{{ route('SingleProductView', $item->Product->slug) }}">
                                     <img src="{{ asset('thumbnail_img/' . $item->Product->thumbnail_img) }}" alt="">
                                 </a>
                             </td>
                             <td style="border:none" class="product">
-                                <a href="{{ route('SingleProductView', $item->product->slug) }}">
-                                    {{ $item->product->title }}
+                                <a href="{{ route('SingleProductView', $item->Product->slug) }}">
+                                    {{ $item->Product->title }}
                                 </a>
                                 @if ($item->flavour_count != '')
                                 <br>
@@ -61,20 +61,19 @@
                                 @endif
                             </td>
                             <td style="border:none" class="ptice">
-                                {{ $item->color->color_name }}
+                                {{ $item->Color->color_name }}
                             </td>
                             <td style="border:none" class="ptice">
-                                {{ $item->size->size_name }}
+                                {{ $item->Size->size_name }}
                             </td>
                             <td style="border:none" class="ptice"> ৳
                                 <span class="singlesub_price">
                                     @php
-                                    $product = App\Models\attribute::where('product_id', $item->product_id)
-                                    ->where('color_id', $item->color_id)
-                                    ->where('size_id', $item->size_id)
-                                    ->first();
+                                    $product =$item->Product->Attribute
+                                    ->where('color_id',$item->color_id)
+                                    ->where('size_id',$item->size_id)->first();
 
-                                    $sale_price = $product->selling_price;
+                                    $sale_price = $product->sell_price;
                                     $regular_price = $product->regular_price;
 
                                     if ($sale_price) {
@@ -124,9 +123,6 @@
                     <div class="col-xl-4 col-lg-5 col-md-6 ">
                         <div class="cartcupon-wrap">
                             <ul class="d-flex">
-                                {{-- <li>
-                                    <button>Update Cart</button>
-                                </li> --}}
                                 <li><a href="{{route('Frontendshop')}}">Continue Shopping</a></li>
                             </ul>
                             <h3>Cupon</h3>

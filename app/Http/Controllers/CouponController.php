@@ -60,7 +60,7 @@ class CouponController extends Controller
             $coupon->coupon_expire_date = $request->coupon_expire_date;
             $coupon->coupon_limit = $request->coupon_limit;
             $coupon->save();
-            return redirect()->route('coupons.index')->with('success', 'Coupon Added Successfully');
+            return redirect('/coupons')->with('success', 'Coupon Added Successfully');
         } else {
             abort('404');
         }
@@ -89,6 +89,7 @@ class CouponController extends Controller
      */
     public function edit(Coupon $coupon)
     {
+        return $coupon;
         if (auth()->user()->can('Edit Coupon')) {
             return view('backend.coupon.edit', compact('coupon'));
         } else {
@@ -117,7 +118,7 @@ class CouponController extends Controller
             $coupon->coupon_expire_date = $request->coupon_expire_date;
             $coupon->coupon_limit = $request->coupon_limit;
             $coupon->save();
-            return redirect()->route('coupons.index')->with('success', 'Coupon Edited Successfully');
+            return redirect('/coupon')->with('success', 'Coupon Edited Successfully');
         } else {
             abort('404');
         }

@@ -62,7 +62,7 @@ class ProductController extends Controller
             'product_name' => ['required', 'string', 'max:250', 'unique:products,title,'],
             'catagory_name' => ['required'],
             'subcatagory_name' => ['required'],
-            'thumbnail_img' => ['required', 'mimes:png,jpeg,jpg', 'dimensions:max_width=300,max_height=200'],
+            // 'thumbnail_img' => ['required', 'mimes:png,jpeg,jpg', 'dimensions:max_width=300,max_height=200'],
             'product_img.*' => ['required', 'mimes:png,jpeg,jpg'],
             'product_summary' => ['required'],
             'product_description' => ['required'],
@@ -251,7 +251,6 @@ class ProductController extends Controller
         if ($request->flavour_id == '') {
             foreach ($request->flavour_name as $flavour) {
                 if ($flavour == '') {
-                    // dd('ok');
                     $flavours = new Flavour;
                     $flavours->product_id = $product->id;
                     $flavours->flavour_name = $flavour;

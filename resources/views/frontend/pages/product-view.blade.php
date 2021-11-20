@@ -3,7 +3,21 @@
 {{$product->title}}
 @endsection
 @section('content')
+<style>
+    #wishlist {
+        padding: 4px 7px;
+        border: none;
+        color: #fff;
+        font-size: 18px;
+        margin-left: 2px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        background-color: #ef4836;
+        cursor: pointer;
+    }
 
+</style>
 <!-- .breadcumb-area start -->
 <div class="breadcumb-area bg-img-4 ptb-100">
     <div class="container">
@@ -82,10 +96,16 @@
                             {{-- #######  selling price section end  ######### --}}
 
                             {{-- quantity section --}}
+                            @if ($product->Attribute->sum('quantity') != 0)
+
                             (<span class="available">{{ $product->Attribute->sum('quantity') }}</span> &nbsp;Product
                             Available)
+                            @else
+                            (<span>Out of Stock</span>)
+                            @endif
                     </div>
-                    <form action="{{route('CartPost')}}" method="POST">
+                    @if ($product->Attribute->sum('quantity') != 0)
+                    <form action="" id="Form_submit" method="POST">
                         @csrf
                         <p>{{$product->product_summary}}</p>
                         <ul class="input-style">
@@ -93,11 +113,12 @@
                                 <input name="cart_quantity" type="text" value="1" />
                             </li>
                             <li>
-                                <button type="submit"
+                                <button type="submit" id="Cart_add"
                                     style="padding:5px 7px;border:none;background:#ef4836;color:white;border-radius:5%">
                                     Add to Cart
                                 </button>
                             </li>
+                            <button id="wishlist" href=""><i class="fa fa-heart"></i></button>
                         </ul>
                         <input type="hidden" value="{{$product->id}}" name="product_id">
                         @if ($color != '')
@@ -158,10 +179,11 @@
                         <ul class="cetagory" style="margin-bottom: 10px">
                             <li>Flavour:</p>
                             <li>
-                                <select name="flavour_id" class="form-control ml-2 @error('flavour_id') is-invalid
-                                    
-                                @enderror">
+                                <select name="flavour_id"
+                                    class="form-control ml-2 @error('flavour_id') is-invalid @enderror">
+                                    @if ($product->flavour_count != 1)
                                     <option value="">Select One</option>
+                                    @endif
                                     @foreach ($product->Flavour as $Flavour)
                                     <option value="{{$Flavour->id}}">{{$Flavour->flavour_name}}</option>
                                     @endforeach
@@ -169,6 +191,8 @@
                             </li>
                         </ul>
                         @endif
+                        @endif
+
                         @if ($product->brand_id != '')
 
                         <ul class="cetagory" style="margin-bottom: 10px">
@@ -183,7 +207,9 @@
                         @endif
                         <ul class="cetagory">
                             <li>Categories:</li>
-                            <li><a href="#">{{$product->Catagory->catagory_name}}</a></li>
+                            <li><a
+                                    href="{{route('CategorySearch',$product->Catagory->slug)}}">{{$product->Catagory->catagory_name}}</a>
+                            </li>
                         </ul>
                         <ul class="socil-icon">
                             <li>Share :</li>
@@ -212,7 +238,7 @@
                 <div class="tab-content">
                     <div class="tab-pane active" id="description">
                         <div class="description-wrap">
-                            <p>{{$product->product_description}}</p>
+                            <p> {!! nl2br($product->product_description) !!}</p>
                         </div>
                     </div>
                     <div class="tab-pane" id="tag">
@@ -459,13 +485,17 @@
             <div class="col-lg-3 col-sm-6 col-12">
                 <div class="featured-product-wrap">
                     <div class="featured-product-img">
-                        <img src="{{asset('thumbnail_img/'.$Catgory_wise_product->thumbnail_img)}}"
-                            alt="{{$Catgory_wise_product->title}}">
+                        <a href="{{route('SingleProductView',$Catgory_wise_product->slug)}}">
+                            <img src="{{asset('thumbnail_img/'.$Catgory_wise_product->thumbnail_img)}}"
+                                alt="{{$Catgory_wise_product->title}}">
+                        </a>
                     </div>
                     <div class="featured-product-content">
                         <div class="row">
                             <div class="col-7">
-                                <h3><a href="shop.html">{{$Catgory_wise_product->title}}</a></h3>
+                                <h3><a
+                                        href="{{route('SingleProductView',$Catgory_wise_product->slug)}}">{{$Catgory_wise_product->title}}</a>
+                                </h3>
                                 <p>৳
                                     @php
                                     $sale = collect($product->Attribute)->min('sell_price');
@@ -615,6 +645,21 @@
         });
       // if therese only size available end
 
+
+// add wishlist
+$('#wishlist').click(function(){
+        // alert('ok');
+        var action =  '/wishlist-post';
+        $('#Form_submit').attr('action', action);
+        // $('#Form_submit').submit();
+    });
+// add cart
+$('#Cart_add').click(function(){
+        // alert('ok');
+        var action =  '/cartpost';
+        $('#Form_submit').attr('action', action);
+        // $('#Form_submit').submit();
+    });
 
 
 </script>

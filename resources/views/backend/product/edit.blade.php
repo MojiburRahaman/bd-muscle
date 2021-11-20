@@ -166,7 +166,7 @@ menu-open
                     </div>
                     <div class="form-group">
                         <label for="product_description">Description</label>
-                        <textarea class="form-control @error('product_description') is-invalid @enderror"
+                        <textarea id="product_description" class="form-control @error('product_description') is-invalid @enderror"
                             name="product_description"
                             id="product_description">{{$product->product_description}}</textarea>
                         @error('product_description')
@@ -190,6 +190,8 @@ menu-open
                             </div>
                         </div>
                         @empty
+                        <input type="hidden" value="" name="flavour_id[]">
+                        
                         <label for="">Flavour Name</label>
                         <div class="input-group mb-3">
                             <input type="text" name="flavour_name[]" class="form-control m-input
@@ -299,7 +301,7 @@ menu-open
             if ($catagory_id) {
                 $.ajax({
                     type: "GET",
-                    url: "{{ url('/products/get-sub-cat/') }}/" + $catagory_id,
+                    url: "{{ url('admin/products/get-sub-cat/') }}/" + $catagory_id,
                     //  url: "{{ url('get/size/price') }}/" + color_id + '/' + product_id,
 
                     success: function(res) {
@@ -420,7 +422,14 @@ menu-open
         });
 
 
-
+        ClassicEditor
+            .create( document.querySelector( '#product_description' ) )
+            .then( editor => {
+                    console.log( editor );
+            } )
+            .catch( error => {
+                    console.error( error );
+            } );
 
 
 </script>

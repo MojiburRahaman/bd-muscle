@@ -36,37 +36,6 @@
     </head>
 
     <body>
-      <!-- Messenger Chat plugin Code -->
-    {{-- <div id="fb-root"></div>
-
-    <!-- Your Chat plugin code -->
-    <div id="fb-customer-chat" class="fb-customerchat">
-    </div>
-
-    <script>
-      var chatbox = document.getElementById('fb-customer-chat');
-      chatbox.setAttribute("page_id", "181003548728126");
-      chatbox.setAttribute("attribution", "biz_inbox");
-
-      window.fbAsyncInit = function() {
-        FB.init({
-          xfbml            : true,
-          version          : 'v12.0'
-        });
-      };
-
-      (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
-    </script> --}}
-        <!--Start Preloader-->
-        {{-- <div class="preloader-wrap">
-        <div class="spinner"></div>
-    </div> --}}
         <!-- search-form here -->
         <div class="search-area flex-style">
             <span class="closebar">Close</span>
@@ -110,28 +79,24 @@
                                         <li><a href="{{ route('register') }}">Register</a></li>
                                         @endauth
 
-                                        <li><a href="cart.html">Cart</a></li>
+                                        <li><a href="{{route('CartView')}}">Cart</a></li>
                                         <li><a href="checkout.html">Checkout</a></li>
                                         <li><a href="wishlist.html">wishlist</a></li>
                                     </ul>
                                 </li>
-                                {{-- @auth
+                                @auth
                                 @if (Auth::user()->roles()->first()->name == 'Customer')
 
-                                <li><a href="{{route('frontendProfile')}}"> <i class="fa fa-user "><span
-                                        class="pl-2">Profile</span></i> </a></li>
+                                <li><a href="{{route('FrontendProfile')}}"> <i class="fa fa-user "><span
+                                                class="pl-2">Profile</span></i> </a></li>
                                 @else
                                 <li><a href="{{ route('login') }}"> Login/Register </a></li>
                                 @endif
                                 @else
                                 <li><a href="{{ route('login') }}"> Login/Register </a></li>
 
-                                @endauth --}}
-                                @auth
-                                <li><a href="{{ route('dashboard.index') }}"> Login/Register </a></li>
-                                @else
-                                <li><a href="{{ route('login') }}"> Login/Register </a></li>
                                 @endauth
+
                             </ul>
                         </div>
                     </div>
@@ -158,11 +123,11 @@
                                         <ul class="dropdown_style">
                                             <li><a href="shop.html">Shop Page</a></li>
                                             <li><a href="single-product.html">Product Details</a></li>
-                                            <li><a href="">Shopping cart</a></li>
+                                            <li><a href="{{route('CartView')}}">Shopping cart</a></li>
                                             <li><a href="wishlist.html">Wishlist</a></li>
                                         </ul>
                                     </li>
-                                    <li>
+                                    {{-- <li>
                                         <a href="javascript:void(0);">Pages <i class="fa fa-angle-down"></i></a>
                                         <ul class="dropdown_style">
                                             <li><a href="about.html">About Page</a></li>
@@ -172,7 +137,7 @@
                                             <li><a href="wishlist.html">Wishlist</a></li>
                                             <li><a href="faq.html">FAQ</a></li>
                                         </ul>
-                                    </li>
+                                    </li> --}}
                                     <li>
                                         <a href="javascript:void(0);">Blog <i class="fa fa-angle-down"></i></a>
                                         <ul class="dropdown_style">
@@ -181,7 +146,7 @@
                                         </ul>
                                     </li>
                                     <li class="">
-                                        <a href="">
+                                        <a href="{{route('CartView')}}">
                                             <i class="fa fa-shopping-cart"></i>
                                             Cart</a>
                                     </li>
@@ -191,6 +156,7 @@
                                             Checkout</a>
                                     </li>
                                     <li><a href="contact.html">Contact</a></li>
+                                    <li><a href="{{route('WishlistView')}}">Wishlist</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -233,7 +199,7 @@
                                 <li>
                                     {{-- ###########cart list############# --}}
                                     <a href="javascript:void(0);"><i class="flaticon-shop"></i>
-                                        {{-- <span>{{ cart_total_product() }}</span></a>
+                                        <span>{{ cart_total_product() }}</span></a>
                                     @php
                                     $total_cart_amount = 0;
                                     @endphp
@@ -242,49 +208,42 @@
                                         <li class="cart-items">
                                             <div>
                                                 <img style="width:40%;margin-right:10px;float: left;"
-                                                    src="{{ asset('product_thumbnail/' . $cart_product->product->thumbnail) }}"
-                                                    alt="{{ $cart_product->product->title }}">
+                                                    src="{{ asset('thumbnail_img/' . $cart_product->Product->thumbnail_img) }}"
+                                                    alt="{{ $cart_product->Product->title }}">
                                             </div>
                                             <div class="cart-content">
                                                 <a
-                                                    href="{{ route('singleproductview', $cart_product->product->slug) }}">{{ $cart_product->product->title }}</a>
+                                                    href="{{ route('SingleProductView', $cart_product->Product->slug) }}">{{ $cart_product->Product->title }}</a>
                                                 <span>QTY : {{ $cart_product->quantity }}</span>
                                                 <p>৳
                                                     @php
-                                                    $product = App\Models\attribute::where('product_id',
-                                                    $cart_product->product_id)
-                                                    ->where('color_id', $cart_product->color_id)
-                                                    ->where('size_id', $cart_product->size_id)
-                                                    ->first();
-                                                    $sale_price = $product->selling_price;
-                                                    $regular_price = $product->regular_price;
-                                                    if ($sale_price) {
-                                                    $total_cart_amount += $sale_price * $cart_product->quantity;
-
-                                                    echo $sale_price * $cart_product->quantity;
-                                                    }
-                                                    if ($sale_price == '') {
-                                                    $total_cart_amount += $regular_price * $cart_product->quantity;
-
-                                                    echo $regular_price * $cart_product->quantity;
-                                                    }
+                                                    $Attribute =$cart_product->Product->Attribute
+                                                    ->where('color_id',$cart_product->color_id)
+                                                    ->where('size_id',$cart_product->size_id)->first();
+                                                    $regular_price =$Attribute->regular_price;
+                                                    $sell_price = $Attribute->sell_price;
                                                     @endphp
+                                                    {{($sell_price == '')? $regular_price : $sell_price}}
                                                 </p>
+                                                <a href="{{route('CartDelete',$cart_product->id)}}" title="Remove"
+                                                    class="remove">
+                                                    <i class="fa fa-times"></i>
+                                                </a>
+
                                             </div>
                                         </li>
                                         @empty
                                         <li>
                                             No Product In Your Cart
                                         </li>
-                                        @endforelse --}}
-                                        {{-- <li>Subtotol: <span class="pull-right">৳ {{ $total_cart_amount }}</span>
+                                        @endforelse
                                 </li>
                                 <li>
                                     <a class="btn btn-regular"
                                         onMouseOver="this.style.color='white',this.style.backgroundColor='#ef4836'"
                                         onMouseOut="this.style.backgroundColor='#FFFFFF',this.style.color='#ef4836'"
-                                        style="background-color:white;color:#ef4836" href="">View
-                                        More</a>
+                                        style="background-color:white;color:#ef4836" href="{{route('CartView')}}">View
+                                        Cart</a>
                                 </li>
                             </ul>
                             {{-- ###########cart list############# --}}
@@ -326,8 +285,7 @@
                                         <ul aria-expanded="false">
                                             <li><a href="about.html">About Page</a></li>
                                             <li><a href="single-product.html">Product Details</a></li>
-                                            <li><a href="cart.html">Shopping cart</a></li>
-                                            <li><a href="">Checkout</a></li>
+                                            <li><a href="{{route('CartView')}}">Shopping cart</a></li>
                                             <li><a href="wishlist.html">Wishlist</a></li>
                                             <li><a href="faq.html">FAQ</a></li>
                                         </ul>
@@ -433,7 +391,7 @@
             </div>
         </div>
         <!-- Messenger Chat plugin Code -->
-      
+
         <!-- Your Chat plugin code -->
 
         <!-- .footer-area end -->
@@ -470,35 +428,9 @@
         <script src="{{ asset('front/js/scripts.js') }}"></script>
 
         @yield('script_js')
-    
-    
-      <!-- Messenger Chat plugin Code -->
-    {{-- <div id="fb-root"></div>
 
-    <!-- Your Chat plugin code -->
-    <div id="fb-customer-chat" class="fb-customerchat">
-    </div> --}}
 
-    {{-- <script>
-      var chatbox = document.getElementById('fb-customer-chat');
-      chatbox.setAttribute("page_id", "181003548728126");
-      chatbox.setAttribute("attribution", "biz_inbox");
-
-      window.fbAsyncInit = function() {
-        FB.init({
-          xfbml            : true,
-          version          : 'v12.0'
-        });
-      };
-
-      (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
-    </script> --}}
+      
     </body>
     <!-- Mirrored from themepresss.com/tf/html/tohoney/index.html by HTTrack Website Copier/3.x
             [XR&CO'2014], Fri, 13 Mar 2020 03:33:34 GMT -->

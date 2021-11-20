@@ -17,12 +17,17 @@ class SubCatagoryController extends Controller
      */
     public function index()
     {
-        $sub_catagories = Subcatagory::with('Catagory')
-            ->select('id', 'catagory_id', 'subcatagory_name', 'created_at')
-            ->latest('id')->get();
-        return view('backend.subcatagory.index', [
-            'subcatagories' => $sub_catagories,
-        ]);
+        if (auth()->user()->can('View Sub-Category')) {
+
+            $sub_catagories = Subcatagory::with('Catagory')
+                ->select('id', 'catagory_id', 'subcatagory_name', 'created_at')
+                ->latest('id')->simplepaginate(15);
+            return view('backend.subcatagory.index', [
+                'subcatagories' => $sub_catagories,
+            ]);
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -32,12 +37,17 @@ class SubCatagoryController extends Controller
      */
     public function create()
     {
-        $catagories = Catagory::select('id', 'catagory_name')->get();
+        if (auth()->user()->can('Create Sub-Category')) {
 
-        return view('backend.subcatagory.create', [
-            'catagories' => $catagories,
+            $catagories = Catagory::select('id', 'catagory_name')->get();
 
-        ]);
+            return view('backend.subcatagory.create', [
+                'catagories' => $catagories,
+
+            ]);
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -48,16 +58,21 @@ class SubCatagoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'subcatagory_name' => ['required', 'unique:subcatagories,subcatagory_name'],
-            'catagory_id' => ['required']
-        ]);
-        $subcatagory = new Subcatagory;
-        $subcatagory->catagory_id = $request->catagory_id;
-        $subcatagory->subcatagory_name = strip_tags($request->subcatagory_name);
-        $subcatagory->slug = strip_tags(Str::slug($request->subcatagory_name));
-        $subcatagory->save();
-        return redirect()->route('subcatagory.index')->with('success', 'Sub Catagory Created Successfully');
+        if (auth()->user()->can('Create Sub-Category')) {
+
+            $request->validate([
+                'subcatagory_name' => ['required', 'unique:subcatagories,subcatagory_name'],
+                'catagory_id' => ['required']
+            ]);
+            $subcatagory = new Subcatagory;
+            $subcatagory->catagory_id = $request->catagory_id;
+            $subcatagory->subcatagory_name = strip_tags($request->subcatagory_name);
+            $subcatagory->slug = strip_tags(Str::slug($request->subcatagory_name));
+            $subcatagory->save();
+            return redirect()->route('subcatagory.index')->with('success', 'Sub Catagory Created Successfully');
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -79,16 +94,21 @@ class SubCatagoryController extends Controller
      */
     public function edit($id)
     {
-        $subcatagory = Subcatagory::select('id', 'subcatagory_name', 'catagory_id')->findorfail($id);
-        $catagories = Catagory::select('id', 'catagory_name')->get();
+        if (auth()->user()->can('Edit Sub-Category')) {
 
-        return view(
-            'backend.subcatagory.edit',
-            [
-                'catagories' => $catagories,
-                'subcatagory' => $subcatagory,
-            ]
-        );
+            $subcatagory = Subcatagory::select('id', 'subcatagory_name', 'catagory_id')->findorfail($id);
+            $catagories = Catagory::select('id', 'catagory_name')->get();
+
+            return view(
+                'backend.subcatagory.edit',
+                [
+                    'catagories' => $catagories,
+                    'subcatagory' => $subcatagory,
+                ]
+            );
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -100,16 +120,21 @@ class SubCatagoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'subcatagory_name' => ['required', 'unique:subcatagories,subcatagory_name,' . $id],
-            'catagory_id' => ['required']
-        ]);
-        $subcatagory = Subcatagory::findorfail($id);
-        $subcatagory->catagory_id = $request->catagory_id;
-        $subcatagory->subcatagory_name = strip_tags($request->subcatagory_name);
-        $subcatagory->slug = strip_tags(Str::slug($request->subcatagory_name));
-        $subcatagory->save();
-        return redirect()->route('subcatagory.index')->with('Warning', 'Sub Catagory Edited Successfully');
+        if (auth()->user()->can('Edit Sub-Category')) {
+
+            $request->validate([
+                'subcatagory_name' => ['required', 'unique:subcatagories,subcatagory_name,' . $id],
+                'catagory_id' => ['required']
+            ]);
+            $subcatagory = Subcatagory::findorfail($id);
+            $subcatagory->catagory_id = $request->catagory_id;
+            $subcatagory->subcatagory_name = strip_tags($request->subcatagory_name);
+            $subcatagory->slug = strip_tags(Str::slug($request->subcatagory_name));
+            $subcatagory->save();
+            return redirect()->route('subcatagory.index')->with('Warning', 'Sub Catagory Edited Successfully');
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -120,28 +145,37 @@ class SubCatagoryController extends Controller
      */
     public function destroy($id)
     {
-        $product = Product::where('subcatagory_id', $id)->get()->count();
-        if ($product > 0) {
-            return back()->with('warning', 'Theres a Product Under This Subcatagory');
+        if (auth()->user()->can('Delete Sub-Category')) {
+
+            $product = Product::where('subcatagory_id', $id)->get()->count();
+            if ($product > 0) {
+                return back()->with('warning', 'Theres a Product Under This Subcatagory');
+            } else {
+                Subcatagory::findorfail($id)->delete();
+                return back()->with('delete', 'Subcatagory Deleted Successfully');
+            }
         } else {
-            Subcatagory::findorfail($id)->delete();
-            return back()->with('delete', 'Subcatagory Deleted Successfully');
+            abort('404');
         }
     }
     public function MarkdeleteSubCatagory(Request $request)
     {
-        if ($request->filled('delete')) {
-            foreach ($request->delete as $value) {
-                $product = Product::where('subcatagory_id', $value)->get()->count();
-                if ($product > 0) {
-                    return back()->with('warning', 'Theres a Product Under This Subcatagory');
-                } else {
-                    Subcatagory::findorfail($value)->delete();
+        if (auth()->user()->can('Delete Sub-Category')) {
+            if ($request->filled('delete')) {
+                foreach ($request->delete as $value) {
+                    $product = Product::where('subcatagory_id', $value)->get()->count();
+                    if ($product > 0) {
+                        return back()->with('warning', 'Theres a Product Under This Subcatagory');
+                    } else {
+                        Subcatagory::findorfail($value)->delete();
+                    }
                 }
+                return back()->with('delete', 'Subcatagory Deleted Successfully');
+            } else {
+                return back()->with('warning', 'No Item Selected');
             }
-            return back()->with('delete', 'Subcatagory Deleted Successfully');
         } else {
-            return back()->with('warning', 'No Item Selected');
+            abort('404');
         }
     }
 }

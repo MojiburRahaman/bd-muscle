@@ -23,13 +23,13 @@ class RoleController extends Controller
     public function index()
     {
 
-        // if (auth()->user()->can('View Role')) {
+        if (auth()->user()->can('View Role')) {
             return view('backend.role.index', [
                 'roles' => Role::with('Permissions')->latest()->simplepaginate(5),
             ]);
-        // } else {
-            // abort('404');
-        // }
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -39,7 +39,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        // if (auth()->user()->can('Create Role')) {
+        if (auth()->user()->can('Create Role')) {
             // $permission = Permission::create(['name' => 'View Category']);
             // $permission = Permission::create(['name' => 'Create Category']);
             // $permission = Permission::create(['name' => 'Edit Category']);
@@ -78,9 +78,9 @@ class RoleController extends Controller
             return view('backend.role.create', [
                 'Permissions' => Permission::select('name', 'id')->get()
             ]);
-        // } else {
+        } else {
             abort('404');
-        // }
+        }
     }
 
     /**
@@ -91,7 +91,7 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        // if (auth()->user()->can('Create Role')) {
+        if (auth()->user()->can('Create Role')) {
 
 
             $request->validate([
@@ -103,9 +103,9 @@ class RoleController extends Controller
             $role = Role::create(['name' => $request->role_name]);
             $role->givePermissionTo($request->permission);
             return redirect('admin/roles ')->with('success', 'Role Added Successfully');
-        // } else {
-        //     abort('404');
-        // }
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -184,7 +184,7 @@ class RoleController extends Controller
     }
     public function AssignUserPost(RequirdRequest  $request)
     {
-        // if (auth()->user()->can('Assign User')) {
+        if (auth()->user()->can('Assign User')) {
 
             $user = User::findorfail($request->user_name);
             // foreach ($user->Roles as $role) {
@@ -201,33 +201,33 @@ class RoleController extends Controller
             // return 'ok';
             // }
             // return 'yes';
-        // } else {
-        //     abort('404');
-        // }
+        } else {
+            abort('404');
+        }
     }
     public function UserList()
     {
-        // if (auth()->user()->can('User List')) {
+        if (auth()->user()->can('User List')) {
             return view('backend.role.user-list', [
                 'users' => User::all(),
                 'roles' => Role::all(),
             ]);
-        // } else {
-        //     abort('404');
-        // }
+        } else {
+            abort('404');
+        }
     }
     public function UserListPost(Request $request)
     {
-        // if (auth()->user()->can('User List')) {
+        if (auth()->user()->can('User List')) {
             $user = User::findorfail($request->user_id);
             if ($request->role_name == '') {
                 return back();
             }
             $user->syncRoles($request->role_name);
             return back();
-        // } else {
-        //     abort('404');
-        // }
+        } else {
+            abort('404');
+        }
     }
     public function CreateUser()
     {
@@ -242,7 +242,6 @@ class RoleController extends Controller
             'user_email' => 'required|string|email|max:255', 'unique:users',
             'role_name' => ['required',],
         ]);
-        // return $request;
         $random_pass_genarate = Str::random(10);
         // return $random_pass_genarate;
         $user = new User;
