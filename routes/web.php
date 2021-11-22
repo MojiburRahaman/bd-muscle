@@ -17,6 +17,7 @@
     use App\Http\Controllers\CouponController;
     use App\Http\Controllers\WishlistController;
     use App\Http\Controllers\BlogController;
+    use App\Http\Controllers\UserProfileController;
 
     /*
 |--------------------------------------------------------------------------
@@ -46,7 +47,7 @@
     Route::get('/shop', [FrontendController::class, 'Frontendshop'])->name('Frontendshop');
 
     // blog route
-    Route::get('/blogs', [FrontendController::class, 'Frontendblog'])->name('Frontendblog');
+    Route::get('/blog', [FrontendController::class, 'Frontendblog'])->name('Frontendblog');
     Route::get('/blog/{slug}', [FrontendController::class, 'FrontenblogView'])->name('FrontenblogView');
     Route::post('/blog/comment', [FrontendController::class, 'BlogComment'])->name('BlogComment');
     Route::post('/blog/reply', [FrontendController::class, 'BlogReply'])->name('BlogReply');

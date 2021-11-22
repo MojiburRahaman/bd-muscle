@@ -5,7 +5,6 @@ function cart_total_product(){
 }
 function wish_list_count(){
     return App\Models\Wishlist::Where('user_id', auth()->id())->count();
-
 }
 function cart_product_view(){
     return App\Models\Cart::with(['Product.Attribute',])->Where('cookie_id', Cookie::get('cookie_id'))->get();

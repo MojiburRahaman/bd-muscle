@@ -5,10 +5,11 @@
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <title>@yield('title')</title>
-        <meta name="description" content="">
+        <meta name="description" content="@yield('meta_description')">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{csrf_token()}}">
         <link rel="shortcut icon" type="image/png" href="{{ asset('front/images/favicon.png') }}">
+        <link rel="canonical" href="{{url()->current()}}">
         <!-- Place favicon.ico in the root directory -->
         <!-- all css here -->
         <!-- bootstrap v4.0.0-beta.2 css -->
@@ -107,8 +108,8 @@
                     <div class="row">
                         <div class="col-lg-3 col-md-7 col-sm-6 col-6">
                             <div class="logo">
-                                <a href="index.html">
-                                    <img src="assets/images/logo.png" alt="">
+                                <a href="{{route('Frontendhome')}}">
+                                    <img src="{{asset('front/images/logo.png')}}" alt="">
                                 </a>
                             </div>
                         </div>
@@ -127,23 +128,8 @@
                                             <li><a href="wishlist.html">Wishlist</a></li>
                                         </ul>
                                     </li>
-                                    {{-- <li>
-                                        <a href="javascript:void(0);">Pages <i class="fa fa-angle-down"></i></a>
-                                        <ul class="dropdown_style">
-                                            <li><a href="about.html">About Page</a></li>
-                                            <li><a href="single-product.html">Product Details</a></li>
-                                            <li><a href="">Shopping cart</a></li>
-                                            <li><a href="">Checkout</a></li>
-                                            <li><a href="wishlist.html">Wishlist</a></li>
-                                            <li><a href="faq.html">FAQ</a></li>
-                                        </ul>
-                                    </li> --}}
-                                    <li>
-                                        <a href="javascript:void(0);">Blog <i class="fa fa-angle-down"></i></a>
-                                        <ul class="dropdown_style">
-                                            <li><a href="blog.html">blog Page</a></li>
-                                            <li><a href="blog-details.html">blog Details</a></li>
-                                        </ul>
+                                    <li class="{{route('Frontendblog') == url()->current() ? 'active' : ''}}">
+                                        <a href="{{route('Frontendblog')}}">Blog </a>
                                     </li>
                                     <li class="">
                                         <a href="{{route('CartView')}}">
@@ -162,47 +148,67 @@
                         </div>
                         <div class="col-md-4 col-lg-2 col-sm-5 col-4">
                             <ul class="search-cart-wrapper d-flex">
+
                                 <li class="search-tigger"><a href="javascript:void(0);"><i
                                             class="flaticon-search"></i></a>
                                 </li>
+                                @auth
+                                {{-- wishlist start --}}
                                 <li>
-                                    <a href="javascript:void(0);"><i class="flaticon-like"></i> <span>2</span></a>
+                                    <a href="javascript:void(0);"><i class="flaticon-like"></i>
+                                        <span>{{wish_list_count()}}</span></a>
                                     <ul class="cart-wrap dropdown_style">
+                                        @forelse (wish_list_products() as $wish_list)
                                         <li class="cart-items">
-                                            <div class="cart-img">
-                                                <img src="assets/images/cart/1.jpg" alt="">
+                                            <div>
+                                                <img style="width:40%;margin-right:10px;float: left;"
+                                                    src="{{ asset('thumbnail_img/' . $wish_list->Product->thumbnail_img) }}"
+                                                    alt="{{ $wish_list->Product->title }}">
                                             </div>
                                             <div class="cart-content">
-                                                <a href="cart.html">Pure Nature Product</a>
-                                                <span>QTY : 1</span>
-                                                <p>$35.00</p>
-                                                <i class="fa fa-times"></i>
+                                                <a
+                                                    href="{{ route('SingleProductView', $wish_list->Product->slug) }}">{{ $wish_list->Product->title }}</a>
+                                                <span>QTY : {{ $wish_list->quantity }}</span>
+                                                <p>৳
+                                                    @php
+                                                    $Attribute =$wish_list->Product->Attribute
+                                                    ->where('color_id',$wish_list->color_id)
+                                                    ->where('size_id',$wish_list->size_id)->first();
+                                                    $regular_price =$Attribute->regular_price;
+                                                    $sell_price = $Attribute->sell_price;
+                                                    @endphp
+                                                    {{($sell_price == '')? $regular_price : $sell_price}}
+                                                </p>
+                                                <a href="{{route('WishlistRemove',$wish_list->id)}}" title="Remove"
+                                                    class="remove">
+                                                    <i class="fa fa-times"></i>
+                                                </a>
+
                                             </div>
                                         </li>
-                                        <li class="cart-items">
-                                            <div class="cart-img">
-                                                <img src="assets/images/cart/3.jpg" alt="">
-                                            </div>
-                                            <div class="cart-content">
-                                                <a href="cart.html">Pure Nature Product</a>
-                                                <span>QTY : 1</span>
-                                                <p>$35.00</p>
-                                                <i class="fa fa-times"></i>
-                                            </div>
-                                        </li>
-                                        <li>Subtotol: <span class="pull-right">$70.00</span></li>
+                                        @empty
                                         <li>
-                                            <button>Check Out</button>
+                                            No Product In Your Wishlist
+                                        </li>
+                                        @endforelse
+                                        <li>
+                                            <a class="btn btn-regular"
+                                                onMouseOver="this.style.color='white',this.style.backgroundColor='#ef4836'"
+                                                onMouseOut="this.style.backgroundColor='#FFFFFF',this.style.color='#ef4836'"
+                                                style="background-color:white;color:#ef4836"
+                                                href="{{route('WishlistView')}}">
+                                                View Wishlist
+                                            </a>
                                         </li>
                                     </ul>
                                 </li>
+                                {{-- wishlist end --}}
+                                @endauth
                                 <li>
                                     {{-- ###########cart list############# --}}
                                     <a href="javascript:void(0);"><i class="flaticon-shop"></i>
                                         <span>{{ cart_total_product() }}</span></a>
-                                    @php
-                                    $total_cart_amount = 0;
-                                    @endphp
+
                                     <ul class="cart-wrap dropdown_style">
                                         @forelse (cart_product_view() as $cart_product)
                                         <li class="cart-items">
@@ -430,7 +436,7 @@
         @yield('script_js')
 
 
-      
+
     </body>
     <!-- Mirrored from themepresss.com/tf/html/tohoney/index.html by HTTrack Website Copier/3.x
             [XR&CO'2014], Fri, 13 Mar 2020 03:33:34 GMT -->
