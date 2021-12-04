@@ -1,8 +1,8 @@
 @extends('frontend.master')
 
 @section('content')
-  <!-- .breadcumb-area start -->
-  <div class="breadcumb-area bg-img-4 ptb-100">
+<!-- .breadcumb-area start -->
+<div class="breadcumb-area bg-img-4 ptb-100">
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -29,11 +29,12 @@
         </div>
         <div class="row">
             @forelse ($blogs as $blog)
-                
+
             <div class="col-lg-4  col-md-6 col-12">
                 <div class="blog-wrap">
                     <div class="blog-image">
-                        <img src="{{asset('blogs/thumbnail/'.$blog->blog_thumbnail)}}" alt="{{Str::ucfirst($blog->title)}}">
+                        <img src="{{asset('blogs/thumbnail/'.$blog->blog_thumbnail)}}"
+                            alt="{{Str::ucfirst($blog->title)}}">
                         <ul>
                             <li>{{$blog->created_at->format('d')}}</li>
                             <li>{{$blog->created_at->format('M')}}</li>
@@ -42,24 +43,23 @@
                     <div class="blog-content">
                         <div class="blog-meta">
                             <ul>
-                                <li class="pull-right"><a ><i class="fa fa-clock-o"></i> {{$blog->created_at->format('d/m/y')}}</a></li>
+                                <li class="pull-right"><a><i class="fa fa-clock-o"></i>
+                                        {{$blog->created_at->format('d/m/y')}}</a></li>
                             </ul>
                         </div>
                         <h3><a href="{{route('FrontenblogView',$blog->slug)}}">{{Str::ucfirst($blog->title)}}</a></h3>
-                        {{-- <p>{!! Str::ucfirst(Str::limit($blog->blog_description,100)) !!}</p> --}}
                     </div>
                 </div>
             </div>
             @empty
-                
+
             @endforelse
-         
+
             <div class="col-12">
-               {{$blogs->links('frontend.paginator')}}
+                {{$blogs->links('frontend.paginator')}}
             </div>
         </div>
     </div>
 </div>
 <!-- blog-area end -->
 @endsection
-

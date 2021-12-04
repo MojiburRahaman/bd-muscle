@@ -40,7 +40,7 @@
 
     // frontend route start
     Route::get('/', [FrontendController::class, 'Frontendhome'])->name('Frontendhome');
-    Route::get('/search', [FrontendController::class, 'FrontendSearch'])->name('FrontendSearch');
+    // Route::get('/search', [FrontendController::class, 'FrontendSearch'])->name('FrontendSearch');
     Route::get('/product/{slug}', [ProductViewController::class, 'SingleProductView'])->name('SingleProductView');
     Route::post('/product/get-size', [ProductViewController::class, 'GetSizeByColor'])->name('GetSizeByColor');
     Route::post('/product/get-pricebysize', [ProductViewController::class, 'GetPriceBySize'])->name('GetPriceBySize');
@@ -69,6 +69,7 @@
     Route::middleware(['auth', 'checkcoustomer'])->group(function () {
         // Profile route
         Route::get('/profile', [UserProfileController::class, 'FrontendProfile'])->name('FrontendProfile');
+        Route::post('/change-password', [UserProfileController::class, 'ChangeUserPass'])->name('ChangeUserPass');
         // wishlist route start
         Route::get('/wishlist', [WishlistController::class, 'WishlistView'])->name('WishlistView');
         Route::post('/wishlist-post', [WishlistController::class, 'WishlistPost'])->name('WishlistPost');

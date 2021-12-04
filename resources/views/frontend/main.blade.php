@@ -302,8 +302,10 @@ BD Muscle - Home
                             <ul>
                                 <li><a data-toggle="modal" data-target="#exampleModalCenter{{ $product->id }}"
                                         href="javascript:void(0);"><i class="fa fa-eye"></i></a></li>
-                                <li><a href="wishlist.html"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="cart.html"><i class="fa fa-shopping-bag"></i></a></li>
+                                <li><a href="{{route('SingleProductView',$product->slug)}}"><i
+                                            class="fa fa-heart"></i></a></li>
+                                <li><a href="{{route('SingleProductView',$product->slug)}}"><i
+                                            class="fa fa-shopping-bag"></i></a></li>
                             </ul>
                         </div>
                     </div>
@@ -370,11 +372,15 @@ BD Muscle - Home
                                     <li class="quantity cart-plus-minus">
                                         <input type="text" value="1" />
                                     </li>
-                                    <li><a href="cart.html">Add to Cart</a></li>
+                                    <li><a href="{{route('SingleProductView',$product->slug)}}">Add to Cart</a></li>
                                 </ul>
                                 <ul class="cetagory">
                                     <li>Categories:</li>
-                                    <li><a href="#">{{ $product->Catagory->catagory_name }}</a></li>
+                                    <li>
+                                        <a href="{{route('CategorySearch',$product->Catagory->catagory_name)}}">
+                                            {{ $product->Catagory->catagory_name }}
+                                        </a>
+                                    </li>
                                 </ul>
                                 <ul class="socil-icon">
                                     <li>Share :</li>
@@ -468,72 +474,38 @@ BD Muscle - Home
         </div>
 
         <div class="row">
+            @forelse ($blogs as $blog)
+
             <div class="col-lg-4 mb-md-30px mb-lm-30px">
                 <div class="single-blog ">
                     <div class="blog-image">
-                        <a href="blog-single-left-sidebar.html"><img src="{{asset('front/images/blog/2.jpg')}}"
-                                class="img-responsive w-100" alt=""></a>
+                        <a href="{{route('FrontenblogView',$blog->slug)}}">
+                            <img src="{{asset('blogs/thumbnail/'.$blog->blog_thumbnail)}}" class="img-responsive w-100"
+                                alt="{{Str::ucfirst($blog->title)}}">
+                        </a>
                     </div>
                     <div class="blog-text">
                         <div class="blog-athor-date">
                             <a class="blog-date height-shape" href="#"><i class="fa fa-calendar" aria-hidden="true"></i>
-                                24 Aug, 2021</a>
+                                {{$blog->created_at->format('d M, Y')}}
+                            </a>
                             <a class="blog-mosion" href="#"><i class="fa fa-commenting" aria-hidden="true"></i> 1.5
                                 K</a>
                         </div>
-                        <h5 class="blog-heading"><a class="blog-heading-link" href="blog-single-left-sidebar.html">It is
-                                a long established factoi
-                                ader will be distracted</a></h5>
+                        <h5 class="blog-heading mt-2">
+                            <a class="blog-heading-link" href="{{route('FrontenblogView',$blog->slug)}}">
+                                {{Str::ucfirst($blog->title)}}
+                            </a>
+                        </h5>
 
-                        <a href="blog-single-left-sidebar.html" class="btn btn-primary blog-btn"> Read More<i
+                        <a href="{{route('FrontenblogView',$blog->slug)}}" class="btn btn-primary blog-btn"> Read More<i
                                 class="fa fa-arrow-right ml-5px" aria-hidden="true"></i></a>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 mb-md-30px mb-lm-30px">
-                <div class="single-blog ">
-                    <div class="blog-image">
-                        <a href="blog-single-left-sidebar.html"><img src="{{asset('front/images/blog/2.jpg')}}"
-                                class="img-responsive w-100" alt=""></a>
-                    </div>
-                    <div class="blog-text">
-                        <div class="blog-athor-date">
-                            <a class="blog-date height-shape" href="#"><i class="fa fa-calendar" aria-hidden="true"></i>
-                                24 Aug, 2021</a>
-                            <a class="blog-mosion" href="#"><i class="fa fa-commenting" aria-hidden="true"></i> 1.5
-                                K</a>
-                        </div>
-                        <h5 class="blog-heading"><a class="blog-heading-link" href="blog-single-left-sidebar.html">It is
-                                a long established factoi
-                                ader will be distracted</a></h5>
-
-                        <a href="blog-single-left-sidebar.html" class="btn btn-primary blog-btn"> Read More<i
-                                class="fa fa-arrow-right ml-5px" aria-hidden="true"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 mb-md-30px mb-lm-30px">
-                <div class="single-blog ">
-                    <div class="blog-image">
-                        <a href="blog-single-left-sidebar.html"><img src="{{asset('front/images/blog/2.jpg')}}"
-                                class="img-responsive w-100" alt=""></a>
-                    </div>
-                    <div class="blog-text">
-                        <div class="blog-athor-date">
-                            <a class="blog-date height-shape" href="#"><i class="fa fa-calendar" aria-hidden="true"></i>
-                                24 Aug, 2021</a>
-                            <a class="blog-mosion" href="#"><i class="fa fa-commenting" aria-hidden="true"></i> 1.5
-                                K</a>
-                        </div>
-                        <h5 class="blog-heading"><a class="blog-heading-link" href="blog-single-left-sidebar.html">It is
-                                a long established factoi
-                                ader will be distracted</a></h5>
-
-                        <a href="blog-single-left-sidebar.html" class="btn btn-primary blog-btn"> Read More<i
-                                class="fa fa-arrow-right ml-5px" aria-hidden="true"></i></a>
-                    </div>
-                </div>
-            </div>
+            @empty
+            No Blogs
+            @endforelse
         </div>
     </div>
 </section>

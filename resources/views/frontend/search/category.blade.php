@@ -1,6 +1,37 @@
-@extends('frontend.master');
+@extends('frontend.master')
+{{-- @section('title') Search Result for "{{$search}}" BD-Muscle @endsection --}}
 @section('content')
 
+<style>
+    li {
+        list-style: none;
+    }
+
+    * {
+        margin: 0px;
+        padding-top: 0px;
+    }
+
+    i {
+        padding-top: 10px;
+    }
+
+    .loadMore_btn {
+        display: inline-block;
+        padding: 8px 40px;
+        border: 1px solid #ef4836;
+        font-weight: 500;
+        color: #ef4836;
+        margin: 30px 0 0;
+    }
+
+    .loadMore_btn:hover {
+
+        background-color: #ef4836;
+        color: white;
+    }
+
+</style>
 <div class="breadcumb-area bg-img-4 ptb-100">
     <div class="container">
         <div class="row">
@@ -25,8 +56,8 @@
                 <aside class="sidebar-area">
                     <div class="widget widget_search">
                         <h4 class="widget-title">Search Product</h4>
-                        <form action="#" class="searchform">
-                            <input type="text" name="s" placeholder="Search Product...">
+                        <form action="{{route('Frontendhome')}}">
+                            <input name="search" value="{{$search}}" type="text" placeholder="Search Here...">
                             <button type="submit"><i class="fa fa-search"></i></button>
                         </form>
                     </div>
@@ -60,63 +91,29 @@
                         <h4 class="widget-title">Categories</h4>
                         <ul>
                             @foreach ($Categories as $catagory)
-                                
-                            <li><a href="{{route('CategorySearch',$catagory->slug)}}">{{$catagory->catagory_name}}</a></li>
+
+                            <li><a href="{{route('CategorySearch',$catagory->slug)}}">{{$catagory->catagory_name}}</a>
+                            </li>
                             @endforeach
-                            {{-- <li><a href="#">Honey</a></li>
-                            <li><a href="#">Olive Oil</a></li>
-                            <li><a href="#">Nut Oil</a></li>
-                            <li><a href="#">Mustard Oil</a></li>
-                            <li><a href="#">Sunrise Oil</a></li> --}}
                         </ul>
                     </div>
-                    {{-- <div class="widget widget_recent_entries">
-                        <h4 class="widget-title">Related Product</h4>
-                        <ul>
-                            <li>
-                                <div class="post-img">
-                                    <img src="assets/images/post/1.jpg" alt="">
-                                </div>
-                                <div class="post-content">
-                                    <a href="shop.html">Mustard Oil</a>
-                                    <p>$478.56</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="post-img">
-                                    <img src="assets/images/post/2.jpg" alt="">
-                                </div>
-                                <div class="post-content">
-                                    <a href="shop.html">Mustard Oil</a>
-                                    <p>$245.56</p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="post-img">
-                                    <img src="assets/images/post/3.jpg" alt="">
-                                </div>
-                                <div class="post-content">
-                                    <a href="shop.html">Mustard Oil</a>
-                                    <p>$219.56</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div> --}}
                 </aside>
             </div>
             <div class="col-lg-9 col-12">
                 <div class="row mb-30">
                     <div class="col-sm-4 col-12">
-                      <h3 style="color: #ef4836;">{{$category->catagory_name}}</h3>
-                      <p>Result : {{$Products->count()}} Product </p>
+                        @if ($category != '')
+
+                        <h3 style="color: #ef4836;">{{$category->catagory_name}}</h3>
+                        @endif
+                        <p class="test">Result : <span class="result">{{$Products->count()}}</span> Product </p>
                     </div>
-                   
+
                 </div>
                 <div class="tab-content">
                     <div class="tab-pane active" id="grid">
                         <ul class="row">
                             @forelse ($Products as $product)
-
                             <li class="col-lg-4 col-sm-6 col-12">
                                 <div class="product-wrap">
                                     <div class="product-img">
@@ -124,16 +121,28 @@
                                             alt="{{ $product->title }}">
                                         <div class="product-icon flex-style">
                                             <ul>
-                                                <li><a data-toggle="modal" style="padding-top: 7px"
+                                                <li>
+                                                    <a data-toggle="modal" style="padding-top: 7px"
                                                         data-target="#exampleModalCenter{{ $product->id }}"
-                                                        href="javascript:void(0);"><i class="fa fa-eye"></i></a></li>
-                                                <li><a href="wishlist.html" style="padding-top: 7px"><i class="fa fa-heart"></i></a></li>
-                                                <li><a href="cart.html" style="padding-top: 7px"><i class="fa fa-shopping-bag"></i></a></li>
+                                                        href="javascript:void(0);"><i style="padding-top: 0"
+                                                            class="fa fa-eye"></i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="wishlist.html" style="padding-top: 7px"><i
+                                                            style="padding-top: 0" class="fa fa-heart"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a href="cart.html" style="padding-top: 7px"><i
+                                                            style="padding-top: 0" class="fa fa-shopping-bag"></i></a>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="product-content">
-                                        <h3><a href="">{{ $product->title }}</a></h3>
+                                        <h3><a
+                                                href="{{route('SingleProductView',$product->slug)}}">{{ $product->title }}</a>
+                                        </h3>
                                         <p class="pull-left"> ৳
                                             @php
                                             $sale = collect($product->Attribute)->min('sell_price');
@@ -214,24 +223,33 @@
                                     </div>
                                 </div>
                             </div>
-                            @endforeach
+                            @empty
+                            No Product
+                            @endforelse
                         </ul>
-                        {{-- <div class="row">
-                            <div class="col-12">
-                                <div class="pagination-wrapper text-center">
-                                    <ul class="page-numbers">
-                                        <li><a class="prev page-numbers" href="#"><i class="fa fa-angle-left"></i></a>
-                                        </li>
-                                        <li><a class="page-numbers" href="#">1</a></li>
-                                        <li><span class="page-numbers current">2</span></li>
-                                        <li><a class="page-numbers" href="#">3</a></li>
-                                        <li><a class="next page-numbers" href="#"><i class="fa fa-angle-right"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
+                        <ul id="ajax-data">
+
+                        </ul>
+                        <ul class="no_data" style="display: none">
+                            <li class="text-center"> No More Product</li>
+                        </ul>
+                        @if (url()->current() != route('Frontendhome') )
+
+                        {{$Products->links('frontend.paginator')}}
+                        @else
+                        @if ($Products->links() != '')
+                        <li class="col-12 text-center">
+                            <div class="load_image" style="display: none">
+                                <p>
+                                    <img width="30%" src="{{asset('front/images/Reload-Image-Gif-1.gif')}}" alt="">
+                                </p>
                             </div>
-                        </div> --}}
+                            <a class="loadMore_btn" href="javascript:void(0);">Load More</a>
+                        </li>
+                        @endif
+                        @endif
                     </div>
+
                     {{-- <div class="tab-pane product-list" id="list">
                         <ul class="row">
                             <li class="col-12">
@@ -438,22 +456,76 @@
 </div>
 @endsection
 
+@section('script_js')
+
+<script>
+    var page = 1;
+    $(document).on('click', '.loadMore_btn', function(event){
+    page++;
+    loadMoreData(page)
+    // alert('ok');
+ });
+
+function loadMoreData(page){
+     $('.loadMore_btn').hide();
+    $('.load_image').show();
+    $.ajax({
+        url:'?page=' + page,
+        type:'get',
+    })
+    .done(function(data){
+        if(data.html == ""){
+         $('.loadMore_btn').hide();
+        $('.load_image').hide();
+        $('.no_data').show();
+           
+            return;
+        }
+        // $(".result").html( val +data.total);
+        // $(".result").load(location.href + " .result");
+        $('#ajax-data').append(data.html);
+        $('.load_image').hide();
+        $('.loadMore_btn').show();
+    })
+}
+
+</script>
+@endsection
 
 
 
-{{--
-@php
-$sale = collect($Product->Attribute)->min('sell_price');
-$regular = collect($Product->Attribute)->min('regular_price');
+{{-- @section('script_js')
+<script>
+alert('ok');
+    
+    function loadMoreData(page){
+        $.ajax({
+            url:'?page=' + page,
+            type='get'
+            .done(function(data){
+                if (data.html == ''){
+                    $('.ajax-load').html("No Product");
+                    return;
+                }
+                $('#ajax-data').append(data.html);
+            })
+            .fail(function(jqXHR,ajaxOptions){
+                alert('server error'); 
+            })
 
-@endphp
-@if ($sale == '')
+        })
+    }
+    var page = 1;
+    // ('.loadmore-btn').onclick(function(){
+    //     alert('ok');
+    // }})
+alert('ok');
+$(document).on('click', '.btn-regular', function(event){
+// event.preventDefault();
+// var page = $(this).attr('href').split('page=')[1];
+// fetch_data(page);
+alert('ok');
+});
+</script>
 
-<p class="pull-left">৳ {{$regular}} </p>
-@else
-
-<p class="pull-left">৳ {{$sale}}</p>
-@endif
-@if ($sale != '')
-<del>৳ {{$regular}} </del>
-@endif --}}
+@endsection --}}
