@@ -16,7 +16,7 @@ class CartController extends Controller
     function CartView($coupon_name = '')
     {
         $Carts = Cart::with(['Product.Attribute', 'Color:id,color_name', 'Size:id,size_name', 'Flavour:flavour_name,id'])
-            ->Where('cookie_id', Cookie::get('cookie_id'))->withcount('Flavour')->get();
+            ->Where('cookie_id', Cookie::get('cookie_id'))->withcount('Flavour')->latest('id')->get();
         $coupon = Coupon::where('coupon_name', $coupon_name)->first();
         $current_date = Carbon::today()->format('Y-m-d');
         if ($coupon_name == '') {

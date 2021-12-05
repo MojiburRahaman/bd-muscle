@@ -28,6 +28,7 @@
         <link rel="stylesheet" href="{{ asset('front/css/selectsearch.css') }}">
         <!-- swiper.min.css -->
         <link rel="stylesheet" href="{{ asset('front/css/swiper.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('front/css/price_range_style.css') }}">
         <!-- style css -->
         <link rel="stylesheet" href="{{ asset('front/css/styles.css') }}">
         <!-- responsive css -->
@@ -420,7 +421,9 @@
         <script src="{{ asset('front/js/countdown.js') }}"></script>
         <!-- swiper.min.js -->
         <script src="{{ asset('front/js/swiper.min.js') }}"></script>
+        <script src="{{ asset('front/js/price_range_script.js') }}"></script>
         <!-- metisMenu.min.js -->
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="{{ asset('front/js/metisMenu.min.js') }}"></script>
         <!-- mailchimp.js -->
         <script src="{{ asset('front/js/mailchimp.js') }}"></script>

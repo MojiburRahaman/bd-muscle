@@ -1,6 +1,6 @@
 @extends('frontend.master')
 @section('title')
-Blog - BD Mucle
+Blog - BD Mucle 
 @endsection
 
 @section('content')

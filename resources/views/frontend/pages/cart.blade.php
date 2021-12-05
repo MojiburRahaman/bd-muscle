@@ -69,8 +69,7 @@ Cart - BD Muscle
                             <td style="border:none" class="ptice">
                                 {{ $item->Size->size_name }}
                             </td>
-                            <td style="border:none" class="ptice"> ৳
-                                <span class="singlesub_price">
+                            <td style="border:none" class="ptice">৳<span class="singlesub_price">
                                     @php
                                     $product =$item->Product->Attribute
                                     ->where('color_id',$item->color_id)
@@ -78,6 +77,7 @@ Cart - BD Muscle
 
                                     $sale_price = $product->sell_price;
                                     $regular_price = $product->regular_price;
+                                    $quantity = $product->quantity;
 
                                     if ($sale_price) {
                                     echo $sale_price;
@@ -92,8 +92,7 @@ Cart - BD Muscle
                                 <input type="text" class="cart_quantity" name="cart_quantity"
                                     value="{{ $item->quantity }}" />
                             </td>
-                            <td style="border:none" class="total "> ৳
-                                <span class="sub_product_total">
+                            <td style="border:none" class="total ">৳<span class="sub_product_total">
                                     @php
                                     if ($sale_price) {
                                     $total_cart_amount += $sale_price * $item->quantity;
@@ -114,11 +113,39 @@ Cart - BD Muscle
                                 <a href="{{route('CartDelete',$item->id)}}" title="Delete Item"><i
                                         class="fa fa-times"></i>
                                 </a>
-                                @empty
                             </td>
-                            <td colspan="10" class="text-center">No data available</td>
+                            @if ($quantity < $item->quantity)
+                                @section('script_js')
+                                <script>
+                                    let timerInterval
+                                Swal.fire({
+                                text: '{{ $item->Product->title }} Quantity is out of stock',
+                                //   html: 'I will close in <b></b> milliseconds.',
+                                timer: 2500,
+                                timerProgressBar: true,
+                                didOpen: () => {
+                                    Swal.showLoading()
+                                    const b = Swal.getHtmlContainer().querySelector('b')
+                                    timerInterval = setInterval(() => {
+                                    b.textContent = Swal.getTimerLeft()
+                                    }, 100)
+                                },
+                                willClose: () => {
+                                    clearInterval(timerInterval)
+                                }
+                                }).then((result) => {
+                                /* Read more about handling dismissals below */
+                                if (result.dismiss === Swal.DismissReason.timer) {
+                                    window.location.href = '{{route('CartDelete',$item->id)}}'
+                                }
+                                })
+                                </script>
+                                @endsection
+                                @endif
+                                @empty
+                                <td colspan="10" class="text-center">No data available</td>
 
-                            @endforelse
+                                @endforelse
                         </tr>
                     </tbody>
                 </table>
@@ -174,11 +201,32 @@ Cart - BD Muscle
 </div>
 <!-- cart-area end -->
 
-@endsection
+<<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+    </div>
 
-@section('script_js')
-<script>
-    $(".rotate").click(function(){
+    @endsection
+
+    @section('script_js')
+    <script>
+        $(".rotate").click(function(){
     $(this).toggleClass("down"); 
         var ele = $(this);
         var sub_total = $('.subtotal').html();
@@ -197,7 +245,9 @@ Cart - BD Muscle
                },
            success: function(res) {
                     if (res == '') {
-alert('The Product Quantity is out of stock');
+
+
+Swal.fire({text:'The Product Quantity is out of stock'});
                     }
                 else{
                     ele.parents("tr").find('.sub_product_total').html(res);
@@ -214,14 +264,54 @@ alert('The Product Quantity is out of stock');
         $('#coupon_submit_btn').click(function(){
             var coupon_name_test = $('#coupon_name').val();
             var coupon_redirect_url = " {{route('CartView')}}/" + coupon_name_test;
-    window.location.href = coupon_redirect_url;
+          window.location.href = coupon_redirect_url;
+         });
     });
-    
-    });
-</script>
+//     Swal.fire({
+//   title: 'Do you want to save the changes?',
+// //   showDenyButton: true,
+// //   showCancelButton: true,
+//   confirmButtonText: 'Ok',
+// //   denyButtonText: `Don't save`,
+// }).then((result) => {
+//   /* Read more about isConfirmed, isDenied below */
+//   if (result.isConfirmed) {
+//     Swal.fire('Saved!', '', 'success')
+//   } else if (result.isDenied) {
+//     Swal.fire('Changes are not saved', '', 'info')
+//   }
+// })
+
+
+// let timerInterval
+// Swal.fire({
+//   text: 'The Product Quantity is out of stock',
+// //   html: 'I will close in <b></b> milliseconds.',
+//   timer: 2000,
+//   timerProgressBar: true,
+//   didOpen: () => {
+//     Swal.showLoading()
+//     const b = Swal.getHtmlContainer().querySelector('b')
+//     timerInterval = setInterval(() => {
+//       b.textContent = Swal.getTimerLeft()
+//     }, 100)
+//   },
+//   willClose: () => {
+//     clearInterval(timerInterval)
+//   }
+// }).then((result) => {
+//   /* Read more about handling dismissals below */
+//   if (result.dismiss === Swal.DismissReason.timer) {
+//     window.location.href = '{{route('Frontendblog')}}'
+//   }
+// })
+
+    // // alert('You Clicked on Click Here Button');
+    // $('#exampleModal').modal('show');
+    </script>
 
 
 
 
 
-@endsection
+    @endsection

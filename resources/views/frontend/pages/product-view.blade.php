@@ -104,10 +104,11 @@
                             (<span>Out of Stock</span>)
                             @endif
                     </div>
-                    @if ($product->Attribute->sum('quantity') != 0)
                     <form action="" id="Form_submit" method="POST">
                         @csrf
                         <p>{{$product->product_summary}}</p>
+                    @if ($product->Attribute->sum('quantity') != 0)
+
                         <ul class="input-style">
                             <li class="quantity cart-plus-minus">
                                 <input name="cart_quantity" type="text" value="1" />
