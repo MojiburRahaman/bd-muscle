@@ -13,12 +13,12 @@ class FrontendController extends Controller
     {
         $category = '';
         $search = strip_tags($request->search);
-        
+
         $Products = Product::with('Catagory', 'Attribute')
         ->where('title', 'LIKE', "%$search%")
         ->where('status', 1)
         ->select('id', 'slug', 'catagory_id', 'thumbnail_img', 'product_summary', 'title')
-        ->latest()->simplePaginate(3);
+        ->latest()->simplePaginate(1);
 
     if ($request->ajax()) {
         $view = view('frontend.search.pagination-data', compact('Products'))->render();

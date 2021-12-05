@@ -1,4 +1,7 @@
 @extends('frontend.master')
+@section('title')
+Cart - BD Muscle
+@endsection
 @section('content')
 <!-- cart-area start -->
 <style>
@@ -180,8 +183,6 @@
         var ele = $(this);
         var sub_total = $('.subtotal').html();
         var cart_id = $(this).attr('data-id');
-    //   var  cart_quantity=ele.parents("tr").find(".cart_quantity").val();
-            //    alert(cart_quantity);
               $.ajaxSetup({
         headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -193,19 +194,17 @@
            data:{
                cart_id:cart_id, 
                cart_quantity:ele.parents("tr").find(".cart_quantity").val(),
-            //    alert(cart_quantity),
                },
            success: function(res) {
-                    if (res) {
-                     ele.parents("tr").find('.sub_product_total').html(res);
-                //      ele.parents("tr").find('.sub_product_total').html(res);
-                //    var quantity =  ele.parents("tr").find('.singlesub_price').attr('data-quantity');
-                //    ele.parents("tr").find(".cart_quantity").val(quantity);
+                    if (res == '') {
+alert('The Product Quantity is out of stock');
+                    }
+                else{
+                    ele.parents("tr").find('.sub_product_total').html(res);
                 $(".subtotal").load(location.href + " .subtotal");
                 $(".discount").load(location.href + " .discount");
                 $(".cart_total").load(location.href + " .cart_total");
-
-                    }
+                }
                 }
             })
     });

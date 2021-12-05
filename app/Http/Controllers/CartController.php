@@ -41,7 +41,6 @@ class CartController extends Controller
 
     function CartPost(Request $request)
     {
-        // return $request;
         session()->forget('cart_total');
         $request->validate([
             'color_id' => ['required',],
@@ -103,18 +102,22 @@ class CartController extends Controller
     }
     function CartUpdate(Request $request)
     {
+        $html ='';
         $request->validate([
             'cart_quantity' => ['required', 'numeric', 'min:1'],
             'cart_id' => ['required', 'numeric',]
         ]);
         $cart = Cart::findorfail($request->cart_id);
-        $cart->quantity = $request->cart_quantity;
-        $cart->save();
-
         $Attr = Attribute::where('product_id', $cart->product_id)
             ->where('color_id', $cart->color_id)
             ->where('size_id', $cart->size_id)
-            ->select('regular_price', 'sell_price')->first();
+            ->select('regular_price', 'sell_price', 'quantity')->first();
+        if ($Attr->quantity < $request->cart_quantity) {
+            return response()->json($html);
+        }
+        $cart->quantity = $request->cart_quantity;
+        $cart->save();
+
         if ($Attr->sell_price != '') {
             $price = $Attr->sell_price;
         } else {

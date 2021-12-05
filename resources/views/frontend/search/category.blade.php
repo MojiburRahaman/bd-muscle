@@ -1,5 +1,9 @@
 @extends('frontend.master')
-{{-- @section('title') Search Result for "{{$search}}" BD-Muscle @endsection --}}
+@section('title') @if (url()->current() == route('Frontendhome'))
+Search Result for "{{$search}}" BD-Muscle
+@else
+{{$category->catagory_name}} BD-Mucle
+@endif @endsection
 @section('content')
 
 <style>
@@ -103,7 +107,6 @@
                 <div class="row mb-30">
                     <div class="col-sm-4 col-12">
                         @if ($category != '')
-
                         <h3 style="color: #ef4836;">{{$category->catagory_name}}</h3>
                         @endif
                         <p class="test">Result : <span class="result">{{$Products->count()}}</span> Product </p>

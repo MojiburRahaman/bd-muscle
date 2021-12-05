@@ -1,4 +1,7 @@
 @extends('frontend.master')
+@section('title')
+Blog - BD Mucle
+@endsection
 
 @section('content')
 <!-- .breadcumb-area start -->
