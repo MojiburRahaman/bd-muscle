@@ -18,6 +18,7 @@
     use App\Http\Controllers\WishlistController;
     use App\Http\Controllers\BlogController;
     use App\Http\Controllers\UserProfileController;
+    use App\Http\Controllers\CheckoutController;
 
     /*
 |--------------------------------------------------------------------------

@@ -7,6 +7,18 @@
 {{$blog->title}}
 @endsection
 @section('content')
+<style>
+    .comment_btn {
+	width: 125px;
+	color: #fff;
+	text-transform: uppercase;
+	padding: 0;
+	background: #333;
+	cursor: pointer;
+	margin: 30px 0px 0px;
+    height: 40px;
+}
+</style>
 <!-- .breadcumb-area start -->
 <div class="breadcumb-area bg-img-4 ptb-100">
     <div class="container">
@@ -63,78 +75,37 @@
                         <h3 class="blog-title"><span>(03)</span>Comments:</h3>
                         <ol class="comments">
                             <li class="comment even thread-even depth-1">
+                                @forelse ($blog->BlogComment as $comment )
+                                    
                                 <div class="comment-wrap">
-                                    <div class="comment-theme">
-                                        <div class="comment-image">
-                                            <img src="assets/images/comment/1.png" alt="Jhon">
-                                        </div>
-                                    </div>
                                     <div class="comment-main-area">
                                         <div class="comment-wrapper">
                                             <div class="sewl-comments-meta">
-                                                <h4>Lily Justin </h4>
-                                                <span>19 JAN 2019 at 2:30pm</span>
+                                                <h4>{{$comment->user_name}} </h4>
+                                                <span>{{$comment->created_at->format('d M Y')}}</span>
                                             </div>
                                             <div class="comment-area">
-                                                <p>simply dummy text of the printing and typesetting industry. Lorem
-                                                    Ipsum has been the industry's standard dummy text ever since the
-                                                    1500s, when</p>
+                                                <p>{{$comment->comment}}</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="comment-wrap">
-                                    <div class="comment-theme">
-                                        <div class="comment-image">
-                                            <img src="assets/images/comment/2.png" alt="Jhon">
-                                        </div>
-                                    </div>
-                                    <div class="comment-main-area">
-                                        <div class="comment-wrapper">
-                                            <div class="sewl-comments-meta">
-                                                <h4>Timberlake Justin </h4>
-                                                <span>19 JAN 2019 at 2:30pm</span>
-                                            </div>
-                                            <div class="comment-area">
-                                                <p>simply dummy text of the printing and typesetting industry. Lorem
-                                                    Ipsum has been the industry's standard dummy text ever since the
-                                                    1500s, when</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="comment-wrap">
-                                    <div class="comment-theme">
-                                        <div class="comment-image">
-                                            <img src="assets/images/comment/3.png" alt="Jhon">
-                                        </div>
-                                    </div>
-                                    <div class="comment-main-area">
-                                        <div class="comment-wrapper">
-                                            <div class="sewl-comments-meta">
-                                                <h4>Sata Houston </h4>
-                                                <span>19 JAN 2019 at 2:30pm</span>
-                                            </div>
-                                            <div class="comment-area">
-                                                <p>simply dummy text of the printing and typesetting industry. Lorem
-                                                    Ipsum has been the industry's standard dummy text ever since the
-                                                    1500s, when</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                @empty
+                                    
+                                @endforelse
                             </li>
                         </ol>
                     </div>
                     <div id="respond" class="sewl-comment-form comment-respond form-style">
                         <h3 id="reply-title" class="blog-title">Leave a <span>comment</span></h3>
-                        <form novalidate="" method="post" id="commentform" class="comment-form" action="#0">
+                        <form method="post" id="commentform" class="comment-form" action="{{route('BlogComment')}}">
+                            @csrf
                             <div class="row">
                                 <div class="col-12">
                                     <div class="sewl-form-inputs no-padding-left">
                                         <div class="row">
                                             <div class="col-sm-6 col-12">
-                                                <input id="name" name="name" value="" tabindex="2" placeholder="Name"
+                                                <input id="name" name="user_name" value="" tabindex="2" placeholder="Name"
                                                     type="text">
                                             </div>
                                             <div class="col-sm-6 col-12">
@@ -145,6 +116,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
+                                    <input type="hidden" name="blog_id" value="{{$blog->id}}">
                                     <div class="sewl-form-textarea no-padding-right">
                                         <textarea id="comment" name="comment" tabindex="4" rows="3" cols="30"
                                             placeholder="Write Your Comments..."></textarea>
@@ -152,9 +124,7 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="form-submit">
-                                        <input name="submit" id="submit" value="Send" type="submit">
-                                        <input name="comment_post_ID" value="1" id="comment_post_ID" type="hidden">
-                                        <input name="comment_parent" id="comment_parent" value="0" type="hidden">
+                                        <button class="btn comment_btn" type="submit">Submit</button>
                                     </div>
                                 </div>
                             </div>

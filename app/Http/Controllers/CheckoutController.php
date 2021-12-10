@@ -20,17 +20,16 @@ class CheckoutController extends Controller
 {
     function CheckoutView()
     {
-        
+
         if (!session()->get('cart_total')) {
             return back();
         }
-        return view('frontend.pages.checkout-view', [
+        return view('frontend.pages.checkout', [
             'divisions' => Division::select('id', 'name')->get(),
         ]);
     }
     function CheckoutajaxDivid(Request $request)
     {
-        // return $request;
         $district = District::where('division_id', $request->division_id)
             ->select('id', 'name')->get();
         return response()->json($district);
@@ -46,7 +45,6 @@ class CheckoutController extends Controller
         if (!session()->get('cart_total')) {
             return redirect('/');
         }
-        // print_r(session()->all());
         $request->validate([
             'billing_user_name' => ['required', 'string', 'max:255'],
             'user_email' => ['required'],
@@ -56,10 +54,8 @@ class CheckoutController extends Controller
             'billing_address' => ['required'],
             'billing_number' => ['required'],
             'payment_option' => ['required'],
-            // 'division' => ['required'],
-            ]);
-            // return $request;
-            if ($request->district_name == 47) {
+        ]);
+        if ($request->district_name == 47) {
             session()->put('shipping', 60);
         } else {
             session()->put('shipping', 120);
@@ -104,6 +100,5 @@ class CheckoutController extends Controller
         session()->forget('cart_subtotal');
         session()->forget('shipping');
         return redirect('/');
-        // return 'done';
     }
 }

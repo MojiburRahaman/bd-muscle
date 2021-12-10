@@ -12,7 +12,7 @@ BD Muscle - Home
                 <div class="single-slider slide-inner slide-inner1">
                     <div class="container">
                         <div class="row">
-                            <div class="col-lg-12 col-lg-9 col-12">
+                            {{-- <div class="col-lg-12 col-lg-9 col-12">
                                 <div class="slider-content">
                                     <div class="slider-shape">
                                         <h2 data-swiper-parallax="-500">Amazing Pure Nature Hohey</h2>
@@ -21,7 +21,15 @@ BD Muscle - Home
                                         <a href="shop.html" data-swiper-parallax="-300">Shop Now</a>
                                     </div>
                                 </div>
+                            </div> --}}
+                            <div class="col-xl-8 col-lg-9 col-6">
+                                <div class="slider-content slider-content3">
+                                    <h2>Amazing Pure Nature Hohey</h2>
+                                    {{-- <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin</p> --}}
+                                    <a href="shop.html" data-swiper-parallax="-300" style="transition-duration: 1000ms; transform: translate3d(0px, 0px, 0px);">Shop Now</a>
+                                </div>
                             </div>
+                        
                         </div>
                     </div>
                 </div>

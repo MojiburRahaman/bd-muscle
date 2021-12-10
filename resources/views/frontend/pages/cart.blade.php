@@ -119,8 +119,8 @@ Cart - BD Muscle
                                 <script>
                                     let timerInterval
                                 Swal.fire({
-                                text: '{{ $item->Product->title }} Quantity is out of stock',
-                                //   html: 'I will close in <b></b> milliseconds.',
+                                icon : 'warning',
+                                text: '{{ $item->Product->title }} Quantity is out of stock ',
                                 timer: 2500,
                                 timerProgressBar: true,
                                 didOpen: () => {
@@ -190,7 +190,7 @@ Cart - BD Muscle
                             session()->put('cart_subtotal',round($total_cart_amount - ($total_cart_amount *
                             $discount)/100));
                             @endphp
-                            <a href="">Proceed to Checkout</a>
+                            <a href="{{route('CheckoutView')}}">Proceed to Checkout</a>
                         </div>
                     </div>
                 </div>

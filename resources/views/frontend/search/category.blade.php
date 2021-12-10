@@ -75,38 +75,30 @@ Search Result for "{{$search}}" BD-Muscle
                             <button type="submit"><i class="fa fa-search"></i></button>
                         </form>
                     </div>
-                    <div class="product-filter">
+                    {{-- <div class="product-filter">
                         <h4 class="widget-title">Filter by Price</h4>
                         <div class="filter-price">
-                            <form action="#">
-                                <input type="text" min=0 max="9900" value="0" oninput="validity.valid||(value='0');"
-                                id="min_price" class="price-range-field min_price" disabled/>
+                            <form action="{{url()->current()}}" method="GET">
+                                <input type="text" name="min_price" min=0 max="9900" value="0" oninput="validity.valid||(value='0');"
+                                id="min_price" class="price-range-field min_price" />
                                 <div id="slider-range" class="price-filter-range" name="rangeInput">
-                                    <input type="text" min=0 max="10000" value="10000"
-                                          disabled  oninput="validity.valid||(value='10000');" id="max_price"
+                                    <input type="text" min=0 max="10000" value="10000" name="max_price"
+                                            oninput="validity.valid||(value='10000');" id="max_price"
                                             class="price-range-field max_price" />
                                 </div>
-                                {{-- <div id="slider-range"
-                                    class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
-                                    <div class="ui-slider-range ui-widget-header ui-corner-all"
-                                        style="left: 0%; width: 46.8085%;"></div><span
-                                        class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"
-                                        style="left: 0%;"></span><span
-                                        class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"
-                                        style="left: 46.8085%;"></span>
-                                </div> --}}
+                             
                                 
                                 <div class="row mt-4">
                                     <div class="col-7">
 
                                     </div>
                                     <div class="col-5  text-right">
-                                        <button style="margin-left:90px;margin-top:10px">filter</button>
+                                        <button type="submit" style="margin-left:90px;margin-top:10px">filter</button>
                                     </div>
                                 </div>
                             </form>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="widget widget_categories">
                         <h4 class="widget-title">Categories</h4>
                         <ul>
