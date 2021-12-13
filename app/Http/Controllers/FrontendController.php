@@ -25,12 +25,12 @@ class FrontendController extends Controller
                 ->latest()->simplePaginate(1);
 
             $view = view('frontend.search.pagination-data', compact('Products'))->render();
-            return response()->json(['html' => $view, 'total' => $Products->count()]);
+            return response()->json(['html' => $view,]);
         }
 
         if ($search == '') {
             $product = Product::with('Catagory', 'Attribute')
-                ->where('status', 1)->latest()
+                ->where('status', 1)->latest('id')
                 ->select('id', 'slug', 'catagory_id', 'thumbnail_img', 'product_summary', 'title')
                 ->get();
             $blogs = Blog::latest('id')
@@ -49,7 +49,7 @@ class FrontendController extends Controller
             ->latest()->simplePaginate(1);
         $categories = Catagory::select('slug', 'catagory_name')->get();
 
-        return view('frontend.search.category', [
+        return view('frontend.search.search-data', [
             'Products' => $Products,
             'Categories' => $categories,
             'category' => $category,
@@ -93,7 +93,7 @@ class FrontendController extends Controller
             'email' => ['required', 'email'],
             'subject' => ['nullable', 'string'],
             'comment' => ['required'],
-            'blog_id' => ['required','numeric'],
+            'blog_id' => ['required', 'numeric'],
         ]);
 
         $user_name =  strip_tags($request->user_name);

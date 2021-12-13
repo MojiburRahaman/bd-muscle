@@ -3,7 +3,6 @@
 BD Muscle - Home
 @endsection
 @section('content')
-
 <!-- slider-area start -->
 <div class="slider-area">
     <div class="swiper-container">
@@ -26,10 +25,12 @@ BD Muscle - Home
                                 <div class="slider-content slider-content3">
                                     <h2>Amazing Pure Nature Hohey</h2>
                                     {{-- <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin</p> --}}
-                                    <a href="shop.html" data-swiper-parallax="-300" style="transition-duration: 1000ms; transform: translate3d(0px, 0px, 0px);">Shop Now</a>
+                                    <a href="shop.html" data-swiper-parallax="-300"
+                                        style="transition-duration: 1000ms; transform: translate3d(0px, 0px, 0px);">Shop
+                                        Now</a>
                                 </div>
                             </div>
-                        
+
                         </div>
                     </div>
                 </div>

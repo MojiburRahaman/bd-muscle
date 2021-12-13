@@ -5,7 +5,6 @@ Search Result for "{{$search}}" BD-Muscle
 {{$category->catagory_name}} BD-Mucle
 @endif @endsection
 @section('content')
-
 <style>
     li {
         list-style: none;
@@ -34,16 +33,18 @@ Search Result for "{{$search}}" BD-Muscle
         background-color: #ef4836;
         color: white;
     }
+
     .max_price {
-	float: right;
-	padding-left: 30px;
-	color: black;
-	background: white;
-}
+        float: right;
+        padding-left: 30px;
+        color: black;
+        background: white;
+    }
+
     .min_price {
-	color: black;
-	background: white;
-}
+        color: black;
+        background: white;
+    }
 
 </style>
 <div class="breadcumb-area bg-img-4 ptb-100">
@@ -75,19 +76,19 @@ Search Result for "{{$search}}" BD-Muscle
                             <button type="submit"><i class="fa fa-search"></i></button>
                         </form>
                     </div>
-                    {{-- <div class="product-filter">
+                    @if (url()->current() != route('Frontendhome'))
+                    <div class="product-filter">
                         <h4 class="widget-title">Filter by Price</h4>
                         <div class="filter-price">
                             <form action="{{url()->current()}}" method="GET">
-                                <input type="text" name="min_price" min=0 max="9900" value="0" oninput="validity.valid||(value='0');"
-                                id="min_price" class="price-range-field min_price" />
+                                <input type="text" name="min_price" min=0 max="9900" value="0"
+                                    oninput="validity.valid||(value='0');" id="min_price"
+                                    class="price-range-field min_price" />
                                 <div id="slider-range" class="price-filter-range" name="rangeInput">
                                     <input type="text" min=0 max="10000" value="10000" name="max_price"
-                                            oninput="validity.valid||(value='10000');" id="max_price"
-                                            class="price-range-field max_price" />
+                                        oninput="validity.valid||(value='10000');" id="max_price"
+                                        class="price-range-field max_price" />
                                 </div>
-                             
-                                
                                 <div class="row mt-4">
                                     <div class="col-7">
 
@@ -98,7 +99,8 @@ Search Result for "{{$search}}" BD-Muscle
                                 </div>
                             </form>
                         </div>
-                    </div> --}}
+                    </div>
+                    @endif
                     <div class="widget widget_categories">
                         <h4 class="widget-title">Categories</h4>
                         <ul>
@@ -219,7 +221,9 @@ Search Result for "{{$search}}" BD-Muscle
                                                 </ul>
                                                 <ul class="cetagory">
                                                     <li>Categories:</li>
-                                                    <li><a href="#">{{ $product->Catagory->catagory_name }}</a></li>
+                                                    <li><a
+                                                            href="{{route('CategorySearch',$product->Catagory->slug )}}">{{ $product->Catagory->catagory_name }}</a>
+                                                    </li>
                                                 </ul>
                                                 <ul class="socil-icon">
                                                     <li>Share :</li>
@@ -244,10 +248,6 @@ Search Result for "{{$search}}" BD-Muscle
                         <ul class="no_data" style="display: none">
                             <li class="text-center"> No More Product</li>
                         </ul>
-                        @if (url()->current() != route('Frontendhome') )
-
-                        {{$Products->links('frontend.paginator')}}
-                        @else
                         @if ($Products->links() != '')
                         <li class="col-12 text-center">
                             <div class="load_image" style="display: none">
@@ -257,7 +257,7 @@ Search Result for "{{$search}}" BD-Muscle
                             </div>
                             <a class="loadMore_btn" href="javascript:void(0);">Load More</a>
                         </li>
-                        @endif
+                        {{-- @endif --}}
                         @endif
                     </div>
 

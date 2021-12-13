@@ -93,7 +93,7 @@
                     </ul>
                     <ul class="cetagory">
                         <li>Categories:</li>
-                        <li><a href="#">{{ $product->Catagory->catagory_name }}</a></li>
+                        <li><a href="{{route('CategorySearch',$product->Catagory->slug )}}">{{ $product->Catagory->catagory_name }}</a></li>
                     </ul>
                     <ul class="socil-icon">
                         <li>Share :</li>
