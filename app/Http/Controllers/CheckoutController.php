@@ -67,6 +67,7 @@ class CheckoutController extends Controller
         ]);
         $Order_Summaries_id = Order_Summaries::insertGetId([
             'billing_details_id' => $billing_details,
+            'order_number' => now()->format('dm').Auth::id().mt_rand(1,1000),
             'coupon_name' => session()->get('coupon_name'),
             'total' => session()->get('cart_total'),
             'subtotal' => session()->get('cart_subtotal') + session()->get('shipping'),
@@ -80,6 +81,7 @@ class CheckoutController extends Controller
                 'Order_Summaries_id' => $Order_Summaries_id,
                 'product_id' => $cart->product_id,
                 'color_id' => $cart->color_id,
+                'flavour_id' => $cart->flavour_id,
                 'size_id' => $cart->size_id,
                 'quantity' => $cart->quantity,
                 'created_at' => Carbon::now(),

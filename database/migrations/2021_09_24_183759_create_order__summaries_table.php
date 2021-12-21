@@ -15,6 +15,7 @@ class CreateOrderSummariesTable extends Migration
     {
         Schema::create('order__summaries', function (Blueprint $table) {
             $table->id();
+            $table->string('order_number');
             $table->foreignId('billing_details_id');
             $table->string('coupon_name')->nullable();
             $table->integer('total');

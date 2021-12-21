@@ -85,7 +85,7 @@
                             </div>
                             <div class="col-sm-4 col-12 mt-4">
                                 <p>Postcode/ZIP</p>
-                                <input type="email" name="billing_postcode">
+                                <input type="text" name="billing_postcode">
                             </div>
                             <div class="col-12 mb-4">
                                 <p>Order Notes (Optional) </p>

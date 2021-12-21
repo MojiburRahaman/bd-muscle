@@ -19,8 +19,9 @@
     use App\Http\Controllers\BlogController;
     use App\Http\Controllers\UserProfileController;
     use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrderController;
 
-    /*
+/*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
@@ -107,6 +108,7 @@
 
         // product route
 
+        Route::get('/products/best_seller/{id}', [ProductController::class, 'Best_seller'])->name('Best_seller');
         Route::get('/products/status/{id}', [ProductController::class, 'ProductStaus'])->name('ProductStaus');
         Route::post('/products/mark-delete/', [ProductController::class, 'MarkdeleteProduct'])->name('MarkdeleteProduct');
         Route::get('/products/edit/product-attribute-delete/{id}', [ProductController::class, 'ProducvtAtributeDelete'])->name('ProducvtAtributeDelete');
@@ -125,7 +127,8 @@
         Route::post('/roles/assign-user-post', [RoleController::class, 'AssignUserPost'])->name('AssignUserPost');
         Route::get('/roles/assign-user', [RoleController::class, 'AssignUser'])->name('AssignUser');
         Route::resource('/roles', RoleController::class);
-
+// order route
+        Route::resource('/orders', OrderController::class);
         // coupon route
         Route::resource('/coupons', CouponController::class);
         // color route

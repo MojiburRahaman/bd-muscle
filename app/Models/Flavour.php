@@ -16,4 +16,12 @@ class Flavour extends Model
     {
        return $this->hasMany(Cart::class, 'flavour_id');
     }
+    function Wishlist()
+    {
+       return $this->hasMany(Wishlist::class, 'flavour_id');
+    }
+    function Order_Details()
+    {
+       return $this->hasMany(Order_Details::class, 'flavour_id');
+    }
 }

@@ -20,6 +20,10 @@ class Wishlist extends Model
     {
         return $this->belongsTo(Size::class, 'size_id');
     }
+    function Flavour()
+    {
+        return $this->belongsTo(Flavour::class, 'flavour_id');
+    }
     function User()
     {
         return $this->belongsTo(User::class, 'user_id');

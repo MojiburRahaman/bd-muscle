@@ -419,4 +419,20 @@ class ProductController extends Controller
             return back()->with('success', 'Product Active Successfully');
         }
     }
+    public function Best_seller($id)
+    {
+        $product = Product::findorfail($id);
+        if ($product->best_seller == 1) {
+            $product->best_seller = 0;
+            $product->save();
+            
+            return back()->with('warning', 'Product remove from Best Seller Successfully');
+        } else {
+            $product->best_seller = 1;
+            $product->save();
+            // return $product;
+
+            return back()->with('success', 'Product Added to Best Seller Successfully');
+        }
+    }
 }

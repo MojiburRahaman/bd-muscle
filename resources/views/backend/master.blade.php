@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="{{asset('backend/plugins/fontawesome-free/css/all.min.css')}}">
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <!-- overlayScrollbars -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
         <link rel="stylesheet" href="{{asset('backend/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
         <!-- Theme style -->
         <link rel="stylesheet" href="{{asset('backend/dist/css/adminlte.min.css')}}">
@@ -461,6 +462,31 @@
 
                             </ul>
                         </li>
+                        <li class="nav-item @yield('blog_dropdown_active')">
+                            <a href="#" class="nav-link @yield('blog_active')">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    Order
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                {{-- <li class="nav-item">
+                                    <a href="{{route('orders.create')}}" class="nav-link @yield('add_blog-active')">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Create Blog</p>
+                                    </a>
+                                </li> --}}
+                            
+                                <li class="nav-item">
+                                    <a href="{{route('orders.index')}}" class="nav-link @yield('view_order-active')">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>View Order</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
 
                         <li class="nav-item">
                             <a class="nav-link"
@@ -510,7 +536,7 @@
         <!-- AdminLTE App -->
         <script src="{{asset('backend/dist/js/adminlte.js')}}"></script>
         <script src="https://cdn.ckeditor.com/ckeditor5/31.0.0/classic/ckeditor.js"></script>
-
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
         <!-- PAGE PLUGINS -->
         <!-- jQuery Mapael -->
         <script src="{{asset('backend/plugins/jquery-mousewheel/jquery.mousewheel.js')}}"></script>

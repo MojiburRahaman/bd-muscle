@@ -42,9 +42,9 @@
                 <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#change-passwords" role="tab"
                     aria-controls="change-passwords" aria-selected="false">Change Password</a>
                 <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab"
-                    aria-controls="v-pills-messages" aria-selected="false">Messages</a>
-                <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab"
-                    aria-controls="v-pills-settings" aria-selected="false">Settings</a>
+                    aria-controls="v-pills-messages" aria-selected="false">Order</a>
+                {{-- <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab"
+                    aria-controls="v-pills-settings" aria-selected="false">Settings</a> --}}
                 <a class="nav-link" onclick="event.preventDefault();document.getElementById('from_logout').submit()"
                     href="{{ route('logout') }}">Log Out</a>
                 <form id="from_logout" action="{{ route('logout') }}" method="POST">

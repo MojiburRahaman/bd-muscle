@@ -56,7 +56,13 @@
                                     </a>
                                 </td>
                                 <td class="product"><a
-                                        href="{{route('SingleProductView',$wish_list->Product->slug)}}">{{$wish_list->Product->title}}</a>
+                                        href="{{route('SingleProductView',$wish_list->Product->slug)}}">
+                                        {{$wish_list->Product->title}}
+                                        @if ($wish_list->flavour_count != '')
+                                        <br>
+                                        (Flavour: {{$wish_list->Flavour->flavour_name}})
+                                        @endif
+                                    </a>
                                 </td>
                                 <td class="ptice">৳
                                     @php
@@ -77,6 +83,9 @@
                                     @endphp
                                 </td>
                                 <input type="hidden" name="product_id" value="{{$wish_list->product_id}}">
+                                @if ($wish_list->flavour_count != '')
+                                <input type="hidden" name="flavour_id" value="{{$wish_list->flavour_id}}">
+                                @endif
                                 <input type="hidden" name="color_id" value="{{$wish_list->color_id}}">
                                 <input type="hidden" name="size_id" value="{{$wish_list->size_id}}">
                                 <input type="hidden" name="wish_list_id" value="{{$wish_list->id}}">

@@ -19,6 +19,7 @@ class CreateWishlistsTable extends Migration
             $table->foreignId('product_id');
             $table->foreignId('color_id');
             $table->foreignId('size_id');
+            $table->foreignId('flavour_id')->nullable();
             $table->string('quantity');
             $table->timestamps();
         });

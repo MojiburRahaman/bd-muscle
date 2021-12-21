@@ -8,7 +8,7 @@ use App\Models\Product;
 use App\Models\BlogComment;
 use App\Models\BlogReply;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Cache;
 
 class FrontendController extends Controller
 {
@@ -29,6 +29,11 @@ class FrontendController extends Controller
         }
 
         if ($search == '') {
+            $best_seller = Product::with('Catagory:id,slug,catagory_name', 'Attribute')->where('best_seller', 1)
+                ->where('status', 1)->latest('id')
+                ->select('id', 'slug', 'catagory_id', 'thumbnail_img', 'product_summary', 'title')
+                ->take(4)
+                ->get();
             $product = Product::with('Catagory', 'Attribute')
                 ->where('status', 1)->latest('id')
                 ->select('id', 'slug', 'catagory_id', 'thumbnail_img', 'product_summary', 'title')
@@ -39,6 +44,7 @@ class FrontendController extends Controller
             return view('frontend.main', [
                 'latest_product' => $product,
                 'blogs' => $blogs,
+                'best_seller' => $best_seller,
             ]);
         }
 
@@ -69,15 +75,19 @@ class FrontendController extends Controller
     }
     function Frontendblog()
     {
-        $blogs = Blog::latest('id')->select('id', 'title', 'slug', 'blog_thumbnail', 'blog_description', 'created_at')->paginate(1);
+        $blogs = Blog::latest('id')->select('id', 'title', 'slug', 'blog_thumbnail', 'blog_description', 'created_at')->paginate(10);
         return view('frontend.pages.blogs', [
             'blogs' => $blogs,
         ]);
     }
     function FrontenblogView($slug)
     {
+        // $blogs = Cache::rememberForever('key', function () {
+
+        //    return Blog::latest('id')->select('id', 'title', 'slug', 'blog_thumbnail',  'created_at')->take(5)->get();
+        // });
         $blogs = Blog::latest('id')->select('id', 'title', 'slug', 'blog_thumbnail',  'created_at')->take(5)->get();
-        $blog = Blog::where('slug', $slug)->with('BlogComment')->first();
+        $blog = Blog::where('slug', $slug)->with('BlogComment')->withCount('BlogComment')->first();
         $next = Blog::where('id', '>', $blog->id)->select('slug')->first();
         return view('frontend.pages.blog-view', [
             'blog' => $blog,

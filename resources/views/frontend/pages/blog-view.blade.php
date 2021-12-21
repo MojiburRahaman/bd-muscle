@@ -72,7 +72,7 @@
                 </div>
                 <div class="comment-form-area">
                     <div class="comment-main">
-                        <h3 class="blog-title"><span>(03)</span>Comments:</h3>
+                        <h3 class="blog-title"><span>({{$blog->blog_comment_count}})</span>Comments:</h3>
                         <ol class="comments">
                             <li class="comment even thread-even depth-1">
                                 @forelse ($blog->BlogComment as $comment )

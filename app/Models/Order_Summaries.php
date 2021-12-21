@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order_Summaries extends Model
 {
-    use HasFactory,SoftDeletes;
-    protected $guarded=[];
-    function billing_details(){
+    use HasFactory, SoftDeletes;
+    protected $guarded = [];
+    function billing_details()
+    {
         return $this->belongsTo(billing_details::class, 'billing_details_id');
     }
-    function Order_Details(){
+    function Order_Details()
+    {
         return $this->hasMany(Order_Details::class, 'Order_Summaries_id');
     }
 }
