@@ -25,7 +25,6 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::with('Attribute.Color', 'Attribute.Size')->latest('id')->cursorPaginate(10)->fragment('Product');
-
         return view('backend.product.index', [
             'products' => $products,
         ]);
@@ -66,12 +65,16 @@ class ProductController extends Controller
             'product_img.*' => ['required', 'mimes:png,jpeg,jpg'],
             'product_summary' => ['required'],
             'product_description' => ['required'],
-            // 'quantity[]' => ['required'],
+            'quantity.*' => ['required'],
+            'discount.*' => ['nullable', 'integer', 'min:1', 'max:99'],
             // 'regular_price[]' => ['required'],
         ], [
             'product_img.*.mimes' => 'Product Image must be png,jpg,jpeg formate',
             'product_img.*.required' => 'Product Image required',
+            'discount.*.min' => 'Minimum 1',
+            'discount.*.max' => 'Maximum 99',
         ]);
+        return $request;
         $product = new Product;
         $product->title = $request->product_name;
         $product->slug = Str::slug($request->product_name);
@@ -84,7 +87,7 @@ class ProductController extends Controller
         if ($request->hasFile('thumbnail_img')) {
             $product_thumbnail = $request->file('thumbnail_img');
             $extension = Str::slug($request->product_name) . '-' . Str::random(1) . '.' . $product_thumbnail->getClientOriginalExtension();
-            Image::make($product_thumbnail)->save(public_path('thumbnail_img/' . $extension), 80);
+            Image::make($product_thumbnail)->save(public_path('thumbnail_img/' . $extension), 90);
         }
         $product->thumbnail_img = $extension;
         $product->save();
@@ -123,7 +126,14 @@ class ProductController extends Controller
             $attribute->size_id = $request->size_id[$key];
             $attribute->quantity = $request->quantity[$key];
             $attribute->regular_price = $request->regular_price[$key];
-            $attribute->sell_price = $request->selling_price[$key];
+            if ($request->discount[$key] != '') {
+                $regular_price = $request->regular_price[$key];
+                $discount_amount = ($request->regular_price[$key] * $request->discount[$key]) / 100;
+                $sell_price = $request->regular_price[$key] - $discount_amount;
+
+                $attribute->sell_price = $sell_price;
+                $attribute->discount = $request->discount[$key];
+            }
             $attribute->save();
         }
 
@@ -185,11 +195,14 @@ class ProductController extends Controller
             'product_img_new.*' => ['mimes:png,jpeg,jpg'],
             'product_summary' => ['required'],
             'product_description' => ['required'],
+            'discount.*' => ['nullable', 'integer', 'min:1', 'max:99'],
             // 'quantity[]' => ['required'],
             // 'regular_price[]' => ['required'],
         ], [
             'product_img_new.*.mimes' => 'Product Image must be png,jpg,jpeg formate',
             'product_img.*.mimes' => 'Product Image must be png,jpg,jpeg formate',
+            'discount.*.min' => 'Minimum 1',
+            'discount.*.max' => 'Maximum 99',
             // 'regular_price[].required' => 'Regular Price is required'
         ]);
         // return $request;
@@ -284,7 +297,14 @@ class ProductController extends Controller
                 $attribute->size_id = $request->size_id[$key];
                 $attribute->quantity = $request->quantity[$key];
                 $attribute->regular_price = $request->regular_price[$key];
-                $attribute->sell_price = $request->selling_price[$key];
+                if ($request->discount[$key] != '') {
+                    $regular_price = $request->regular_price[$key];
+                    $discount_amount = ($request->regular_price[$key] * $request->discount[$key]) / 100;
+                    $sell_price = $request->regular_price[$key] - $discount_amount;
+
+                    $attribute->sell_price = $sell_price;
+                    $attribute->discount = $request->discount[$key];
+                }
                 $attribute->save();
             } else {
                 $attribute = new Attribute;
@@ -293,7 +313,14 @@ class ProductController extends Controller
                 $attribute->size_id = $request->size_id[$key];
                 $attribute->quantity = $request->quantity[$key];
                 $attribute->regular_price = $request->regular_price[$key];
-                $attribute->sell_price = $request->selling_price[$key];
+                if ($request->discount[$key] != '') {
+                    $regular_price = $request->regular_price[$key];
+                    $discount_amount = ($request->regular_price[$key] * $request->discount[$key]) / 100;
+                    $sell_price = $request->regular_price[$key] - $discount_amount;
+
+                    $attribute->sell_price = $sell_price;
+                    $attribute->discount = $request->discount[$key];
+                }
                 $attribute->save();
             }
         }
@@ -419,20 +446,20 @@ class ProductController extends Controller
             return back()->with('success', 'Product Active Successfully');
         }
     }
-    public function Best_seller($id)
-    {
-        $product = Product::findorfail($id);
-        if ($product->best_seller == 1) {
-            $product->best_seller = 0;
-            $product->save();
-            
-            return back()->with('warning', 'Product remove from Best Seller Successfully');
-        } else {
-            $product->best_seller = 1;
-            $product->save();
-            // return $product;
+    // public function Best_seller($id)
+    // {
+    //     $product = Product::findorfail($id);
+    //     if ($product->best_seller == 1) {
+    //         $product->best_seller = 0;
+    //         $product->save();
 
-            return back()->with('success', 'Product Added to Best Seller Successfully');
-        }
-    }
+    //         return back()->with('warning', 'Product remove from Best Seller Successfully');
+    //     } else {
+    //         $product->best_seller = 1;
+    //         $product->save();
+    //         // return $product;
+
+    //         return back()->with('success', 'Product Added to Best Seller Successfully');
+    //     }
+    // }
 }

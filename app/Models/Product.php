@@ -9,6 +9,9 @@ use \Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 class Product extends Model
 {
     use HasFactory,HasEagerLimit;
+    protected $casts = [
+        'most_view' => 'integer',
+    ];
     function Catagory()
     {
         return $this->belongsTo(Catagory::class, 'catagory_id');

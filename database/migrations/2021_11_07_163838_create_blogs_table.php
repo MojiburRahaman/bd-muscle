@@ -17,6 +17,7 @@ class CreateBlogsTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug');
+            $table->string('add_to_goal')->nullable()->comment('1=active,null=inactive');
             $table->string('blog_image');
             $table->string('blog_thumbnail');
             $table->text('meta_description');

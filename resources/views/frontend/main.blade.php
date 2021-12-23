@@ -8,7 +8,7 @@ BD Muscle - Home
     <div class="swiper-container">
         <div class="swiper-wrapper">
             <div class="swiper-slide overlay">
-                <div class="single-slider slide-inner slide-inner1">
+                <div class="single-slider slide-inner ">
                     <div class="container">
                         <div class="row">
                             {{-- <div class="col-lg-12 col-lg-9 col-12">
@@ -21,13 +21,64 @@ BD Muscle - Home
                                     </div>
                                 </div>
                             </div> --}}
-                            <div class="col-xl-8 col-lg-9 col-6">
+                            <div class=" col-lg-6 col-6 ">
+                                <div class="mt-lg-5 pt-lg-5">
+
+                                    <div class="slider-content slider-content3">
+                                        <h2>Amazing Pure Nature Hohey</h2>
+                                        {{-- <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin</p> --}}
+                                        <a href="shop.html" data-swiper-parallax="-300"
+                                            style="transition-duration: 1000ms; transform: translate3d(0px, 0px, 0px);">Shop
+                                            Now</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=" col-lg-6 col-6">
+                                <div class="slider-content slider-content3">
+                                <img src="{{asset('thumbnail_img/asylum-cabinet-beta-alanine-0.png')}}" alt="">
+                                    {{-- <h2>Amazing Pure Nature Hohey</h2> --}}
+                                    {{-- <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin</p> --}}
+                                    {{-- <a href="shop.html" data-swiper-parallax="-300"
+                                        style="transition-duration: 1000ms; transform: translate3d(0px, 0px, 0px);">Shop
+                                        Now</a> --}}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-slide overlay">
+                <div class="single-slider slide-inner ">
+                    <div class="container">
+                        <div class="row">
+                            {{-- <div class="col-lg-12 col-lg-9 col-12">
+                                <div class="slider-content">
+                                    <div class="slider-shape">
+                                        <h2 data-swiper-parallax="-500">Amazing Pure Nature Hohey</h2>
+                                        <p data-swiper-parallax="-400">Contrary to popular belief, Lorem Ipsum is not
+                                            simply random text. It has roots in a piece of classical Latin</p>
+                                        <a href="shop.html" data-swiper-parallax="-300">Shop Now</a>
+                                    </div>
+                                </div>
+                            </div> --}}
+                            <div class=" col-lg-6 col-6">
                                 <div class="slider-content slider-content3">
                                     <h2>Amazing Pure Nature Hohey</h2>
                                     {{-- <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin</p> --}}
                                     <a href="shop.html" data-swiper-parallax="-300"
                                         style="transition-duration: 1000ms; transform: translate3d(0px, 0px, 0px);">Shop
                                         Now</a>
+                                </div>
+                            </div>
+                            <div class=" col-lg-6 col-6">
+                                <div class="slider-content slider-content3">
+                                <img src="{{asset('thumbnail_img/bpi-sports-best-bcaa-o.jpg')}}" alt="">
+                                    {{-- <h2>Amazing Pure Nature Hohey</h2> --}}
+                                    {{-- <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin</p> --}}
+                                    {{-- <a href="shop.html" data-swiper-parallax="-300"
+                                        style="transition-duration: 1000ms; transform: translate3d(0px, 0px, 0px);">Shop
+                                        Now</a> --}}
                                 </div>
                             </div>
 
@@ -53,7 +104,7 @@ BD Muscle - Home
                     </div>
                 </div>
             </div>
-            <div class="swiper-slide">
+            {{-- <div class="swiper-slide">
                 <div class="slide-inner slide-inner8">
                     <div class="container">
                         <div class="row">
@@ -70,7 +121,7 @@ BD Muscle - Home
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
         <div class="swiper-pagination"></div>
     </div>
@@ -82,21 +133,21 @@ BD Muscle - Home
         <div class="row">
             <div class="col-12">
                 <div class="featured-active2 owl-carousel next-prev-style">
-            @foreach ($latest_product->take(6) as $Product)
-            <div class="featured-wrap">
-                <div class="featured-img">
-                    <img src="{{asset('thumbnail_img/'.$Product->thumbnail_img)}}" alt="">
-                    <div class="featured-content">
-                        <a style="padding: 12px 15px"
-                            href="{{route('CategorySearch',$Product->Catagory->slug)}}">{{$Product->Catagory->catagory_name}}</a>
+                    @foreach ($latest_product->take(6) as $Product)
+                    <div class="featured-wrap">
+                        <div class="featured-img">
+                            <img src="{{asset('thumbnail_img/'.$Product->thumbnail_img)}}" alt="">
+                            <div class="featured-content">
+                                <a style="padding: 12px 15px"
+                                    href="{{route('CategorySearch',$Product->Catagory->slug)}}">{{$Product->Catagory->catagory_name}}</a>
+                            </div>
+                        </div>
                     </div>
+                    @endforeach
                 </div>
             </div>
-            @endforeach
         </div>
     </div>
-</div>
-</div>
 </div>
 <!-- featured-area end -->
 <!-- start count-down-section -->
@@ -127,7 +178,7 @@ BD Muscle - Home
         <div class="row">
             <div class="col-12">
                 <div class="section-title">
-                    <h2>Best Seller</h2>
+                    <h2>Most View</h2>
                     <img src="assets/images/section-title.png" alt="">
                 </div>
             </div>
@@ -137,7 +188,10 @@ BD Muscle - Home
             <li class="col-xl-3 col-lg-4 col-sm-6 col-12">
                 <div class="product-wrap">
                     <div class="product-img">
-                        {{-- <span style="z-index: 2">New</span> --}}
+                        @if (collect($product->Attribute)->min('discount') != '')
+
+                        <span style=" z-index: 2">{{collect($product->Attribute)->min('discount')}}%</span>
+                        @endif
                         <img src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}" alt="{{ $product->title }}">
                         <div class="product-icon flex-style">
                             <ul>
@@ -237,94 +291,94 @@ BD Muscle - Home
                 </div>
             </div>
             @empty
-                No Product
+            No Product
             @endforelse
             {{-- <li class="col-xl-3 col-lg-4 col-sm-6 col-12">
                 <div class="product-wrap">
                     <div class="product-img">
                         <img src="{{asset('front/images/product/2.jpg')}}" alt="">
-                        <div class="product-icon flex-style">
-                            <ul>
-                                <li><a data-toggle="modal" data-target="#exampleModalCenter"
-                                        href="javascript:void(0);"><i class="fa fa-eye"></i></a></li>
-                                <li><a href="wishlist.html"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="cart.html"><i class="fa fa-shopping-bag"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="product-content">
-                        <h3><a href="single-product.html">Olive Oil</a></h3>
-                        <p class="pull-left">$125
+            <div class="product-icon flex-style">
+                <ul>
+                    <li><a data-toggle="modal" data-target="#exampleModalCenter" href="javascript:void(0);"><i
+                                class="fa fa-eye"></i></a></li>
+                    <li><a href="wishlist.html"><i class="fa fa-heart"></i></a></li>
+                    <li><a href="cart.html"><i class="fa fa-shopping-bag"></i></a></li>
+                </ul>
+            </div>
+    </div>
+    <div class="product-content">
+        <h3><a href="single-product.html">Olive Oil</a></h3>
+        <p class="pull-left">$125
 
-                        </p>
-                        <ul class="pull-right d-flex">
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star-half-o"></i></li>
-                        </ul>
-                    </div>
-                </div>
-            </li>
-            <li class="col-xl-3 col-lg-4 col-sm-6 col-12">
-                <div class="product-wrap">
-                    <div class="product-img">
-                        <img src="{{asset('front/images/product/3.jpg')}}" alt="">
-                        <div class="product-icon flex-style">
-                            <ul>
-                                <li><a data-toggle="modal" data-target="#exampleModalCenter"
-                                        href="javascript:void(0);"><i class="fa fa-eye"></i></a></li>
-                                <li><a href="wishlist.html"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="cart.html"><i class="fa fa-shopping-bag"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="product-content">
-                        <h3><a href="single-product.html">Olive Oil</a></h3>
-                        <p class="pull-left">$125
-
-                        </p>
-                        <ul class="pull-right d-flex">
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star-half-o"></i></li>
-                        </ul>
-                    </div>
-                </div>
-            </li>
-            <li class="col-xl-3 col-lg-4 col-sm-6 col-12">
-                <div class="product-wrap">
-                    <div class="product-img">
-                        <img src="{{asset('front/images/product/4.jpg')}}" alt="">
-                        <div class="product-icon flex-style">
-                            <ul>
-                                <li><a data-toggle="modal" data-target="#exampleModalCenter"
-                                        href="javascript:void(0);"><i class="fa fa-eye"></i></a></li>
-                                <li><a href="wishlist.html"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="cart.html"><i class="fa fa-shopping-bag"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="product-content">
-                        <h3><a href="single-product.html">Coconut Oil</a></h3>
-                        <p class="pull-left">$125
-
-                        </p>
-                        <ul class="pull-right d-flex">
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star-half-o"></i></li>
-                        </ul>
-                    </div>
-                </div>
-            </li> --}}
+        </p>
+        <ul class="pull-right d-flex">
+            <li><i class="fa fa-star"></i></li>
+            <li><i class="fa fa-star"></i></li>
+            <li><i class="fa fa-star"></i></li>
+            <li><i class="fa fa-star"></i></li>
+            <li><i class="fa fa-star-half-o"></i></li>
         </ul>
     </div>
+</div>
+</li>
+<li class="col-xl-3 col-lg-4 col-sm-6 col-12">
+    <div class="product-wrap">
+        <div class="product-img">
+            <img src="{{asset('front/images/product/3.jpg')}}" alt="">
+            <div class="product-icon flex-style">
+                <ul>
+                    <li><a data-toggle="modal" data-target="#exampleModalCenter" href="javascript:void(0);"><i
+                                class="fa fa-eye"></i></a></li>
+                    <li><a href="wishlist.html"><i class="fa fa-heart"></i></a></li>
+                    <li><a href="cart.html"><i class="fa fa-shopping-bag"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="product-content">
+            <h3><a href="single-product.html">Olive Oil</a></h3>
+            <p class="pull-left">$125
+
+            </p>
+            <ul class="pull-right d-flex">
+                <li><i class="fa fa-star"></i></li>
+                <li><i class="fa fa-star"></i></li>
+                <li><i class="fa fa-star"></i></li>
+                <li><i class="fa fa-star"></i></li>
+                <li><i class="fa fa-star-half-o"></i></li>
+            </ul>
+        </div>
+    </div>
+</li>
+<li class="col-xl-3 col-lg-4 col-sm-6 col-12">
+    <div class="product-wrap">
+        <div class="product-img">
+            <img src="{{asset('front/images/product/4.jpg')}}" alt="">
+            <div class="product-icon flex-style">
+                <ul>
+                    <li><a data-toggle="modal" data-target="#exampleModalCenter" href="javascript:void(0);"><i
+                                class="fa fa-eye"></i></a></li>
+                    <li><a href="wishlist.html"><i class="fa fa-heart"></i></a></li>
+                    <li><a href="cart.html"><i class="fa fa-shopping-bag"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="product-content">
+            <h3><a href="single-product.html">Coconut Oil</a></h3>
+            <p class="pull-left">$125
+
+            </p>
+            <ul class="pull-right d-flex">
+                <li><i class="fa fa-star"></i></li>
+                <li><i class="fa fa-star"></i></li>
+                <li><i class="fa fa-star"></i></li>
+                <li><i class="fa fa-star"></i></li>
+                <li><i class="fa fa-star-half-o"></i></li>
+            </ul>
+        </div>
+    </div>
+</li> --}}
+</ul>
+</div>
 </div>
 <!-- product-area end -->
 <!-- product-area start -->
@@ -343,8 +397,12 @@ BD Muscle - Home
             <li class="col-xl-3 col-lg-4 col-sm-6 col-12">
                 <div class="product-wrap">
                     <div class="product-img">
+                        @if (collect($product->Attribute)->min('discount') != '')
+                        <span class="mt-5" style=" z-index: 2">{{collect($product->Attribute)->min('discount')}}%</span>
+                        @endif
                         <span style="z-index: 2">New</span>
-                        <img src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}" alt="{{ $product->title }}">
+                        <img lazy="loading" src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}"
+                            alt="{{ $product->title }}">
                         <div class="product-icon flex-style">
                             <ul>
                                 <li><a data-toggle="modal" data-target="#exampleModalCenter{{ $product->id }}"
@@ -513,7 +571,7 @@ BD Muscle - Home
         <div class="row">
             <div class="col-md-12">
                 <div class="section-title text-center mb-30px0px">
-                    <h2 class="title">#blog</h2>
+                    <h2 class="title">Whats your Goal?</h2>
                     {{-- <p class="sub-title">Lorem ipsum dolor sit amet consectetur adipisicing eiusmod. --}}
                     </p>
                 </div>
@@ -556,6 +614,79 @@ BD Muscle - Home
         </div>
     </div>
 </section>
+
+<style>
+    .secure-box {
+        background-color: white;
+        text-align: center;
+        -webkit-box-shadow: 3px -4px 14px -4px rgba(0, 0, 0, 0.53);
+        box-shadow: 3px -4px 14px -4px rgba(0, 0, 0, 0.53);
+        /* padding-bottom:20px;      */
+        height: 210px;
+    }
+
+    .secure-box i {
+        font-size: 60px;
+        padding: 15px 10px;
+    }
+
+    .secure-box:hover {
+        transform: scale(1.1);
+        transition: all .3s ease 0s;
+    }
+
+    .secure-box h3 {
+        font-size: 20px;
+        line-height: 24px;
+        margin-bottom: 10px;
+        font-weight: 700;
+        text-align: center;
+        text-transform: none;
+        color: #333;
+        margin-top: 0;
+    }
+
+    .secure-box p {
+        font-size: 16px;
+        /* display: block; */
+        text-align: center;
+        color: #666;
+        font-weight: 400;
+    }
+
+</style>
+<section id="security" class="container">
+    <div class="row ptb-50">
+        <div class="col-lg-4 col-12 mb-5  ">
+            <div class="secure-box">
+
+                <i class="fa fa-unlock"></i>
+                <h4>
+                    MONEY BACK GUARANTEE</h4>
+                <p>Return Within 7 Day..</p>
+            </div>
+        </div>
+        <div class="col-lg-4 col-12 mb-5  ">
+            <div class="secure-box">
+
+                <i class="fa fa-lock"></i>
+                <h4>100% Authentic Products</h4>
+                <p>We only deal with original products.</p>
+            </div>
+        </div>
+        <div class="col-lg-4  col-12 mb-5 ">
+            <div class="secure-box">
+
+                <i class="fa fa-truck"></i>
+                <h4>Fast Delivery <Service></Service></h4>
+                <p>Fast delivery, competitive prices and excellent services.</p>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+
 <!-- testmonial-area end -->
 <!-- Modal area start -->
 

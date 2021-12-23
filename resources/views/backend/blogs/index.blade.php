@@ -26,73 +26,81 @@ active
     <!-- /.content-header -->
 
     <!-- Main content -->
-   <!-- Main content -->
-   <section class="content">
-    <div class="container-fluid">
-        <div class="col-12">
-            <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
-                    <thead>
-                        <tr>
-                            <th>SL</th>
-                            <th>Title</th>
-                            <th>thumbnail</th>
-                            <th>Created At</th>
-                            {{-- @if (auth()->user()->can('Delete Color') || auth()->user()->can('Edit Color')) --}}
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="col-12">
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-hover text-nowrap">
+                        <thead>
+                            <tr>
+                                <th>SL</th>
+                                <th>Title</th>
+                                <th>Add To Goal</th>
+                                <th>Created At</th>
+                                {{-- @if (auth()->user()->can('Delete Color') || auth()->user()->can('Edit Color')) --}}
 
-                            <th>Action</th>
-                            {{-- @endif --}}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($blogs as $blog)
-
-                        <tr>
-                            <td>
-                                {{$loop->index+1}}
-                            </td>
-                            <td>{{$blog->title}}</td>
-                            <td>
-                                <img width="80px" src="{{asset('blog/thumbnail/'.$blog->blog_thumbnail)}}" alt="">
-                            </td>
-                            <td>{{$blog->created_at->diffForHumans()}}</td>
-                            {{-- @if (auth()->user()->can('Delete Color') || auth()->user()->can('Edit Color')) --}}
-                            <form action="{{route('blogs.destroy',$blog->id)}}" method="post">
+                                <th>Action</th>
+                                {{-- @endif --}}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($blogs as $blog)
+                            <tr>
                                 <td>
-                                    {{-- @can('Edit Color') --}}
+                                    {{$loop->index+1}}
+                                </td>
+                                <td>
+                                    <a title="View Blog" style="color: black"
+                                        href="{{route('FrontenblogView',$blog->slug)}}">{{$blog->title}}</a>
+                                </td>
+                                <td>
+                                    @if ($blog->add_to_goal != '')
+                                    
+                                    <a href="{{route('blogs.show',$blog->id)}}" class="btn-sm btn-success">Active</a>
+                                    @else
+                                    <a href="{{route('blogs.show',$blog->id)}}" class="btn-sm btn-warning">Inactive</a>
+                                        
+                                    @endif
+                                </td>
+                                <td>{{$blog->created_at->diffForHumans()}}</td>
+                                {{-- @if (auth()->user()->can('Delete Color') || auth()->user()->can('Edit Color')) --}}
+                                <form action="{{route('blogs.destroy',$blog->id)}}" method="post">
+                                    <td>
+                                        {{-- @can('Edit Color') --}}
 
-                                    <a style="padding: 7px 8px" href="{{route('blogs.edit',$blog->id)}}"
-                                        class="btn-sm btn-primary">Edit</a>
-                                    {{-- @endcan --}}
-                                    @csrf
-                                    {{-- @can('Delete Color') --}}
-                                    @method('delete')
-                                    <button class="btn-sm btn-danger" type="submit">Delete</button>
+                                        <a style="padding: 7px 8px" href="{{route('blogs.edit',$blog->id)}}"
+                                            class="btn-sm btn-primary">Edit</a>
+                                        {{-- @endcan --}}
+                                        @csrf
+                                        {{-- @can('Delete Color') --}}
+                                        @method('delete')
+                                        <button class="btn-sm btn-danger" type="submit">Delete</button>
 
-                                    {{-- @endcan --}}
-                            </form>
-                            </td>
-                            {{-- @endif  --}}
-                        </tr>
-                        @empty
-                        <td class="text-center" colspan="10">No Data Available</td>
-                        @endforelse
-                    </tbody>
-                </table>
+                                        {{-- @endcan --}}
+                                </form>
+                                </td>
+                                {{-- @endif  --}}
+                            </tr>
+                            @empty
+                            <td class="text-center" colspan="10">No Data Available</td>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-4">
+                    {{$blogs->links()}}
+                </div>
+                <!-- /.card -->
             </div>
-            <div class="mt-4">
-                {{$blogs->links()}}
-            </div>
-            <!-- /.card -->
         </div>
-    </div>
-</section>
+    </section>
 </div>
 @endsection
 @section('script_js')
 
 <script>
-     @if (session('delete')) 
+    @if (session('delete')) 
 Command: toastr["error"]("{{session('delete')}}")
 
 toastr.options = {

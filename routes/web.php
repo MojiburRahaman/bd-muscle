@@ -108,7 +108,7 @@ use App\Http\Controllers\OrderController;
 
         // product route
 
-        Route::get('/products/best_seller/{id}', [ProductController::class, 'Best_seller'])->name('Best_seller');
+        // Route::get('/products/best_seller/{id}', [ProductController::class, 'Best_seller'])->name('Best_seller');
         Route::get('/products/status/{id}', [ProductController::class, 'ProductStaus'])->name('ProductStaus');
         Route::post('/products/mark-delete/', [ProductController::class, 'MarkdeleteProduct'])->name('MarkdeleteProduct');
         Route::get('/products/edit/product-attribute-delete/{id}', [ProductController::class, 'ProducvtAtributeDelete'])->name('ProducvtAtributeDelete');

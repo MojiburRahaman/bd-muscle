@@ -84,7 +84,18 @@ class BlogController extends Controller
      */
     public function show($id)
     {
-        //
+        // return $id;
+        $blog = Blog::findorfail($id);
+        if ($blog->add_to_goal == '') {
+            $blog->add_to_goal = 1;
+            $blog->save();
+            return back();
+        } else {
+            $blog->add_to_goal = '';
+            $blog->save();
+            return back();
+            # code...
+        }
     }
 
     /**
@@ -127,13 +138,13 @@ class BlogController extends Controller
         if ($request->hasFile('thumbnail')) {
             $blog_thumbnail = $request->file('thumbnail');
             $Blog_thumb_extension = Str::slug($request->title) . '-' . 'thumbnail' . '.' . $blog_thumbnail->getClientOriginalExtension();
-            Image::make($blog_thumbnail)->save(public_path('blogs/thumbnail/' . $Blog_thumb_extension),100);
+            Image::make($blog_thumbnail)->save(public_path('blogs/thumbnail/' . $Blog_thumb_extension), 100);
             $Blog->blog_thumbnail = $Blog_thumb_extension;
         }
         if ($request->hasFile('blog_image')) {
             $blog_image = $request->file('blog_image');
             $Blog_image_extension = Str::slug($request->title) . '-' . Str::random(3) . '.' . $blog_image->getClientOriginalExtension();
-            Image::make($blog_image)->save(public_path('blogs/blog_image/' . $Blog_image_extension),100);
+            Image::make($blog_image)->save(public_path('blogs/blog_image/' . $Blog_image_extension), 100);
             $Blog->blog_image = $Blog_image_extension;
         }
 

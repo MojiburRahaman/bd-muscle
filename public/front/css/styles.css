@@ -1172,8 +1172,15 @@ header-area start
     }
 
     .count-down-section #clock>div {
-        flex-basis: calc(100% * (1/2) - 15px);
+        flex-basis: calc(100% * (1/5) - 15px);
         margin-bottom: 30px;
+    }
+
+    .count-down-section #clock>div {
+        /* width: 18%;
+        float: left;
+        text-align: center; */
+        border: none;
     }
 }
 

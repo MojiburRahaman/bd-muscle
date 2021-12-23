@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\billing_details;
+use App\Models\Order_Summaries;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -12,7 +14,11 @@ class UserProfileController extends Controller
 
     function FrontendProfile()
     {
-        return view('frontend.Profile.customer-profile');
+        $orders = billing_details::where('user_id', auth()->id())
+            ->with('order_summaries')->latest('id')->get();
+        return view('frontend.Profile.customer-profile', [
+            'orders' => $orders,
+        ]);
     }
     function ChangeUserPass(Request $request)
     {

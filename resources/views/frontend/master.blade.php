@@ -5,6 +5,7 @@
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <title>@yield('title')</title>
+        <meta name="title" content="@yield('title')" />
         <meta name="description" content="@yield('meta_description')">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{csrf_token()}}">
@@ -244,18 +245,17 @@
                                             No Product In Your Cart
                                         </li>
                                         @endforelse
-                                </li>
-                                <li>
-                                    <a class="btn btn-regular"
-                                        onMouseOver="this.style.color='white',this.style.backgroundColor='#ef4836'"
-                                        onMouseOut="this.style.backgroundColor='#FFFFFF',this.style.color='#ef4836'"
-                                        style="background-color:white;color:#ef4836" href="{{route('CartView')}}">View
-                                        Cart</a>
-                                </li>
-                            </ul>
-                            {{-- ###########cart list############# --}}
 
-                            </li>
+                                        <li>
+                                            <a class="btn btn-regular"
+                                                onMouseOver="this.style.color='white',this.style.backgroundColor='#ef4836'"
+                                                onMouseOut="this.style.backgroundColor='#FFFFFF',this.style.color='#ef4836'"
+                                                style="background-color:white;color:#ef4836" href="{{route('CartView')}}">View
+                                                Cart</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                {{-- ###########cart list############# --}}
                             </ul>
                         </div>
                         <div class="col-md-1 col-sm-1 col-2 d-block d-lg-none">
@@ -316,19 +316,27 @@
         <!-- header-area end -->
         @yield('content')
         <!-- start social-newsletter-section -->
-        <section class="social-newsletter-section">
+        <section  class="social-newsletter-section" style="background-color: #ffdd2e;padding: 50px 0">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="newsletter text-center">
-                            <h3>Subscribe Newsletter</h3>
-                            <div class="newsletter-form">
-                                <form>
-                                    <input type="text" class="form-control" placeholder="Enter Your Email Address...">
-                                    <button type="submit"><i class="fa fa-send"></i></button>
-                                </form>
-                            </div>
+                <div class="row" >
+                    <div class="col-lg-6">
+                        <div class="newsletter text-left"  >
+                            <h3 style="color: black;margin-bottom:0">Subscribe Newsletter</h3>
+                            <p style="color: black">
+                                Receive the latest news, offers and deals going on at Sporter
+                            </p>
                         </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="newsletter-form">
+                            <form>
+                                <div class="input-group">
+                                    <input type="email" required style="padding: 10px 20px" type="text" class="form-control" placeholder="Enter Your Email Address...">
+                                    <button style="padding: 5px 15px;background-color:black;color:white" type="submit">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -345,9 +353,9 @@
                                 <div class="footer-top-text text-center">
                                     <ul>
                                         <li><a href="home.html">home</a></li>
-                                        <li><a href="#">our story</a></li>
-                                        <li><a href="#">feed shop</a></li>
-                                        <li><a href="blog.html">how to eat blog</a></li>
+                                        <li><a href="#">about us</a></li>
+                                        <li><a href="#">shop</a></li>
+                                        <li><a href="blog.html">blog</a></li>
                                         <li><a href="contact.html">contact</a></li>
                                     </ul>
                                 </div>

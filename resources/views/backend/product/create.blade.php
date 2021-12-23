@@ -199,8 +199,11 @@ menu-open
                                     @enderror
                                 </div>
                                 <div class="col-lg-2 col-4">
-                                    <label for="selling_price" class="font-weight-bold">Selling Price</label>
-                                    <input type="number" id="selling_price" class="form-control" name="selling_price[]">
+                                    <label for="selling_price" class="font-weight-bold">Discount(%)</label>
+                                    <input  type="number" id="discount" class="form-control  @error('discount.*') is-invalid  @enderror" name="discount[]">
+                                    @error('discount.*')
+                                    <span style="color: red">*{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>

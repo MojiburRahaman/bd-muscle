@@ -10,13 +10,14 @@ class ProductViewController extends Controller
 {
     function SingleProductView($slug)
     {
-        $Product = Product::with('Catagory.Product:id,title,slug,thumbnail_img,catagory_id', 'Catagory:id,catagory_name,slug', 'Gallery:product_id,product_img', 'Attribute.Color:color_name,id', 'Attribute.Size:id,size_name',)
+      $Product = Product::with('Catagory.Product:id,title,slug,thumbnail_img,catagory_id', 'Catagory:id,catagory_name,slug', 'Gallery:product_id,product_img', 'Attribute.Color:color_name,id', 'Attribute.Size:id,size_name',)
             ->withCount('Flavour')
             ->where('slug', $slug)
             ->where('status', 1)
-            ->select('id', 'brand_id', 'title', 'product_summary', 'product_description', 'slug', 'catagory_id')
+            ->select('id','most_view', 'brand_id', 'title', 'product_summary', 'product_description', 'slug', 'catagory_id')
             ->withCount('Flavour')
             ->first();
+            $Product->increment('most_view', 1);
         $color = $Product->Attribute->where('color_id', '!=', 1)->count();
         $size = $Product->Attribute->where('size_id', '!=', 1)->count();
         return view('frontend.pages.product-view', [

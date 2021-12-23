@@ -67,7 +67,7 @@
                         <div class="info-box-content">
                             <span class="info-box-text">Sales</span>
                             <span class="info-box-number">
-                                ৳ {{$order->where('delivery_status',2)->sum('subtotal')}}
+                                ৳ {{$order->where('delivery_status',3)->sum('subtotal')}}
                             </span>
                         </div>
                         <!-- /.info-box-content -->
@@ -104,7 +104,7 @@
             </div>
             <!-- /.row -->
 
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
@@ -241,11 +241,11 @@
                     <!-- /.card -->
                 </div>
                 <!-- /.col -->
-            </div>
+            </div> --}}
             <!-- /.row -->
 
             <!-- Main row -->
-            <div class="row">
+            {{-- <div class="row">
                 <!-- Left col -->
                 <div class="col-md-8">
                     <!-- MAP & BOX PANE -->
@@ -898,7 +898,7 @@
                     <!-- /.card -->
                 </div>
                 <!-- /.col -->
-            </div>
+            </div> --}}
             <!-- /.row -->
         </div>
         <!--/. container-fluid -->

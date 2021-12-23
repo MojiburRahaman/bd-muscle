@@ -28,7 +28,7 @@
         <div class="container-fluid">
             <div class="col-12">
                 <div class="card-body table-responsive p-0">
-                    <table class="table table-hover text-nowrap">
+                    <table class="table table-hover text-nowrap" id="order_table">
                         <thead>
                             <tr>
                                 <th>SL</th>
@@ -47,8 +47,10 @@
                                 <td>
                                     @if ($order->delivery_status == 1)
                                     <a href="" class="btn-sm btn-danger">pending</a>
+                                    @elseif ($order->delivery_status == 2)
+                                    <a href="" class="btn-sm btn-warning">On The way</a>
                                     @else
-                                    <a href="" class="btn-sm btn-success">Paid</a>
+                                    <a class="btn-sm btn-success">Deliverd</a>
 
                                     @endif
                                 </td>
@@ -61,8 +63,6 @@
                             @endforelse
                         </tbody>
                     </table>
-                </div>
-                <div class="mt-4">
                 </div>
                 <!-- /.card -->
             </div>
@@ -136,5 +136,9 @@ toastr.options = {
 }
 @endif
 
+
+$(document).ready( function () {
+    $('#order_table').DataTable();
+} );
 </script>
 @endsection

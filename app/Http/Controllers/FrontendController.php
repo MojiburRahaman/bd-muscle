@@ -29,9 +29,10 @@ class FrontendController extends Controller
         }
 
         if ($search == '') {
-            $best_seller = Product::with('Catagory:id,slug,catagory_name', 'Attribute')->where('best_seller', 1)
-                ->where('status', 1)->latest('id')
-                ->select('id', 'slug', 'catagory_id', 'thumbnail_img', 'product_summary', 'title')
+            // ->orderBy('most_view','DESC') latest('most_view')
+            $best_seller = Product::with('Catagory:id,slug,catagory_name', 'Attribute')->where('most_view','!=', 0)
+                ->where('status', 1)->orderBy('most_view','DESC')
+                ->select('id','most_view', 'slug', 'catagory_id', 'thumbnail_img', 'product_summary', 'title')
                 ->take(4)
                 ->get();
             $product = Product::with('Catagory', 'Attribute')
@@ -39,7 +40,8 @@ class FrontendController extends Controller
                 ->select('id', 'slug', 'catagory_id', 'thumbnail_img', 'product_summary', 'title')
                 ->get();
             $blogs = Blog::latest('id')
-                ->select('id', 'title', 'slug', 'blog_thumbnail', 'created_at')->take(3)->get();
+                ->select('id', 'title', 'add_to_goal', 'slug', 'blog_thumbnail', 'created_at')
+                ->where('add_to_goal',1)->take(3)->get();
 
             return view('frontend.main', [
                 'latest_product' => $product,

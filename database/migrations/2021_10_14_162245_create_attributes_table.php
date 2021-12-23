@@ -21,6 +21,7 @@ class CreateAttributesTable extends Migration
             $table->foreignId('brand_id')->nullable();
             $table->string('quantity');
             $table->string('regular_price');
+            $table->string('discount')->nullable();
             $table->string('sell_price')->nullable();
             $table->timestamps();
         });

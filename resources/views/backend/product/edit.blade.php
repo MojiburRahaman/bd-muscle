@@ -254,10 +254,12 @@ menu-open
                                     <span style="color: red">*{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-lg-2 col-6">
-                                    <label for="selling_price" class="font-weight-bold">Selling Price</label>
-                                    <input value="{{$Attribute->sell_price}}" type="number" id="selling_price"
-                                        class="form-control" name="selling_price[]">
+                                <div class="col-lg-2 col-4">
+                                    <label for="selling_price" class="font-weight-bold">Discount(%)</label>
+                                    <input value="{{$Attribute->discount}}"  type="number" id="discount" class="form-control  @error('discount.*') is-invalid  @enderror" name="discount[]">
+                                    @error('discount.*')
+                                    <span style="color: red">*{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="col-lg-1 pl-4 col-6 delete_btn" style="padding-top: 38px" id="test">
                                     <a href="{{route('ProducvtAtributeDelete',$Attribute->id)}}" class="btn-sm btn-danger" ">Delete</a>
