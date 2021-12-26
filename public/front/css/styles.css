@@ -247,6 +247,16 @@ a#scrollUp {
     color: #fff;
 }
 
+.discount_tag {
+    padding: 3px 18px;
+    color: #fff;
+    background: #ef4836;
+    line-height: 25px;
+    text-align: center;
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+}
+
 a#scrollUp:hover {
     background: #333;
 }

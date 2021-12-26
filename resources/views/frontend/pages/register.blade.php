@@ -1,7 +1,4 @@
 @extends('frontend.master')
-@section('title')
-Login - {{config('app.name')}} 
-@endsection
 @section('content')
 <!-- .breadcumb-area start -->
 <div class="breadcumb-area bg-img-4 ptb-100">
@@ -12,7 +9,7 @@ Login - {{config('app.name')}}
                     <h2>Account</h2>
                     <ul>
                         <li><a href="index.html">Home</a></li>
-                        <li><span>Login</span></li>
+                        <li><span>Register</span></li>
                     </ul>
                 </div>
             </div>
@@ -27,56 +24,58 @@ Login - {{config('app.name')}}
             <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-12">
                 <!-- Session Status -->
                 <x-auth-session-status class="mb-4" :status="session('status')" />
-
+                {{-- <x-auth-validation-errors class="mb-4" :errors="$errors" /> --}}
                 <!-- Validation Errors -->
                 @if ($errors->any())
                 <div class="alert alert-danger">
                     @foreach ($errors->all() as $item)
-                    {{$item}}
+                    <span> {{$item}}</span> <br>
                     @endforeach
                 </div>
                 @endif
                 @if (session('warning'))
                 <div class="alert alert-danger">{{session('warning')}}</div>
-
                 @endif
                 <div class="account-form form-style">
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('register') }}">
                         @csrf
+                        <div class="form-group mb-0">
+                            <x-label for="name" :value="__('Name')" />
+
+                            <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')"
+                                required autofocus />
+                        </div>
                         <div class="form-group mb-0">
 
                             <x-label for="email" :value="__('Email')" />
 
                             <x-input id="email" class="block mt-1 w-full" type="email" name="email"
-                                :value="old('email')" required autofocus />
+                                :value="old('email')" required />
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-0">
                             <x-label for="password" :value="__('Password')" />
 
                             <x-input id="password" class="block mt-1 w-full" type="password" name="password" required
-                                autocomplete="current-password" />
+                                autocomplete="new-password" />
+                        </div>
+                        <div class="form-group mb-0">
+                            <x-label for="password_confirmation" :value="__('Confirm Password')" />
+
+                            <x-input id="password_confirmation" class="block mt-1 w-full" type="password"
+                                name="password_confirmation" required />
                         </div>
 
                         <div class="row">
-                            <div class="col-lg-6">
-                                <input id="remember_me" type="checkbox"
-                                    class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    name="remember">
-                                <span for="remember_me" class=" text-sm text-gray-600">{{ __('Remember me') }}</span>
-                            </div>
-                            <div class="col-lg-6 text-right">
-                                <a href="{{ route('password.request') }}">Forget Your Password?</a>
-                            </div>
                         </div>
-                        <button type="submit">SIGN IN</button>
+                        <button type="submit">Register</button>
                     </form>
                     <div class="text-center">
-                        <div class="col-lg-12 col-12">
+                        <div>
 
-                            <a style="width: 100%" class="btn btn-danger mb-4 ptb-2"
-                                href="{{route('GoogleLogin')}}">Login with Gmail</a>
+                            <a style="padding: 10px 190px" class="btn btn-danger mb-4"
+                                href="{{route('GoogleRegister')}}">Register with Gmail</a>
                         </div>
-                        <a href="{{route('register')}}">Or Creat an Account</a>
+                        <a href="register.html">Or Creat an Account</a>
                     </div>
                 </div>
             </div>

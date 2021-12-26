@@ -319,7 +319,7 @@
         <section  class="social-newsletter-section" style="background-color: #ffdd2e;padding: 50px 0">
             <div class="container">
                 <div class="row" >
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 mb-2">
                         <div class="newsletter text-left"  >
                             <h3 style="color: black;margin-bottom:0">Subscribe Newsletter</h3>
                             <p style="color: black">

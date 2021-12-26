@@ -19,9 +19,10 @@
     use App\Http\Controllers\BlogController;
     use App\Http\Controllers\UserProfileController;
     use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\OrderController;
-
-/*
+    use App\Http\Controllers\OrderController;
+    use App\Http\Controllers\SocialLoginController;
+    use Illuminate\Support\Facades\Auth;
+    /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
@@ -31,7 +32,16 @@ use App\Http\Controllers\OrderController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+    // socialite
 
+    Route::get('login/google', [SocialLoginController::class, 'GoogleLogin'])->name('GoogleLogin');
+    Route::get('register/google', [SocialLoginController::class, 'GoogleRegister'])->name('GoogleRegister');
+    Route::get('login/callback', [SocialLoginController::class, 'GoogleCallbackUrlRegister'])->name('GoogleCallbackUrlRegister');
+
+
+    Auth::routes(['verify' => true]);
+
+    // socialite
     // Route::get('/', function () {
     //     return view('welcome');
     // });
@@ -68,7 +78,7 @@ use App\Http\Controllers\OrderController;
     Route::post('/cartpost', [CartController::class, 'CartPost'])->name('CartPost');
 
     // cart route end
-    Route::middleware(['auth', 'checkcoustomer'])->group(function () {
+    Route::middleware(['auth','verified', 'checkcoustomer'])->group(function () {
         // Profile route
         Route::get('/profile', [UserProfileController::class, 'FrontendProfile'])->name('FrontendProfile');
         Route::post('/change-password', [UserProfileController::class, 'ChangeUserPass'])->name('ChangeUserPass');
@@ -127,7 +137,7 @@ use App\Http\Controllers\OrderController;
         Route::post('/roles/assign-user-post', [RoleController::class, 'AssignUserPost'])->name('AssignUserPost');
         Route::get('/roles/assign-user', [RoleController::class, 'AssignUser'])->name('AssignUser');
         Route::resource('/roles', RoleController::class);
-// order route
+        // order route
         Route::resource('/orders', OrderController::class);
         // coupon route
         Route::resource('/coupons', CouponController::class);
@@ -159,3 +169,7 @@ use App\Http\Controllers\OrderController;
     // backend route start
 
     require __DIR__ . '/auth.php';
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

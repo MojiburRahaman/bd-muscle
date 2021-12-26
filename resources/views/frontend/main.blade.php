@@ -8,7 +8,7 @@ BD Muscle - Home
     <div class="swiper-container">
         <div class="swiper-wrapper">
             <div class="swiper-slide overlay">
-                <div class="single-slider slide-inner ">
+                <div style="border-bottom: 1px solid red" class="single-slider slide-inner ">
                     <div class="container">
                         <div class="row">
                             {{-- <div class="col-lg-12 col-lg-9 col-12">
@@ -35,7 +35,7 @@ BD Muscle - Home
                             </div>
                             <div class=" col-lg-6 col-6">
                                 <div class="slider-content slider-content3">
-                                <img src="{{asset('thumbnail_img/asylum-cabinet-beta-alanine-0.png')}}" alt="">
+                                    <img src="{{asset('thumbnail_img/asylum-cabinet-beta-alanine-0.png')}}" alt="">
                                     {{-- <h2>Amazing Pure Nature Hohey</h2> --}}
                                     {{-- <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin</p> --}}
                                     {{-- <a href="shop.html" data-swiper-parallax="-300"
@@ -49,31 +49,25 @@ BD Muscle - Home
                 </div>
             </div>
             <div class="swiper-slide overlay">
-                <div class="single-slider slide-inner ">
+                <div style="border-bottom: 1px solid red" class="single-slider slide-inner ">
                     <div class="container">
                         <div class="row">
-                            {{-- <div class="col-lg-12 col-lg-9 col-12">
-                                <div class="slider-content">
-                                    <div class="slider-shape">
-                                        <h2 data-swiper-parallax="-500">Amazing Pure Nature Hohey</h2>
-                                        <p data-swiper-parallax="-400">Contrary to popular belief, Lorem Ipsum is not
-                                            simply random text. It has roots in a piece of classical Latin</p>
-                                        <a href="shop.html" data-swiper-parallax="-300">Shop Now</a>
+                            <div class=" col-lg-6 col-7 col-sm-6">
+                                <div class="mt-lg-5 pt-lg-5">
+                                    <div class="slider-content slider-content3">
+                                        <h2 class="text-left">Amazing Pure Nature Hohey</h2>
+                                        <h6><span style="color: red;font-size:25px">40%</span> Discount</h6>
+                                        {{-- <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin</p> --}}
+                                        <a href="shop.html" data-swiper-parallax="-300"
+                                            style="transition-duration: 1000ms; transform: translate3d(0px, 0px, 0px);width:90px;height:40px;line-height:40px">Buy
+                                            Now</a>
                                     </div>
                                 </div>
-                            </div> --}}
-                            <div class=" col-lg-6 col-6">
-                                <div class="slider-content slider-content3">
-                                    <h2>Amazing Pure Nature Hohey</h2>
-                                    {{-- <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin</p> --}}
-                                    <a href="shop.html" data-swiper-parallax="-300"
-                                        style="transition-duration: 1000ms; transform: translate3d(0px, 0px, 0px);">Shop
-                                        Now</a>
-                                </div>
+
                             </div>
-                            <div class=" col-lg-6 col-6">
+                            <div class=" col-lg-6 col-5 col-sm-6">
                                 <div class="slider-content slider-content3">
-                                <img src="{{asset('thumbnail_img/bpi-sports-best-bcaa-o.jpg')}}" alt="">
+                                    <img src="{{asset('thumbnail_img/bpi-sports-best-bcaa-o.jpg')}}" alt="">
                                     {{-- <h2>Amazing Pure Nature Hohey</h2> --}}
                                     {{-- <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin</p> --}}
                                     {{-- <a href="shop.html" data-swiper-parallax="-300"
@@ -133,7 +127,7 @@ BD Muscle - Home
         <div class="row">
             <div class="col-12">
                 <div class="featured-active2 owl-carousel next-prev-style">
-                    @foreach ($latest_product->take(6) as $Product)
+                    @foreach ($latest_product as $Product)
                     <div class="featured-wrap">
                         <div class="featured-img">
                             <img src="{{asset('thumbnail_img/'.$Product->thumbnail_img)}}" alt="">
@@ -179,7 +173,7 @@ BD Muscle - Home
             <div class="col-12">
                 <div class="section-title">
                     <h2>Most View</h2>
-                    <img src="assets/images/section-title.png" alt="">
+                    <img src="{{asset('front/images/section-title.png')}}" alt="">
                 </div>
             </div>
         </div>
@@ -189,7 +183,6 @@ BD Muscle - Home
                 <div class="product-wrap">
                     <div class="product-img">
                         @if (collect($product->Attribute)->min('discount') != '')
-
                         <span style=" z-index: 2">{{collect($product->Attribute)->min('discount')}}%</span>
                         @endif
                         <img src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}" alt="{{ $product->title }}">
@@ -216,7 +209,6 @@ BD Muscle - Home
                             echo $sale;
                             }
                             @endphp
-
                         </p>
                         <ul class="pull-right d-flex">
                             <li><i class="fa fa-star"></i></li>
@@ -228,6 +220,7 @@ BD Muscle - Home
                     </div>
                 </div>
             </li>
+
             <div class="modal fade" id="exampleModalCenter{{ $product->id }}" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -236,6 +229,9 @@ BD Muscle - Home
                         </button>
                         <div class="modal-body d-flex">
                             <div class="product-single-img w-50">
+                                @if (collect($product->Attribute)->min('discount') != '')
+                                <span class="discount_tag">{{collect($product->Attribute)->min('discount')}}%</span>
+                                @endif
                                 <img src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}"
                                     alt="{{ $product->title }}">
                             </div>
@@ -293,92 +289,8 @@ BD Muscle - Home
             @empty
             No Product
             @endforelse
-            {{-- <li class="col-xl-3 col-lg-4 col-sm-6 col-12">
-                <div class="product-wrap">
-                    <div class="product-img">
-                        <img src="{{asset('front/images/product/2.jpg')}}" alt="">
-            <div class="product-icon flex-style">
-                <ul>
-                    <li><a data-toggle="modal" data-target="#exampleModalCenter" href="javascript:void(0);"><i
-                                class="fa fa-eye"></i></a></li>
-                    <li><a href="wishlist.html"><i class="fa fa-heart"></i></a></li>
-                    <li><a href="cart.html"><i class="fa fa-shopping-bag"></i></a></li>
-                </ul>
-            </div>
-    </div>
-    <div class="product-content">
-        <h3><a href="single-product.html">Olive Oil</a></h3>
-        <p class="pull-left">$125
-
-        </p>
-        <ul class="pull-right d-flex">
-            <li><i class="fa fa-star"></i></li>
-            <li><i class="fa fa-star"></i></li>
-            <li><i class="fa fa-star"></i></li>
-            <li><i class="fa fa-star"></i></li>
-            <li><i class="fa fa-star-half-o"></i></li>
         </ul>
     </div>
-</div>
-</li>
-<li class="col-xl-3 col-lg-4 col-sm-6 col-12">
-    <div class="product-wrap">
-        <div class="product-img">
-            <img src="{{asset('front/images/product/3.jpg')}}" alt="">
-            <div class="product-icon flex-style">
-                <ul>
-                    <li><a data-toggle="modal" data-target="#exampleModalCenter" href="javascript:void(0);"><i
-                                class="fa fa-eye"></i></a></li>
-                    <li><a href="wishlist.html"><i class="fa fa-heart"></i></a></li>
-                    <li><a href="cart.html"><i class="fa fa-shopping-bag"></i></a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="product-content">
-            <h3><a href="single-product.html">Olive Oil</a></h3>
-            <p class="pull-left">$125
-
-            </p>
-            <ul class="pull-right d-flex">
-                <li><i class="fa fa-star"></i></li>
-                <li><i class="fa fa-star"></i></li>
-                <li><i class="fa fa-star"></i></li>
-                <li><i class="fa fa-star"></i></li>
-                <li><i class="fa fa-star-half-o"></i></li>
-            </ul>
-        </div>
-    </div>
-</li>
-<li class="col-xl-3 col-lg-4 col-sm-6 col-12">
-    <div class="product-wrap">
-        <div class="product-img">
-            <img src="{{asset('front/images/product/4.jpg')}}" alt="">
-            <div class="product-icon flex-style">
-                <ul>
-                    <li><a data-toggle="modal" data-target="#exampleModalCenter" href="javascript:void(0);"><i
-                                class="fa fa-eye"></i></a></li>
-                    <li><a href="wishlist.html"><i class="fa fa-heart"></i></a></li>
-                    <li><a href="cart.html"><i class="fa fa-shopping-bag"></i></a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="product-content">
-            <h3><a href="single-product.html">Coconut Oil</a></h3>
-            <p class="pull-left">$125
-
-            </p>
-            <ul class="pull-right d-flex">
-                <li><i class="fa fa-star"></i></li>
-                <li><i class="fa fa-star"></i></li>
-                <li><i class="fa fa-star"></i></li>
-                <li><i class="fa fa-star"></i></li>
-                <li><i class="fa fa-star-half-o"></i></li>
-            </ul>
-        </div>
-    </div>
-</li> --}}
-</ul>
-</div>
 </div>
 <!-- product-area end -->
 <!-- product-area start -->
@@ -388,7 +300,7 @@ BD Muscle - Home
             <div class="col-12">
                 <div class="section-title">
                     <h2>Our Latest Product</h2>
-                    <img src="assets/images/section-title.png" alt="">
+                    <img src="{{asset('front/images/section-title.png')}}" alt="">
                 </div>
             </div>
         </div>
@@ -509,69 +421,13 @@ BD Muscle - Home
     </div>
 </div>
 <!-- product-area end -->
-<!-- testmonial-area start -->
-{{-- <div class="testmonial-area testmonial-area2 bg-img-2 black-opacity">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="test-title text-center">
-                        <h2>What Our client Says</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-10 offset-md-1 col-12">
-                    <div class="testmonial-active owl-carousel">
-                        <div class="test-items test-items2">
-                            <div class="test-content">
-                                <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a
-                                    piece of classical LatinContrary to popular belief, Lorem Ipsum is not simply random
-                                    text. It has roots in a piece of classical Latin</p>
-                                <h2>Elizabeth Ayna</h2>
-                                <p>CEO of Woman Fedaration</p>
-                            </div>
-                            <div class="test-img2">
-                                <img src="assets/images/test/1.png" alt="">
-                            </div>
-                        </div>
-                        <div class="test-items test-items2">
-                            <div class="test-content">
-                                <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a
-                                    piece of classical LatinContrary to popular belief, Lorem Ipsum is not simply random
-                                    text. It has roots in a piece of classical Latin</p>
-                                <h2>Elizabeth Ayna</h2>
-                                <p>CEO of Woman Fedaration</p>
-                            </div>
-                            <div class="test-img2">
-                                <img src="assets/images/test/1.png" alt="">
-                            </div>
-                        </div>
-                        <div class="test-items test-items2">
-                            <div class="test-content">
-                                <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a
-                                    piece of classical LatinContrary to popular belief, Lorem Ipsum is not simply random
-                                    text. It has roots in a piece of classical Latin</p>
-                                <h2>Elizabeth Ayna</h2>
-                                <p>CEO of Woman Fedaration</p>
-                            </div>
-                            <div class="test-img2">
-                                <img src="assets/images/test/1.png" alt="">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
-
 
 <section id="blog_part" class="mb-5">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="section-title text-center mb-30px0px">
-                    <h2 class="title">Whats your Goal?</h2>
+                    <h2 class="title">Whats your <span style="color:#ef4836">Goal?</span></h2>
                     {{-- <p class="sub-title">Lorem ipsum dolor sit amet consectetur adipisicing eiusmod. --}}
                     </p>
                 </div>
@@ -635,7 +491,7 @@ BD Muscle - Home
         transition: all .3s ease 0s;
     }
 
-    .secure-box h3 {
+    .secure-box h4 {
         font-size: 20px;
         line-height: 24px;
         margin-bottom: 10px;
@@ -644,11 +500,12 @@ BD Muscle - Home
         text-transform: none;
         color: #333;
         margin-top: 0;
+        cursor: pointer;
     }
 
     .secure-box p {
         font-size: 16px;
-        /* display: block; */
+        cursor: pointer;
         text-align: center;
         color: #666;
         font-weight: 400;
@@ -678,7 +535,8 @@ BD Muscle - Home
             <div class="secure-box">
 
                 <i class="fa fa-truck"></i>
-                <h4>Fast Delivery <Service></Service></h4>
+                <h4>Fast Delivery <Service></Service>
+                </h4>
                 <p>Fast delivery, competitive prices and excellent services.</p>
             </div>
         </div>

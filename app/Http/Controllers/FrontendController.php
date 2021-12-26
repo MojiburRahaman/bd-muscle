@@ -38,6 +38,7 @@ class FrontendController extends Controller
             $product = Product::with('Catagory', 'Attribute')
                 ->where('status', 1)->latest('id')
                 ->select('id', 'slug', 'catagory_id', 'thumbnail_img', 'product_summary', 'title')
+                ->take(8)
                 ->get();
             $blogs = Blog::latest('id')
                 ->select('id', 'title', 'add_to_goal', 'slug', 'blog_thumbnail', 'created_at')
