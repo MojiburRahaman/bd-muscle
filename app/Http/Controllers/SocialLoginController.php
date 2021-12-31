@@ -20,17 +20,20 @@ class SocialLoginController extends Controller
     }
     function GoogleCallbackUrlRegister()
     {
-        $user = Socialite::driver('google')->user();
+        $user_detail = Socialite::driver('google')->user();
 
-        $users =   User::where('email', $user->getEmail())->first();
+        $users =   User::where('email', $user_detail->getEmail())->first();
         if ($users == '') {
-            $user = User::create([
-                'name' => $user->getName(),
-                'email' => $user->getEmail(),
-                'password' => bcrypt($user->getEmail() . now()),
-            ]);
+            $user = new User;
+            $user->name = $user_detail->getName();
+            $user->email = $user_detail->getEmail();
+            $user->email_verified_at = now();
+            $user->password = bcrypt($user_detail->getEmail() . now());
+            $user->save();
+
             $user->assignrole('Customer');
             Auth::login($user);
+            
             return redirect('/');
         } else {
             Auth::login($users);

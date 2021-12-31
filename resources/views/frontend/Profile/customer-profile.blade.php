@@ -68,8 +68,8 @@
                     aria-labelledby="v-pills-home-tab">
                     <h3>Welcome, {{Str::ucfirst(auth()->user()->name)}}</h3>
                     <p>From your account dashboard. you can easily check & view your <a class="test" href=""> recent
-                            orders</a> and Edit your
-                        password and account details.</p>
+                            orders</a> and <a class="test"  href="">Change your
+                                password</a> and account details.</p>
                 </div>
                 <div class="tab-pane fade" id="change-passwords" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                     <div class="ml-5 col-lg-5">
@@ -127,7 +127,7 @@
                                 @endforeach
                             </tr>
                             @empty
-                                
+                            <td colspan="10">No Order</td>
                             @endforelse
                         </tbody>
                     </table>

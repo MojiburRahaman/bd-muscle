@@ -8,7 +8,7 @@ use \Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 
 class Product extends Model
 {
-    use HasFactory,HasEagerLimit;
+    use HasFactory, HasEagerLimit;
     protected $casts = [
         'most_view' => 'integer',
     ];
@@ -36,5 +36,8 @@ class Product extends Model
     {
         return $this->belongsTo(Brand::class, 'brand_id');
     }
-   
+    function Banner()
+    {
+        return $this->hasMany(Banner::class, 'product_id');
+    }
 }

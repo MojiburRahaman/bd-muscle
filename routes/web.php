@@ -20,7 +20,8 @@
     use App\Http\Controllers\UserProfileController;
     use App\Http\Controllers\CheckoutController;
     use App\Http\Controllers\OrderController;
-    use App\Http\Controllers\SocialLoginController;
+use App\Http\Controllers\SiteSettingController;
+use App\Http\Controllers\SocialLoginController;
     use Illuminate\Support\Facades\Auth;
     /*
 |--------------------------------------------------------------------------
@@ -78,7 +79,7 @@
     Route::post('/cartpost', [CartController::class, 'CartPost'])->name('CartPost');
 
     // cart route end
-    Route::middleware(['auth','verified', 'checkcoustomer'])->group(function () {
+    Route::middleware(['auth', 'verified', 'checkcoustomer'])->group(function () {
         // Profile route
         Route::get('/profile', [UserProfileController::class, 'FrontendProfile'])->name('FrontendProfile');
         Route::post('/change-password', [UserProfileController::class, 'ChangeUserPass'])->name('ChangeUserPass');
@@ -106,6 +107,8 @@
 
     // dashboard route 
     Route::middleware(['auth', 'checkadminpanel'])->prefix('admin')->group(function () {
+        Route::get('/change-password', [DashboardController::class,'AdminChangePassword'])->name('AdminChangePassword');
+        Route::post('/change-password', [DashboardController::class,'AdminChangePasswordPost'])->name('AdminChangePasswordPost');
         Route::resource('dashboard', DashboardController::class);
 
         // catagory route 
@@ -138,7 +141,15 @@
         Route::get('/roles/assign-user', [RoleController::class, 'AssignUser'])->name('AssignUser');
         Route::resource('/roles', RoleController::class);
         // order route
+        Route::get('orders/status/{id}', [OrderController::class, 'DeliveryStatus'])->name('DeliveryStatus');
+        Route::get('orders/download-invoice/{id}', [OrderController::class, 'InvoiceDownload'])->name('InvoiceDownload');
         Route::resource('/orders', OrderController::class);
+        
+        Route::get('settings/banner-status/{id}', [SiteSettingController::class, 'SiteBannerStatus'])->name('SiteBannerStatus');
+        Route::get('settings/banner-delete/{id}', [SiteSettingController::class, 'SiteBannerDelete'])->name('SiteBannerDelete');
+        Route::post('settings/banner-post', [SiteSettingController::class, 'SiteBannerPost'])->name('SiteBannerPost');
+        Route::get('settings/banner', [SiteSettingController::class, 'SiteBanner'])->name('SiteBanner');
+        Route::resource('/settings', SiteSettingController::class);
         // coupon route
         Route::resource('/coupons', CouponController::class);
         // color route
@@ -170,6 +181,6 @@
 
     require __DIR__ . '/auth.php';
 
-Auth::routes();
+    Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

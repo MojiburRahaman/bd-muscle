@@ -49,15 +49,19 @@
                 <div class="col-6 col-lg-6 text-right">
                     @if ($order->delivery_status == 1)
                     <a href="" class="btn-sm btn-danger">pending</a>
+                    @elseif ($order->delivery_status == 2)
+                    <a href="" class="btn-sm btn-warning">On The way</a>
                     @else
-                    <a href="" class="btn-sm btn-success">Paid</a>
+                    <a class="btn-sm btn-success">Deliverd</a>
 
                     @endif
-                    <a  href="" class="btn-sm btn-success testpdf">Pdf</a>
+                    <a class="btn-sm btn-success" href="{{route('InvoiceDownload',$order->id)}}"><i
+                            class="fa fa-download"></i></a>
+
                 </div>
             </div>
             <div class="col-12">
-                <div class="card-body table-responsive p-0" >
+                <div class="card-body table-responsive p-0">
                     <table class="table table-hover text-nowrap" id="pdf">
                         <thead>
                             <tr>
@@ -100,27 +104,8 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="mt-4">
-                </div>
-                <!-- /.card -->
             </div>
         </div>
     </section>
 </div>
 @endsection
-
-{{-- @section('script_js')
-<script>
-    $(document).ready(function() {
-    $('#pdf').DataTable( {
-        dom: 'Bfrtip',
-        buttons: [
-            {
-                extend: 'testpdf',
-                messageTop: 'PDF created by PDFMake with Buttons for DataTables.'
-            }
-        ]
-    } );
-} );
-</script>
-@endsection --}}

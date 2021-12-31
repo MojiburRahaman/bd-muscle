@@ -7,47 +7,8 @@ BD Muscle - Home
 <div class="slider-area">
     <div class="swiper-container">
         <div class="swiper-wrapper">
-            <div class="swiper-slide overlay">
-                <div style="border-bottom: 1px solid red" class="single-slider slide-inner ">
-                    <div class="container">
-                        <div class="row">
-                            {{-- <div class="col-lg-12 col-lg-9 col-12">
-                                <div class="slider-content">
-                                    <div class="slider-shape">
-                                        <h2 data-swiper-parallax="-500">Amazing Pure Nature Hohey</h2>
-                                        <p data-swiper-parallax="-400">Contrary to popular belief, Lorem Ipsum is not
-                                            simply random text. It has roots in a piece of classical Latin</p>
-                                        <a href="shop.html" data-swiper-parallax="-300">Shop Now</a>
-                                    </div>
-                                </div>
-                            </div> --}}
-                            <div class=" col-lg-6 col-6 ">
-                                <div class="mt-lg-5 pt-lg-5">
-
-                                    <div class="slider-content slider-content3">
-                                        <h2>Amazing Pure Nature Hohey</h2>
-                                        {{-- <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin</p> --}}
-                                        <a href="shop.html" data-swiper-parallax="-300"
-                                            style="transition-duration: 1000ms; transform: translate3d(0px, 0px, 0px);">Shop
-                                            Now</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class=" col-lg-6 col-6">
-                                <div class="slider-content slider-content3">
-                                    <img src="{{asset('thumbnail_img/asylum-cabinet-beta-alanine-0.png')}}" alt="">
-                                    {{-- <h2>Amazing Pure Nature Hohey</h2> --}}
-                                    {{-- <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin</p> --}}
-                                    {{-- <a href="shop.html" data-swiper-parallax="-300"
-                                        style="transition-duration: 1000ms; transform: translate3d(0px, 0px, 0px);">Shop
-                                        Now</a> --}}
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @forelse ($banners as $banner)
+            @if ($banner->product_id != '')
             <div class="swiper-slide overlay">
                 <div style="border-bottom: 1px solid red" class="single-slider slide-inner ">
                     <div class="container">
@@ -55,67 +16,48 @@ BD Muscle - Home
                             <div class=" col-lg-6 col-7 col-sm-6">
                                 <div class="mt-lg-5 pt-lg-5">
                                     <div class="slider-content slider-content3">
-                                        <h2 class="text-left">Amazing Pure Nature Hohey</h2>
-                                        <h6><span style="color: red;font-size:25px">40%</span> Discount</h6>
-                                        {{-- <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin</p> --}}
-                                        <a href="shop.html" data-swiper-parallax="-300"
+                                        <h2 class="text-left">{{$banner->Product->title}}</h2>
+                                        @if (collect($banner->Product->Attribute)->max('discount') != '')
+
+                                        <h6><span style="color: red;font-size:25px">
+                                                {{collect($banner->Product->Attribute)->max('discount')}}%
+                                            </span>
+                                            Discount</h6>
+                                        @endif
+                                        <a href="{{route('SingleProductView',$banner->Product->slug)}}"
+                                            data-swiper-parallax="-300"
                                             style="transition-duration: 1000ms; transform: translate3d(0px, 0px, 0px);width:90px;height:40px;line-height:40px">Buy
                                             Now</a>
                                     </div>
                                 </div>
-
                             </div>
                             <div class=" col-lg-6 col-5 col-sm-6">
                                 <div class="slider-content slider-content3">
-                                    <img src="{{asset('thumbnail_img/bpi-sports-best-bcaa-o.jpg')}}" alt="">
-                                    {{-- <h2>Amazing Pure Nature Hohey</h2> --}}
-                                    {{-- <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin</p> --}}
-                                    {{-- <a href="shop.html" data-swiper-parallax="-300"
-                                        style="transition-duration: 1000ms; transform: translate3d(0px, 0px, 0px);">Shop
-                                        Now</a> --}}
+                                    <img src="{{asset('thumbnail_img/'.$banner->Product->thumbnail_img)}}"
+                                        alt="{{$banner->Product->title}}">
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
+            @endif
+            @if ($banner->banner_image != '')
+            <style>
+                .slide{{$loop->index+1}} {
+                    background-image: url('{{asset('banner_image/'.$banner->banner_image)}}');
+                    background-position: center;
+                    background-size: cover;
+                }
+            </style>
             <div class="swiper-slide">
-                <div class="slide-inner slide-inner7">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-12 col-lg-9 col-12">
-                                <div class="slider-content">
-                                    <div class="slider-shape">
-                                        <h2 data-swiper-parallax="-500">Amazing Pure Nature Coconut Oil</h2>
-                                        <p data-swiper-parallax="-400">Contrary to popular belief, Lorem Ipsum is not
-                                            simply random text. It has roots in a piece of classical Latin</p>
-                                        <a href="shop.html" data-swiper-parallax="-300">Shop Now</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="slide-inner slide{{$loop->index+1}}">
                 </div>
             </div>
-            {{-- <div class="swiper-slide">
-                <div class="slide-inner slide-inner8">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-12 col-lg-9 col-12">
-                                <div class="slider-content">
-                                    <div class="slider-shape">
-                                        <h2 data-swiper-parallax="-500">Amazing Pure Nut Oil</h2>
-                                        <p data-swiper-parallax="-400">Contrary to popular belief, Lorem Ipsum is not
-                                            simply random text. It has roots in a piece of classical Latin</p>
-                                        <a href="shop.html" data-swiper-parallax="-300">Shop Now</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
+            @endif
+            @empty
+
+            @endforelse
         </div>
         <div class="swiper-pagination"></div>
     </div>
@@ -183,7 +125,7 @@ BD Muscle - Home
                 <div class="product-wrap">
                     <div class="product-img">
                         @if (collect($product->Attribute)->min('discount') != '')
-                        <span style=" z-index: 2">{{collect($product->Attribute)->min('discount')}}%</span>
+                        <span style=" z-index: 2">{{collect($product->Attribute)->max('discount')}}%</span>
                         @endif
                         <img src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}" alt="{{ $product->title }}">
                         <div class="product-icon flex-style">
@@ -450,8 +392,13 @@ BD Muscle - Home
                             <a class="blog-date height-shape" href="#"><i class="fa fa-calendar" aria-hidden="true"></i>
                                 {{$blog->created_at->format('d M, Y')}}
                             </a>
-                            <a class="blog-mosion" href="#"><i class="fa fa-commenting" aria-hidden="true"></i> 1.5
-                                K</a>
+                            <a class="blog-mosion" href="#"><i class="fa fa-commenting" aria-hidden="true"></i>
+                                @if ($blog->blog_comment_count > 999)
+                                {{number_format($comments->count(),2)}}k
+                                @else
+                                {{$blog->blog_comment_count }}
+                                @endif
+                            </a>
                         </div>
                         <h5 class="blog-heading mt-2">
                             <a class="blog-heading-link" href="{{route('FrontenblogView',$blog->slug)}}">

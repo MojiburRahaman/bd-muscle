@@ -34,7 +34,6 @@ class UserProfileController extends Controller
             'confirm_pass.min' => 'Confirm Password must be minimum 8 Charecter',
             'confirm_pass.min' => 'Confirm Password must be minimum 8 Charecter',
         ]);
-
         $current_pass = strip_tags($request->current_pass);
         $new_pass = strip_tags($request->new_pass);
         $confirm_pass = strip_tags($request->confirm_pass);

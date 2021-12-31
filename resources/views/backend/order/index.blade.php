@@ -46,9 +46,9 @@
                                 <td>{{$order->created_at->diffForHumans()}}</td>
                                 <td>
                                     @if ($order->delivery_status == 1)
-                                    <a href="" class="btn-sm btn-danger">pending</a>
+                                    <a href="{{route('DeliveryStatus',$order->id)}}" class="btn-sm btn-danger">pending</a>
                                     @elseif ($order->delivery_status == 2)
-                                    <a href="" class="btn-sm btn-warning">On The way</a>
+                                    <a href="{{route('DeliveryStatus',$order->id)}}" class="btn-sm btn-warning">On The way</a>
                                     @else
                                     <a class="btn-sm btn-success">Deliverd</a>
 
@@ -56,6 +56,7 @@
                                 </td>
                                 <td>
                                     <a class="btn-sm btn-primary" href="{{route('orders.show',$order->id)}}">Details</a>
+                                    <a class="btn-sm btn-success" href="{{route('InvoiceDownload',$order->id)}}"><i class="fa fa-download"></i></a>
                                 </td>
                             </tr>
                             @empty

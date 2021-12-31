@@ -1,14 +1,18 @@
-@extends('frontend.master')
+{{-- @extends('frontend.master')
 @section('title')
 Reset Password - {{config('app.name')}}
 @endsection
 @section('content')
 <style>
+    .footer-bottom ul li a {
+        color: #a0a0a0;
+    }
+
     li a i {
         color: #333;
     }
 
-</style>
+</style> --}}
 <x-guest-layout>
     <x-auth-card>
         <x-slot name="logo">
@@ -57,4 +61,4 @@ Reset Password - {{config('app.name')}}
         </form>
     </x-auth-card>
 </x-guest-layout>
-@endsection
+{{-- @endsection --}}

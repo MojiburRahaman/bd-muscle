@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\Blog;
 use App\Models\Catagory;
 use App\Models\Product;
 use App\Models\BlogComment;
 use App\Models\BlogReply;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 class FrontendController extends Controller
@@ -29,10 +31,12 @@ class FrontendController extends Controller
         }
 
         if ($search == '') {
-            // ->orderBy('most_view','DESC') latest('most_view')
-            $best_seller = Product::with('Catagory:id,slug,catagory_name', 'Attribute')->where('most_view','!=', 0)
-                ->where('status', 1)->orderBy('most_view','DESC')
-                ->select('id','most_view', 'slug', 'catagory_id', 'thumbnail_img', 'product_summary', 'title')
+            $banners = Banner::latest('id')->with(['Product:id,title,slug,thumbnail_img','Product.Attribute:id,product_id,discount'])
+                ->where('status', 1)->get();
+
+            $best_seller = Product::with('Catagory:id,slug,catagory_name', 'Attribute')->where('most_view', '!=', 0)
+                ->where('status', 1)->orderBy('most_view', 'DESC')
+                ->select('id', 'most_view', 'slug', 'catagory_id', 'thumbnail_img', 'product_summary', 'title')
                 ->take(4)
                 ->get();
             $product = Product::with('Catagory', 'Attribute')
@@ -42,12 +46,14 @@ class FrontendController extends Controller
                 ->get();
             $blogs = Blog::latest('id')
                 ->select('id', 'title', 'add_to_goal', 'slug', 'blog_thumbnail', 'created_at')
-                ->where('add_to_goal',1)->take(3)->get();
+                ->where('add_to_goal', 1)
+                ->withCount('BlogComment')->take(3)->get();
 
             return view('frontend.main', [
                 'latest_product' => $product,
                 'blogs' => $blogs,
                 'best_seller' => $best_seller,
+                'banners' => $banners,
             ]);
         }
 

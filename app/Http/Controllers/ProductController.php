@@ -74,7 +74,6 @@ class ProductController extends Controller
             'discount.*.min' => 'Minimum 1',
             'discount.*.max' => 'Maximum 99',
         ]);
-        return $request;
         $product = new Product;
         $product->title = $request->product_name;
         $product->slug = Str::slug($request->product_name);
@@ -129,7 +128,7 @@ class ProductController extends Controller
             if ($request->discount[$key] != '') {
                 $regular_price = $request->regular_price[$key];
                 $discount_amount = ($request->regular_price[$key] * $request->discount[$key]) / 100;
-                $sell_price = $request->regular_price[$key] - $discount_amount;
+                $sell_price = round($request->regular_price[$key] - $discount_amount);
 
                 $attribute->sell_price = $sell_price;
                 $attribute->discount = $request->discount[$key];
@@ -300,7 +299,7 @@ class ProductController extends Controller
                 if ($request->discount[$key] != '') {
                     $regular_price = $request->regular_price[$key];
                     $discount_amount = ($request->regular_price[$key] * $request->discount[$key]) / 100;
-                    $sell_price = $request->regular_price[$key] - $discount_amount;
+                    $sell_price = round($request->regular_price[$key] - $discount_amount);
 
                     $attribute->sell_price = $sell_price;
                     $attribute->discount = $request->discount[$key];
@@ -316,7 +315,7 @@ class ProductController extends Controller
                 if ($request->discount[$key] != '') {
                     $regular_price = $request->regular_price[$key];
                     $discount_amount = ($request->regular_price[$key] * $request->discount[$key]) / 100;
-                    $sell_price = $request->regular_price[$key] - $discount_amount;
+                    $sell_price = round($request->regular_price[$key] - $discount_amount);
 
                     $attribute->sell_price = $sell_price;
                     $attribute->discount = $request->discount[$key];

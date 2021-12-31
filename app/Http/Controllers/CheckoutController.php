@@ -67,6 +67,7 @@ class CheckoutController extends Controller
         ]);
         $Order_Summaries_id = Order_Summaries::insertGetId([
             'billing_details_id' => $billing_details,
+            'user_id' => Auth::id(),
             'order_number' => now()->format('dm').Auth::id().mt_rand(1,1000),
             'coupon_name' => session()->get('coupon_name'),
             'total' => session()->get('cart_total'),

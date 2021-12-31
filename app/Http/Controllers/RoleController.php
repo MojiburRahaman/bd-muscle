@@ -7,11 +7,11 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Http\Requests\RequirdRequest;
+use App\Mail\NewAccountCreated;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
-use App\Mail\NewAcoountNotifyMail;
 
 class RoleController extends Controller
 {
@@ -98,8 +98,6 @@ class RoleController extends Controller
                 'role_name' => ['required'],
                 'permission' => ['required'],
             ]);
-
-
             $role = Role::create(['name' => $request->role_name]);
             $role->givePermissionTo($request->permission);
             return redirect('admin/roles ')->with('success', 'Role Added Successfully');
@@ -239,7 +237,7 @@ class RoleController extends Controller
     {
         $request->validate([
             'user_name' => 'required|string|max:255',
-            'user_email' => 'required|string|email|max:255', 'unique:users',
+            'user_email' => 'required|string|email|max:255', 'unique:users,name',
             'role_name' => ['required',],
         ]);
         $random_pass_genarate = Str::random(10);
@@ -248,9 +246,10 @@ class RoleController extends Controller
         $user->name = $request->user_name;
         $user->email = $request->user_email;
         $user->password = bcrypt($random_pass_genarate);
+        $user->email_verified_at = now();
         $user->save();
         $user->assignRole($request->role_name);
-        // Mail::to($request->user_email)->send(new NewAcoountNotifyMail($random_pass_genarate, $request->user_name));
+        Mail::to($request->user_email)->send(new NewAccountCreated($random_pass_genarate, $request->user_name));
         return back()->with('success','User Created Successfully');
         // $user->name = $request->role_name;
     }

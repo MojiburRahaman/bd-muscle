@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order_Summaries;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class OrderController extends Controller
 {
@@ -15,9 +16,9 @@ class OrderController extends Controller
     public function index()
     {
         $order = Order_Summaries::latest('id')->get();
-       return view('backend.order.index',[
-           'orders'=> $order,
-       ]);
+        return view('backend.order.index', [
+            'orders' => $order,
+        ]);
     }
 
     /**
@@ -49,12 +50,12 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $order=Order_Summaries::where('id',$id)
-        ->with('billing_details','order_details.Product','order_details.Color','order_details.Size','order_details.Flavour')->first();
+        $order = Order_Summaries::where('id', $id)
+            ->with('billing_details', 'order_details.Product', 'order_details.Color', 'order_details.Size', 'order_details.Flavour')->first();
         // $order=Order_Summaries::findorfail($id);
-        
-        return view('backend.order.show',[
-            'order'=>$order,
+
+        return view('backend.order.show', [
+            'order' => $order,
         ]);
     }
 
@@ -90,5 +91,31 @@ class OrderController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function InvoiceDownload($id)
+    {
+        // return 'ok';
+        $Order_Summaries = Order_Summaries::findorfail($id);
+        $pdf = PDF::loadView('backend.download.invoice', [
+            'order' => $Order_Summaries,
+        ])->setPaper('a4', 'protrait');
+        return $pdf->stream('invoice.pdf');
+    }
+    public function DeliveryStatus($id)
+    {
+        $status =   Order_Summaries::findorfail($id);
+        // return 'ok';
+        if ($status->delivery_status == 1) {
+            $status->delivery_status = 2;
+            $status->save();
+            return back();
+        } elseif ($status->delivery_status == 2) {
+            $status->delivery_status = 3;
+            $status->save();
+            return back();
+        } elseif ($status->delivery_status == 3) {
+
+            return back();
+        }
     }
 }
