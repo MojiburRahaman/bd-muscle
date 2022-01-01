@@ -22,6 +22,7 @@
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <!-- flaticon.css -->
         <link rel="stylesheet" href="{{ asset('front/css/flaticon.css') }}">
+        <link rel="stylesheet" href="{{ asset('front/css/corner-popup.min.css') }}">
         <!-- jquery-ui.css -->
         <link rel="stylesheet" href="{{ asset('front/css/jquery-ui.css') }}">
         <!-- metisMenu.min.css -->
@@ -250,7 +251,8 @@
                                             <a class="btn btn-regular"
                                                 onMouseOver="this.style.color='white',this.style.backgroundColor='#ef4836'"
                                                 onMouseOut="this.style.backgroundColor='#FFFFFF',this.style.color='#ef4836'"
-                                                style="background-color:white;color:#ef4836" href="{{route('CartView')}}">View
+                                                style="background-color:white;color:#ef4836"
+                                                href="{{route('CartView')}}">View
                                                 Cart</a>
                                         </li>
                                     </ul>
@@ -316,11 +318,11 @@
         <!-- header-area end -->
         @yield('content')
         <!-- start social-newsletter-section -->
-        <section  class="social-newsletter-section" style="background-color: #ffdd2e;padding: 50px 0">
+        <section class="social-newsletter-section" style="background-color: #ffdd2e;padding: 50px 0">
             <div class="container">
-                <div class="row" >
+                <div class="row">
                     <div class="col-lg-6 mb-2">
-                        <div class="newsletter text-left"  >
+                        <div class="newsletter text-left">
                             <h3 style="color: black;margin-bottom:0">Subscribe Newsletter</h3>
                             <p style="color: black">
                                 Receive the latest news, offers and deals going on at Sporter
@@ -331,8 +333,10 @@
                         <div class="newsletter-form">
                             <form>
                                 <div class="input-group">
-                                    <input type="email" required style="padding: 10px 20px" type="text" class="form-control" placeholder="Enter Your Email Address...">
-                                    <button style="padding: 5px 15px;background-color:black;color:white" type="submit">Submit</button>
+                                    <input type="email" required style="padding: 10px 20px" type="text"
+                                        class="form-control" placeholder="Enter Your Email Address...">
+                                    <button style="padding: 5px 15px;background-color:black;color:white"
+                                        type="submit">Submit</button>
                                 </div>
                             </form>
                         </div>
@@ -407,6 +411,25 @@
         </div>
         <!-- Messenger Chat plugin Code -->
 
+        <div class="newsletter-overlay">
+            <div id="newsletter-popup">
+                <a href="#" class="popup-close">X</a>
+                <div class="newsletter-in">
+                    <h3>Join our Newsletter!</h3>
+                    <form class="validate" method="post" action="{{route('FrontenNewsLetter')}}">
+                        @csrf
+                        <div class="form-group">
+                            <input class="form-control" type="email" placeholder="Enter Your Email Address..." autofocus
+                                id="nsw_email" name="email" required="">
+                        </div>
+                        <div class="frm-submit">
+                            <input type="submit" value="Submit">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <!-- Your Chat plugin code -->
 
         <!-- .footer-area end -->
@@ -437,6 +460,7 @@
         <script src="{{ asset('front/js/mailchimp.js') }}"></script>
         <!-- jquery-ui.min.js -->
         <script src="{{ asset('front/js/jquery-ui.min.js') }}"></script>
+        <script src="{{ asset('front/js/corner-popup.min.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <!-- main js -->
 
@@ -445,7 +469,65 @@
         <script src="{{ asset('front/js/scripts.js') }}"></script>
 
         @yield('script_js')
-
+        <script>
+            @guest
+        
+        var delay = 5000; //in milleseconds
+        jQuery(document).ready(function($){
+          setTimeout(function(){ showNewsletterPopup(); }, delay);
+          
+          $('.popup-close').click(function(){
+              $('.newsletter-overlay').hide();
+              
+              //when closed create a cookie to prevent popup to show again on refresh
+              setCookie('newsletter-popup', 'popped', 30);
+          });
+        });
+        
+        function showNewsletterPopup(){
+          if( getCookie('newsletter-popup') == ""){
+             $('.newsletter-overlay').show();
+             setCookie('newsletter-popup', 'popped', 30);
+          }
+          else{
+            console.log("Newsletter popup blocked.");
+          }
+        }
+        
+        
+        function setCookie(cname,cvalue,exdays)
+        {
+            var d = new Date();
+            d.setTime(d.getTime()+(exdays*24*60*60*100));
+            var expires = "expires="+d.toGMTString();
+            document.cookie = cname+"="+cvalue+"; "+expires+"; path=/";
+        }
+        
+        function getCookie(cname)
+        {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0; i<ca.length; i++) 
+            {
+                var c = jQuery.trim(ca[i]);
+                if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+            }
+            return "";
+        }
+                $.fn.cornerpopup({
+                    variant: 1,
+                    slide: 1,
+                    popupImg: '{{asset('unnamed.png')}}',
+                    position : 'left',
+                    header : '<h6>Continue With Google</h6>',
+                    link1: '{{route('GoogleRegister')}}',
+                    colors : '#ef4836',
+                    delay:10000,    
+                    slide:true,
+                    button1 :'Continue',
+             });
+        @endguest
+        </script>
 
     </body>
     <!-- Mirrored from themepresss.com/tf/html/tohoney/index.html by HTTrack Website Copier/3.x

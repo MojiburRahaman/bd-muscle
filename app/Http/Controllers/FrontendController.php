@@ -31,7 +31,8 @@ class FrontendController extends Controller
         }
 
         if ($search == '') {
-            $banners = Banner::latest('id')->with(['Product:id,title,slug,thumbnail_img','Product.Attribute:id,product_id,discount'])
+            $banners = Banner::latest('id')
+                ->with(['Product:id,title,slug,thumbnail_img', 'Product.Attribute:id,product_id,discount,regular_price'])
                 ->where('status', 1)->get();
 
             $best_seller = Product::with('Catagory:id,slug,catagory_name', 'Attribute')->where('most_view', '!=', 0)
@@ -39,7 +40,7 @@ class FrontendController extends Controller
                 ->select('id', 'most_view', 'slug', 'catagory_id', 'thumbnail_img', 'product_summary', 'title')
                 ->take(4)
                 ->get();
-            $product = Product::with('Catagory', 'Attribute')
+            $product = Product::with('Catagory', 'Attribute:product_id,discount,regular_price,sell_price')
                 ->where('status', 1)->latest('id')
                 ->select('id', 'slug', 'catagory_id', 'thumbnail_img', 'product_summary', 'title')
                 ->take(8)
@@ -56,7 +57,6 @@ class FrontendController extends Controller
                 'banners' => $banners,
             ]);
         }
-
         $Products = Product::with('Catagory', 'Attribute')
             ->where('title', 'LIKE', "%$search%")
             ->where('status', 1)
@@ -71,12 +71,21 @@ class FrontendController extends Controller
             'search' => $search,
         ]);
     }
-    function Frontendshop()
+    function Frontendshop(Request $request)
     {
+        if ($request->ajax()) {
+            $Products = Product::with('Catagory', 'Attribute')->where('status', 1)
+                ->select('id', 'slug', 'title', 'thumbnail_img', 'product_summary', 'catagory_id')
+                ->latest('id')->simplePaginate(8);
+
+            $view = view('frontend.pages.shop-pagination-data', compact('Products'))->render();
+            return response()->json(['html' => $view,]);
+        }
+
         $catagories = Catagory::with('Product.Attribute', 'Product.Catagory')->select('slug', 'id', 'catagory_name',)->latest('id')->get();
         $product = Product::with('Catagory', 'Attribute')->where('status', 1)
             ->select('id', 'slug', 'title', 'thumbnail_img', 'product_summary', 'catagory_id')
-            ->latest('id')->simplePaginate(32);
+            ->latest('id')->simplePaginate(16);
         return view('frontend.pages.shop', [
             'catagories' => $catagories,
             'latest_product' => $product,
@@ -152,5 +161,9 @@ class FrontendController extends Controller
         $blog_comment->blog_id = $blog_id;
         $blog_comment->save();
         return back();
+    }
+    function FrontenNewsLetter(Request $request)
+    {
+        return $request;
     }
 }

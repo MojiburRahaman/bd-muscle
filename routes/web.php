@@ -53,6 +53,7 @@ use App\Http\Controllers\SocialLoginController;
 
     // frontend route start
     Route::get('/', [FrontendController::class, 'Frontendhome'])->name('Frontendhome');
+    Route::post('/newsletter', [FrontendController::class, 'FrontenNewsLetter'])->name('FrontenNewsLetter');
     // Route::get('/search', [FrontendController::class, 'FrontendSearch'])->name('FrontendSearch');
     Route::get('/product/{slug}', [ProductViewController::class, 'SingleProductView'])->name('SingleProductView');
     Route::post('/product/get-size', [ProductViewController::class, 'GetSizeByColor'])->name('GetSizeByColor');

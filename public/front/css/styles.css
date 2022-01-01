@@ -174,6 +174,134 @@ div {
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
 }
 
+/* secure box */
+.secure-box {
+    background-color: white;
+    text-align: center;
+    -webkit-box-shadow: 3px -4px 14px -4px rgba(0, 0, 0, 0.53);
+    box-shadow: 3px -4px 14px -4px rgba(0, 0, 0, 0.53);
+    /* padding-bottom:20px;      */
+    height: 210px;
+}
+
+.secure-box i {
+    font-size: 60px;
+    padding: 15px 10px;
+}
+
+.secure-box:hover {
+    transform: scale(1.1);
+    transition: all .3s ease 0s;
+}
+
+.secure-box h4 {
+    font-size: 20px;
+    line-height: 24px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    text-align: center;
+    text-transform: none;
+    color: #333;
+    margin-top: 0;
+    cursor: pointer;
+}
+
+.secure-box p {
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    color: #666;
+    font-weight: 400;
+}
+
+/* secure box */
+
+/* news letter */
+
+#newsletter-popup {
+    margin: 200px auto;
+    padding: 30px 40px 40px;
+    background: white;
+    border-radius: 5px;
+    width: 25%;
+    position: relative;
+    transition: all 1s ease-in-out;
+}
+
+@media screen and (max-width: 1366px) {
+    #newsletter-popup {
+        width: 40%;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    #newsletter-popup {
+        width: 70%;
+    }
+}
+
+.newsletter-overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: visible;
+    opacity: 1;
+    display: none;
+    z-index: 100;
+}
+
+#newsletter-popup h3 {
+    color: black;
+    font-size: 24px;
+    margin: 0 0 10px;
+    /* font-family: 'Gloria Hallelujah',cursive; */
+}
+
+#newsletter-popup input[type="text"] {
+    width: 100%;
+    height: 36px;
+    border: none;
+    text-indent: 10px;
+    font-size: 13px;
+    border-bottom: 2px solid #faeaec;
+    border-top: 2px solid #fff;
+    padding: 0;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+#newsletter-popup input[type="submit"] {
+    background: #ef4836;
+    border: none;
+    color: #fff;
+    text-align: center;
+    display: block;
+    padding: 4px 0;
+    line-height: 1.5;
+    width: 100%;
+    cursor: pointer;
+    margin: 0;
+    font-size: 18px;
+}
+
+#newsletter-popup .popup-close {
+    color: black;
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    text-align: center;
+    text-decoration: none;
+    line-height: 30px;
+}
+
+/* news letter */
+
 .bg-1 {
     background: #f5f5f5;
 }

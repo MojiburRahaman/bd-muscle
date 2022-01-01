@@ -18,11 +18,19 @@ BD Muscle - Home
                                     <div class="slider-content slider-content3">
                                         <h2 class="text-left">{{$banner->Product->title}}</h2>
                                         @if (collect($banner->Product->Attribute)->max('discount') != '')
-
-                                        <h6><span style="color: red;font-size:25px">
+                                        <h6>
+                                            <span style="color: red;font-size:25px">
                                                 {{collect($banner->Product->Attribute)->max('discount')}}%
                                             </span>
-                                            Discount</h6>
+                                            Discount
+                                        </h6>
+                                        @else
+                                        <h6>
+                                            <span style="color: red;font-size:25px">
+                                                ৳ {{collect($banner->Product->Attribute)->min('regular_price')}}
+                                            </span>
+                                        </h6>
+
                                         @endif
                                         <a href="{{route('SingleProductView',$banner->Product->slug)}}"
                                             data-swiper-parallax="-300"
@@ -33,7 +41,8 @@ BD Muscle - Home
                             </div>
                             <div class=" col-lg-6 col-5 col-sm-6">
                                 <div class="slider-content slider-content3">
-                                    <img src="{{asset('thumbnail_img/'.$banner->Product->thumbnail_img)}}"
+                                    <img loading="lazy"
+                                        src="{{asset('thumbnail_img/'.$banner->Product->thumbnail_img)}}"
                                         alt="{{$banner->Product->title}}">
                                 </div>
                             </div>
@@ -44,11 +53,15 @@ BD Muscle - Home
             @endif
             @if ($banner->banner_image != '')
             <style>
-                .slide{{$loop->index+1}} {
+                .slide{{
+                        $loop->index+1}}
+
+                    {
                     background-image: url('{{asset('banner_image/'.$banner->banner_image)}}');
                     background-position: center;
                     background-size: cover;
                 }
+
             </style>
             <div class="swiper-slide">
                 <div class="slide-inner slide{{$loop->index+1}}">
@@ -56,7 +69,6 @@ BD Muscle - Home
             </div>
             @endif
             @empty
-
             @endforelse
         </div>
         <div class="swiper-pagination"></div>
@@ -72,7 +84,7 @@ BD Muscle - Home
                     @foreach ($latest_product as $Product)
                     <div class="featured-wrap">
                         <div class="featured-img">
-                            <img src="{{asset('thumbnail_img/'.$Product->thumbnail_img)}}" alt="">
+                            <img loading="lazy" src="{{asset('thumbnail_img/'.$Product->thumbnail_img)}}" alt="">
                             <div class="featured-content">
                                 <a style="padding: 12px 15px"
                                     href="{{route('CategorySearch',$Product->Catagory->slug)}}">{{$Product->Catagory->catagory_name}}</a>
@@ -127,7 +139,8 @@ BD Muscle - Home
                         @if (collect($product->Attribute)->min('discount') != '')
                         <span style=" z-index: 2">{{collect($product->Attribute)->max('discount')}}%</span>
                         @endif
-                        <img src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}" alt="{{ $product->title }}">
+                        <img loading="lazy" src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}"
+                            alt="{{ $product->title }}">
                         <div class="product-icon flex-style">
                             <ul>
                                 <li><a data-toggle="modal" data-target="#exampleModalCenter{{ $product->id }}"
@@ -171,10 +184,10 @@ BD Muscle - Home
                         </button>
                         <div class="modal-body d-flex">
                             <div class="product-single-img w-50">
-                                @if (collect($product->Attribute)->min('discount') != '')
+                                @if (collect($product->Attribute)->max('discount') != '')
                                 <span class="discount_tag">{{collect($product->Attribute)->min('discount')}}%</span>
                                 @endif
-                                <img src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}"
+                                <img loading="lazy" src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}"
                                     alt="{{ $product->title }}">
                             </div>
                             <div class="product-single-content w-50">
@@ -383,8 +396,8 @@ BD Muscle - Home
                 <div class="single-blog ">
                     <div class="blog-image">
                         <a href="{{route('FrontenblogView',$blog->slug)}}">
-                            <img src="{{asset('blogs/thumbnail/'.$blog->blog_thumbnail)}}" class="img-responsive w-100"
-                                alt="{{Str::ucfirst($blog->title)}}">
+                            <img lazy="loading" src="{{asset('blogs/thumbnail/'.$blog->blog_thumbnail)}}"
+                                class="img-responsive w-100" alt="{{Str::ucfirst($blog->title)}}">
                         </a>
                     </div>
                     <div class="blog-text">
@@ -417,48 +430,6 @@ BD Muscle - Home
         </div>
     </div>
 </section>
-
-<style>
-    .secure-box {
-        background-color: white;
-        text-align: center;
-        -webkit-box-shadow: 3px -4px 14px -4px rgba(0, 0, 0, 0.53);
-        box-shadow: 3px -4px 14px -4px rgba(0, 0, 0, 0.53);
-        /* padding-bottom:20px;      */
-        height: 210px;
-    }
-
-    .secure-box i {
-        font-size: 60px;
-        padding: 15px 10px;
-    }
-
-    .secure-box:hover {
-        transform: scale(1.1);
-        transition: all .3s ease 0s;
-    }
-
-    .secure-box h4 {
-        font-size: 20px;
-        line-height: 24px;
-        margin-bottom: 10px;
-        font-weight: 700;
-        text-align: center;
-        text-transform: none;
-        color: #333;
-        margin-top: 0;
-        cursor: pointer;
-    }
-
-    .secure-box p {
-        font-size: 16px;
-        cursor: pointer;
-        text-align: center;
-        color: #666;
-        font-weight: 400;
-    }
-
-</style>
 <section id="security" class="container">
     <div class="row ptb-50">
         <div class="col-lg-4 col-12 mb-5  ">
@@ -487,15 +458,25 @@ BD Muscle - Home
                 <p>Fast delivery, competitive prices and excellent services.</p>
             </div>
         </div>
-
-
     </div>
 </section>
 
-<!-- testmonial-area end -->
-<!-- Modal area start -->
-
-<!-- Modal area start -->
-
-
+@endsection
+@section('script_js')
+<script>
+   
+  
+@auth
+$.fn.cornerpopup({
+variant: 5,
+slide: 1,
+// stickToBottom:true,
+displayOnce : 1,
+position : 'left',
+timeOut : '50000',
+text2 : '<h6><span style="color:#ef4836">Hey,</span> {{Auth()->user()->name}}</h6>Welcome to {{config('app.name')}}',
+colors : '#ef4836',
+});
+@endauth
+</script>
 @endsection

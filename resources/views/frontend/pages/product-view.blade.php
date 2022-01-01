@@ -16,10 +16,12 @@
         background-color: #ef4836;
         cursor: pointer;
     }
-
+    /* .bg-img {
+	background: url('{{asset('0cb54dd53bd3565341b384d3b1d264e4.jpg')}}') no-repeat center center / cover;
+} */
 </style>
 <!-- .breadcumb-area start -->
-<div class="breadcumb-area bg-img-4 ptb-100">
+<div class="breadcumb-area bg-img ">
     <div class="container">
         <div class="row">
             <div class="col-12">
