@@ -51,7 +51,7 @@ class CouponController extends Controller
                 'coupon_name' => ['required', 'unique:coupons,coupon_name'],
                 'coupon_amount' => ['required','min:2', 'max:98', 'numeric'],
                 'coupon_limit' => ['min:2', 'numeric', 'nullable'],
-                'coupon_expire_date' => ['date:','required', 'after:tomorrow', 'nullable']
+                'coupon_expire_date' => ['date','required', 'after:tomorrow', 'nullable']
             ]);
             // return $request;
             $coupon = new Coupon;
@@ -89,7 +89,6 @@ class CouponController extends Controller
      */
     public function edit(Coupon $coupon)
     {
-        return $coupon;
         if (auth()->user()->can('Edit Coupon')) {
             return view('backend.coupon.edit', compact('coupon'));
         } else {

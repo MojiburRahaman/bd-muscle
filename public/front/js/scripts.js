@@ -427,7 +427,7 @@
         = COUNTDOWN CLOCK
 -------------------------------------------*/
     if ($("#clock").length) {
-        $('#clock').countdown('2020/12/25', function(event) {
+        $('#clock').countdown('2022/01/03', function(event) {
             var $this = $(this).html(event.strftime('' +
                 '<div class="box"><div>%m</div> <span>month</span> </div>' +
                 '<div class="box"><div>%D</div> <span>Days</span> </div>' +

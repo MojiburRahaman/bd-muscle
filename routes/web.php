@@ -1,6 +1,7 @@
  <?php
 
-    use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BestDealController;
+use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\BrandController;
     use App\Http\Controllers\CartController;
     use App\Http\Controllers\DashboardController;
@@ -105,8 +106,6 @@ use App\Http\Controllers\SocialLoginController;
 
 
     // backend route start
-
-    // dashboard route 
     Route::middleware(['auth', 'checkadminpanel'])->prefix('admin')->group(function () {
         Route::get('/change-password', [DashboardController::class,'AdminChangePassword'])->name('AdminChangePassword');
         Route::post('/change-password', [DashboardController::class,'AdminChangePasswordPost'])->name('AdminChangePasswordPost');
@@ -161,6 +160,9 @@ use App\Http\Controllers\SocialLoginController;
         Route::resource('/flavour', FlavourController::class);
 
         Route::resource('/blogs', BlogController::class);
+        // best deal controller
+        Route::resource('/deals', BestDealController::class)->except('edit',);
+
     });
 
 

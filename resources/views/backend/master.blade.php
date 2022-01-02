@@ -236,6 +236,16 @@
                                 </a>
                             </li>
                             @endcan
+                            @can('View Coupon')
+                            <li class="nav-item">
+                                <a href="{{route('deals.index')}}" class="nav-link  @yield('deal_active')">
+                                    <i class="nav-icon fas fa-th"></i>
+                                    <p>
+                                        Deals
+                                    </p>
+                                </a>
+                            </li>
+                            @endcan
 
                             @can('View Role')
 

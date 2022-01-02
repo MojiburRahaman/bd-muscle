@@ -473,7 +473,7 @@ slide: 1,
 // stickToBottom:true,
 displayOnce : 1,
 position : 'left',
-timeOut : '50000',
+timeOut : '10000',
 text2 : '<h6><span style="color:#ef4836">Hey,</span> {{Auth()->user()->name}}</h6>Welcome to {{config('app.name')}}',
 colors : '#ef4836',
 });
