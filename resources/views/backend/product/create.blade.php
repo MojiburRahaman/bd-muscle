@@ -8,7 +8,6 @@ active
 @section('product_dropdown_active')
 menu-open
 @endsection
-
 @section('content')
 <div class="content-wrapper">
     <!-- Main content -->
@@ -32,11 +31,33 @@ menu-open
                 <form enctype="multipart/form-data" action="{{route('products.store')}}" method="POST">
                     @csrf
                     <div class="form-group">
-                        <label for="catagory_id">Product name</label>
+                        <label for="product_name">Product name</label>
                         <input value="{{old('product_name')}}" name="product_name" type="text"
-                            placeholder="Product Name" autocomplete="none" class="form-control @error('product_name') is-invalid                                
+                            placeholder="Product Name" id="product_name" autocomplete="none" class="form-control @error('product_name') is-invalid                                
                             @enderror">
                         @error('product_name')
+                        <div class="alert alert-danger">
+                            {{$message}}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="meta_description">Meta Description</label>
+                        <input value="{{old('meta_description')}}" name="meta_description" type="text"
+                            placeholder="Meta Description" id="meta_description"  class="form-control @error('meta_description') is-invalid                                
+                            @enderror">
+                        @error('meta_description')
+                        <div class="alert alert-danger">
+                            {{$message}}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="catagory_id">Meta Keyword</label>
+                        <input value="{{old('product_name')}}" name="meta_keyword" type="text"
+                            placeholder="Meta Keyword" autocomplete="none" class="form-control @error('meta_keyword') is-invalid                                
+                            @enderror">
+                        @error('meta_keyword')
                         <div class="alert alert-danger">
                             {{$message}}
                         </div>

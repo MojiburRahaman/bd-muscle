@@ -60,6 +60,8 @@ class ProductController extends Controller
         $request->validate([
             'product_name' => ['required', 'string', 'max:250', 'unique:products,title,'],
             'catagory_name' => ['required'],
+            'meta_description' => ['required','string','max:250'],
+            'meta_keyword' => ['required'],
             'subcatagory_name' => ['required'],
             // 'thumbnail_img' => ['required', 'mimes:png,jpeg,jpg', 'dimensions:max_width=300,max_height=200'],
             'product_img.*' => ['required', 'mimes:png,jpeg,jpg'],
@@ -78,6 +80,8 @@ class ProductController extends Controller
         $product->title = $request->product_name;
         $product->slug = Str::slug($request->product_name);
         $product->catagory_id = $request->catagory_name;
+        $product->meta_description = $request->meta_description;
+        $product->meta_keyword = $request->meta_keyword;
         $product->subcatagory_id = $request->subcatagory_name;
         $product->brand_id = $request->brand_id;
         $product->product_summary = $request->product_summary;
@@ -189,6 +193,8 @@ class ProductController extends Controller
             'product_name' => ['required', 'string', 'max:250', 'unique:products,title,' . $id],
             'catagory_name' => ['required'],
             'subcatagory_name' => ['required'],
+            'meta_description' => ['required','string','max:250'],
+            'meta_keyword' => ['required'],
             // 'thumbnail_img' => ['mimes:png,', 'dimensions:max_width=300,max_height=200'],
             'product_img.*' => ['mimes:png,jpeg,jpg'],
             'product_img_new.*' => ['mimes:png,jpeg,jpg'],
@@ -207,6 +213,8 @@ class ProductController extends Controller
         // return $request;
         $product = Product::findorfail($id);
         $product->title = $request->product_name;
+        $product->meta_description = $request->meta_description;
+        $product->meta_keyword = $request->meta_keyword;
         $product->slug = Str::slug($request->product_name);
         $product->catagory_id = $request->catagory_name;
         $product->subcatagory_id = $request->subcatagory_name;

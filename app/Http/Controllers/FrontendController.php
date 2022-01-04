@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Banner;
+use App\Models\BestDeal;
 use App\Models\Blog;
 use App\Models\Catagory;
 use App\Models\Product;
@@ -31,11 +32,12 @@ class FrontendController extends Controller
         }
 
         if ($search == '') {
+            $deal = BestDeal::first();
             $banners = Banner::latest('id')
                 ->with(['Product:id,title,slug,thumbnail_img', 'Product.Attribute:id,product_id,discount,regular_price'])
                 ->where('status', 1)->get();
 
-            $best_seller = Product::with('Catagory:id,slug,catagory_name', 'Attribute')->where('most_view', '!=', 0)
+            $best_seller = Product::with('Catagory:id,slug,catagory_name', 'Attribute:product_id,discount,regular_price,sell_price')->where('most_view', '!=', 0)
                 ->where('status', 1)->orderBy('most_view', 'DESC')
                 ->select('id', 'most_view', 'slug', 'catagory_id', 'thumbnail_img', 'product_summary', 'title')
                 ->take(4)
@@ -55,6 +57,7 @@ class FrontendController extends Controller
                 'blogs' => $blogs,
                 'best_seller' => $best_seller,
                 'banners' => $banners,
+                'deal' => $deal,
             ]);
         }
         $Products = Product::with('Catagory', 'Attribute')
@@ -93,17 +96,13 @@ class FrontendController extends Controller
     }
     function Frontendblog()
     {
-        $blogs = Blog::latest('id')->select('id', 'title', 'slug', 'blog_thumbnail', 'blog_description', 'created_at')->paginate(10);
+        $blogs = Blog::latest('id')->select('id', 'title', 'slug', 'blog_thumbnail', 'blog_description', 'created_at')->paginate(15);
         return view('frontend.pages.blogs', [
             'blogs' => $blogs,
         ]);
     }
     function FrontenblogView($slug)
     {
-        // $blogs = Cache::rememberForever('key', function () {
-
-        //    return Blog::latest('id')->select('id', 'title', 'slug', 'blog_thumbnail',  'created_at')->take(5)->get();
-        // });
         $blogs = Blog::latest('id')->select('id', 'title', 'slug', 'blog_thumbnail',  'created_at')->take(5)->get();
         $blog = Blog::where('slug', $slug)->with('BlogComment')->withCount('BlogComment')->first();
         $next = Blog::where('id', '>', $blog->id)->select('slug')->first();

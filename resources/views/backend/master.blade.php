@@ -9,7 +9,7 @@
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet"
             href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-            <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <!-- Font Awesome Icons -->
         <link rel="stylesheet" href="{{asset('backend/plugins/fontawesome-free/css/all.min.css')}}">
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -166,6 +166,37 @@
                                 </ul>
                             </li>
                             @endcan
+                            {{-- @can('View Sub-Category') --}}
+                            <li class="nav-item @yield('brand_dropdown_active')">
+                                <a href="#" class="nav-link @yield('brand_active')">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p>
+                                        Brands
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    {{-- @can('View Sub-Category') --}}
+                                    <li class="nav-item">
+                                        <a href="{{route('brand.index')}}"
+                                            class="nav-link @yield('brand_view-active')">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>View Brands</p>
+                                        </a>
+                                    </li>
+                                    {{-- @endcan --}}
+                                    @can('Create Sub-Category')
+                                    <li class="nav-item">
+                                        <a href="{{route('brand.create')}}"
+                                            class="nav-link @yield('brand_add-active')">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Add Brand</p>
+                                        </a>
+                                    </li>
+                                    {{-- @endcan --}}
+                                </ul>
+                            </li>
+                            @endcan
                             @can('View Product')
                             <li class="nav-item @yield('product_dropdown_active')">
                                 <a href="#" class="nav-link @yield('product_active')">
@@ -315,7 +346,6 @@
 
                                 </ul>
                             </li>
-                            {{-- <ul class="nav nav-treeview"> --}}
                             <li class="nav-item @yield('blog_dropdown_active')">
                                 <a href="#" class="nav-link @yield('blog_active')">
                                     <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -324,7 +354,6 @@
                                         <i class="right fas fa-angle-left"></i>
                                     </p>
                                 </a>
-
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
                                         <a href="{{route('orders.index')}}"
@@ -345,10 +374,25 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="{{route('SiteBanner')}}"
-                                            class="nav-link @yield('banner-active')">
+                                        <a href="{{route('SiteBanner')}}" class="nav-link @yield('banner-active')">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Banner</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{route('SiteAbout')}}" class="nav-link @yield('about-active')">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>About</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{Illuminate\Support\Facades\URL::signedRoute('settings.edit',1)}}" class="nav-link @yield('setting-active')">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Settings</p>
                                         </a>
                                     </li>
                                 </ul>

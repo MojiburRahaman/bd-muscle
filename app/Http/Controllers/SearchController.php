@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Catagory;
 use App\Models\Product;
 use App\Models\Attribute;
+use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,7 +19,7 @@ class SearchController extends Controller
         $max_price = strip_tags($request->max_price);
         $category = Catagory::where('slug', $slug)->select('id', 'catagory_name')->first();
         $categories = Catagory::select('slug', 'catagory_name')->get();
-        
+
         if ($request->ajax()) {
             $Products = Product::with('Attribute', 'Catagory:id,catagory_name,slug')
                 ->where('catagory_id', $category->id)
@@ -48,7 +49,33 @@ class SearchController extends Controller
         $Products = Product::with('Attribute', 'Catagory:id,catagory_name,slug')
             ->where('catagory_id', $category->id)
             ->where('status', 1)
-            ->latest()->simplepaginate(1);
+            ->latest('id')->simplepaginate(1);
+        $category = $category->catagory_name;
+        return view('frontend.search.search-data', [
+            'Products' => $Products,
+            'Categories' => $categories,
+            'category' => $category,
+            'search' => $search,
+        ]);
+    }
+    public function BrandSearch($slug, Request $request)
+    {
+        $search = '';
+        $brand = Brand::where('slug', $slug)->first();
+        $category = $brand->brand_name;
+        $categories = Catagory::select('slug', 'catagory_name')->get();
+        if ($request->ajax()) {
+            $Products = Product::with('Attribute', 'Catagory:id,catagory_name,slug')
+                ->where('brand_id', $brand->id)
+                ->where('status', 1)
+                ->latest()->paginate(1);
+            $view = view('frontend.search.pagination-data', compact('Products'))->render();
+            return response()->json(['html' => $view,]);
+        }
+        $Products = Product::with('Attribute', 'Catagory:id,catagory_name,slug')
+            ->where('brand_id', $brand->id)
+            ->where('status', 1)
+            ->latest('id')->simplepaginate(1);
         return view('frontend.search.search-data', [
             'Products' => $Products,
             'Categories' => $categories,

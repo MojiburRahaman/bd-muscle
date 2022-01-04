@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Attribute;
+use App\Models\Brand;
 use Illuminate\Http\Request;
 
 class ProductViewController extends Controller
 {
     function SingleProductView($slug)
     {
+        $brands = Brand::latest('id')->get();
       $Product = Product::with('Catagory.Product:id,title,slug,thumbnail_img,catagory_id', 'Catagory:id,catagory_name,slug', 'Gallery:product_id,product_img', 'Attribute.Color:color_name,id', 'Attribute.Size:id,size_name',)
             ->withCount('Flavour')
             ->where('slug', $slug)
             ->where('status', 1)
-            ->select('id','most_view', 'brand_id', 'title', 'product_summary', 'product_description', 'slug', 'catagory_id')
+            ->select('id','most_view','meta_description','meta_keyword', 'brand_id', 'title', 'product_summary', 'product_description', 'slug', 'catagory_id')
             ->withCount('Flavour')
             ->first();
             $Product->increment('most_view', 1);
@@ -23,6 +25,7 @@ class ProductViewController extends Controller
         return view('frontend.pages.product-view', [
             'product' => $Product,
             'color' => $color,
+            'brands' => $brands,
             'size' => $size,
             'flavour_count' => $Product->flavour_count,
         ]);

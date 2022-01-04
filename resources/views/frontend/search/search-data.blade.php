@@ -2,7 +2,7 @@
 @section('title') @if (url()->current() == route('Frontendhome'))
 Search Result for "{{$search}}" BD-Muscle
 @else
-{{$category->catagory_name}} BD-Mucle
+{{$category}} BD-Mucle
 @endif @endsection
 @section('content')
 <style>
@@ -76,7 +76,7 @@ Search Result for "{{$search}}" BD-Muscle
                             <button type="submit"><i class="fa fa-search"></i></button>
                         </form>
                     </div>
-                    @if (url()->current() != route('Frontendhome'))
+                    {{-- @if (url()->current() != route('Frontendhome'))
                     <div class="product-filter">
                         <h4 class="widget-title">Filter by Price</h4>
                         <div class="filter-price">
@@ -100,7 +100,7 @@ Search Result for "{{$search}}" BD-Muscle
                             </form>
                         </div>
                     </div>
-                    @endif
+                    @endif --}}
                     <div class="widget widget_categories">
                         <h4 class="widget-title">Categories</h4>
                         <ul>
@@ -117,9 +117,9 @@ Search Result for "{{$search}}" BD-Muscle
                 <div class="row mb-30">
                     <div class="col-sm-4 col-12">
                         @if ($category != '')
-                        <h3 style="color: #ef4836;">{{$category->catagory_name}}</h3>
+                        <h3 style="color: #ef4836;">{{Str::ucfirst($category)}}</h3>
                         @endif
-                        <p class="test">Result : <span class="result">{{$Products->count()}}</span> Product </p>
+                        {{-- <p class="test">Result : <span class="result">{{$Products->count()}}</span> Product </p> --}}
                     </div>
 
                 </div>
@@ -225,21 +225,21 @@ Search Result for "{{$search}}" BD-Muscle
                                                             href="{{route('CategorySearch',$product->Catagory->slug )}}">{{ $product->Catagory->catagory_name }}</a>
                                                     </li>
                                                 </ul>
-                                                <ul class="socil-icon">
+                                                {{-- <ul class="socil-icon">
                                                     <li>Share :</li>
                                                     <li><a href="#"><i class="fa fa-facebook"></i></a></li>
                                                     <li><a href="#"><i class="fa fa-twitter"></i></a></li>
                                                     <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
                                                     <li><a href="#"><i class="fa fa-instagram"></i></a></li>
                                                     <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                                                </ul>
+                                                </ul> --}}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             @empty
-                            No Product
+                           <li class="text-center"> No Product</li>
                             @endforelse
                         </ul>
                         <ul id="ajax-data">

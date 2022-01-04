@@ -41,6 +41,28 @@ menu-open
                         @enderror
                     </div>
                     <div class="form-group">
+                        <label for="meta_description">Meta Description </label>
+                        <input value="{{$product->meta_description}}" name="meta_description" type="text" placeholder="Meta Description"
+                          id="meta_description"  autocomplete="none" class="form-control @error('meta_description') is-invalid                                
+                            @enderror">
+                        @error('meta_description')
+                        <div class="alert alert-danger">
+                            {{$message}}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="meta_keyword">Meta Keyword</label>
+                        <input value="{{$product->meta_keyword}}" name="meta_keyword" type="text" placeholder="Meta Keyword"
+                          id="meta_keyword"  autocomplete="none" class="form-control @error('meta_keyword') is-invalid                                
+                            @enderror">
+                        @error('meta_keyword')
+                        <div class="alert alert-danger">
+                            {{$message}}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
                         <label for="catagory_id">Catagory</label>
                         <select title="Select Catagory" class="form-control  @error('catagory_name') is-invalid                                
                         @enderror" name="catagory_name" id="catagory_id">

@@ -1,15 +1,22 @@
 <!doctype html>
 <html class="no-js" lang="en">
+    @php
+    $setting = App\Models\SiteSetting::first();
+    @endphp
 
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>@yield('title')</title>
-        <meta name="title" content="@yield('title')" />
-        <meta name="description" content="@yield('meta_description')">
+        <title>@yield('title') {{(url()->current() === route('Frontendhome'))? $setting->meta_title : ''}}</title>
+        <meta name="title"
+            content="@yield('title') {{(url()->current() == route('Frontendhome'))? $setting->meta_title : ''}}">
+        <meta name="description"
+            content="@yield('meta_description') {{(url()->current() == route('Frontendhome'))? $setting->meta_description : ''}}">
+        <meta name="keyword"
+            content="@yield('meta_keyword') {{(url()->current() == route('Frontendhome'))? $setting->meta_keyword : ''}}">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{csrf_token()}}">
-        <link rel="shortcut icon" type="image/png" href="{{ asset('front/images/favicon.png') }}">
+        <link rel="shortcut icon" type="image/png" href="{{ asset('logo/'.$setting->site_logo) }}">
         <link rel="canonical" href="{{url()->current()}}">
         <!-- Place favicon.ico in the root directory -->
         <!-- all css here -->
@@ -18,8 +25,9 @@
         <!-- owl.carousel.2.0.0-beta.2.4 css -->
         <link rel="stylesheet" href="{{ asset('front/css/owl.carousel.min.css') }}">
         <!-- font-awesome v4.6.3 css -->
+        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
         <link rel="stylesheet" href="{{ asset('front/css/font-awesome.min.css') }}">
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <link href="//cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <!-- flaticon.css -->
         <link rel="stylesheet" href="{{ asset('front/css/flaticon.css') }}">
         <link rel="stylesheet" href="{{ asset('front/css/corner-popup.min.css') }}">
@@ -30,7 +38,7 @@
         <link rel="stylesheet" href="{{ asset('front/css/selectsearch.css') }}">
         <!-- swiper.min.css -->
         <link rel="stylesheet" href="{{ asset('front/css/swiper.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('front/css/price_range_style.css') }}">
+        {{-- <link rel="stylesheet" href="{{ asset('front/css/price_range_style.css') }}"> --}}
         <!-- style css -->
         <link rel="stylesheet" href="{{ asset('front/css/styles.css') }}">
         <!-- responsive css -->
@@ -64,43 +72,21 @@
                     <div class="row">
                         <div class="col-md-6 col-12">
                             <ul class="d-flex header-contact">
-                                <li><i class="fa fa-phone"></i> +01 123 456 789</li>
-                                <li><i class="fa fa-envelope"></i> youremail@gmail.com</li>
+                                <li><i class="fa fa-phone"></i> {{$setting->number}}</li>
+                                <li><i class="fa fa-envelope"></i> {{$setting->email}} </li>
                             </ul>
                         </div>
                         <div class="col-md-6 col-12">
                             <ul class="d-flex account_login-area">
-                                <li>
-                                    <a href="javascript:void(0);"><i class="fa fa-user"></i> My Account <i
-                                            class="fa fa-angle-down"></i></a>
-                                    <ul class="dropdown_style">
-                                        @auth
-                                        <li><a target="_blank" href="{{ route('dashboard.index') }}"> Dashboard </a>
-                                        </li>
-                                        @else
-                                        <li><a href="{{ route('login') }}"> Login/Register </a></li>
-
-                                        <li><a href="{{ route('register') }}">Register</a></li>
-                                        @endauth
-
-                                        <li><a href="{{route('CartView')}}">Cart</a></li>
-                                        <li><a href="checkout.html">Checkout</a></li>
-                                        <li><a href="wishlist.html">wishlist</a></li>
-                                    </ul>
-                                </li>
                                 @auth
-                                @if (Auth::user()->roles()->first()->name == 'Customer')
-
-                                <li><a href="{{route('FrontendProfile')}}"> <i class="fa fa-user "><span
-                                                class="pl-2">Profile</span></i> </a></li>
+                                <li>
+                                    <a href="{{route('FrontendProfile')}}">
+                                         <i class="fa fa-user "><span class="pl-2">Profile</span></i>
+                                    </a>
+                                </li>
                                 @else
                                 <li><a href="{{ route('login') }}"> Login/Register </a></li>
-                                @endif
-                                @else
-                                <li><a href="{{ route('login') }}"> Login/Register </a></li>
-
                                 @endauth
-
                             </ul>
                         </div>
                     </div>
@@ -112,7 +98,7 @@
                         <div class="col-lg-3 col-md-7 col-sm-6 col-6">
                             <div class="logo">
                                 <a href="{{route('Frontendhome')}}">
-                                    <img src="{{asset('front/images/logo.png')}}" alt="">
+                                    <img src="{{ asset('logo/'.$setting->site_logo) }}" alt="{{config('app.name')}}">
                                 </a>
                             </div>
                         </div>
@@ -122,30 +108,18 @@
                                     <li class="{{ route('Frontendhome') == url()->current() ? 'active' : '' }}"><a
                                             href="{{ route('Frontendhome') }}">Home</a></li>
                                     <li><a href="about.html">About</a></li>
-                                    <li>
-                                        <a href="javascript:void(0);">Shop <i class="fa fa-angle-down"></i></a>
-                                        <ul class="dropdown_style">
-                                            <li><a href="shop.html">Shop Page</a></li>
-                                            <li><a href="single-product.html">Product Details</a></li>
-                                            <li><a href="{{route('CartView')}}">Shopping cart</a></li>
-                                            <li><a href="wishlist.html">Wishlist</a></li>
-                                        </ul>
-                                    </li>
+                                    <li class="{{ route('Frontendshop') == url()->current() ? 'active' : '' }}"><a
+                                            href="{{ route('Frontendshop') }}">Shop</a></li>
+
                                     <li class="{{route('Frontendblog') == url()->current() ? 'active' : ''}}">
                                         <a href="{{route('Frontendblog')}}">Blog </a>
                                     </li>
-                                    <li class="">
+                                    <li class="{{route('CartView') == url()->current() ? 'active' : ''}}">
                                         <a href="{{route('CartView')}}">
                                             <i class="fa fa-shopping-cart"></i>
                                             Cart</a>
                                     </li>
-                                    <li class="">
-                                        <a href="">
-                                            <i class="fa fa-shopping-cart"></i>
-                                            Checkout</a>
-                                    </li>
-                                    <li><a href="contact.html">Contact</a></li>
-                                    <li><a href="{{route('WishlistView')}}">Wishlist</a></li>
+                                    <li><a href="contact.html">Contact us</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -277,36 +251,13 @@
                         <div class="row">
                             <div class="col-12 d-block d-lg-none">
                                 <ul class="metismenu">
-                                    <li><a href="index.html">Home</a></li>
+                                    <li><a href="{{route('Frontendhome')}}">Home</a></li>
                                     <li><a href="about.html">About</a></li>
-                                    <li class="sidemenu-items">
-                                        <a class="has-arrow" aria-expanded="false" href="javascript:void(0);">Shop </a>
-                                        <ul aria-expanded="false">
-                                            <li><a href="shop.html">Shop Page</a></li>
-                                            <li><a href="single-product.html">Product Details</a></li>
-                                            <li><a href="cart.html">Shopping cart</a></li>
-                                            <li><a href="">Checkout</a></li>
-                                            <li><a href="wishlist.html">Wishlist</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="sidemenu-items">
-                                        <a class="has-arrow" aria-expanded="false" href="javascript:void(0);">Pages </a>
-                                        <ul aria-expanded="false">
-                                            <li><a href="about.html">About Page</a></li>
-                                            <li><a href="single-product.html">Product Details</a></li>
-                                            <li><a href="{{route('CartView')}}">Shopping cart</a></li>
-                                            <li><a href="wishlist.html">Wishlist</a></li>
-                                            <li><a href="faq.html">FAQ</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="sidemenu-items">
-                                        <a class="has-arrow" aria-expanded="false" href="javascript:void(0);">Blog</a>
-                                        <ul aria-expanded="false">
-                                            <li><a href="blog.html">Blog</a></li>
-                                            <li><a href="blog-details.html">Blog Details</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="contact.html">Contact</a></li>
+                                    <li><a href="{{route('Frontendshop')}}">Shop</a></li>
+                                    <li><a href="{{route('Frontendblog')}}">Blog</a></li>
+                                    <li><a href="{{route('CartView')}}">Cart</a></li>
+                                    <li><a href="{{route('CartView')}}">Contact us</a></li>
+
                                 </ul>
                             </div>
                         </div>
@@ -356,11 +307,11 @@
                             <div class="col-lg-12 col-12">
                                 <div class="footer-top-text text-center">
                                     <ul>
-                                        <li><a href="home.html">home</a></li>
+                                        <li><a href="{{route('Frontendhome')}}">home</a></li>
                                         <li><a href="#">about us</a></li>
-                                        <li><a href="#">shop</a></li>
-                                        <li><a href="blog.html">blog</a></li>
-                                        <li><a href="contact.html">contact</a></li>
+                                        <li><a href="{{route('Frontendshop')}}">shop</a></li>
+                                        <li><a href="{{route('Frontendblog')}}">blog</a></li>
+                                        <li><a href="contact.html">contact us</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -374,26 +325,32 @@
                         <div class="col-lg-2 col-md-3 col-sm-12">
                             <div class="footer-icon">
                                 <ul class="d-flex">
-                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                    @if ($setting->facebook_link != '')
+
+                                    <li><a target="_blank" href="{{$setting->facebook_link}}"><i
+                                                class="fa fa-facebook"></i></a></li>
+                                    @endif
+
+                                    @if ($setting->instagram_link != '')
+
+                                    <li><a target="_blank" href="{{$setting->instagram_link}}"><i
+                                                class="fa fa-instagram"></i></a></li>
+                                    @endif
                                 </ul>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-8 col-sm-12">
                             <div class="footer-content">
-                                <p>On the other hand, we denounce with righteous indignation and dislike men who are so
-                                    beguiled and demoralized by the charms of pleasure righteous indignation and dislike
+                                <p>{{$setting->footer_text}}
                                 </p>
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-8 col-sm-12">
                             <div class="footer-adress">
                                 <ul>
-                                    <li><a href="#"><span>Email:</span> domain@gmail.com</a></li>
-                                    <li><a href="#"><span>Tel:</span> 0131234567</a></li>
-                                    <li><a href="#"><span>Adress:</span> 52 Web Bangale , Adress line2 , ip:3105</a>
+                                    <li><a href="#"><span>Email:</span> {{$setting->email}}</a></li>
+                                    <li><a href="#"><span>Tel:</span>{{$setting->number}}</a></li>
+                                    <li><a href="#"><span>Adress:</span> {{$setting->address}}</a>
                                     </li>
                                 </ul>
                             </div>
@@ -401,7 +358,8 @@
                         <div class="col-lg-3 col-md-4 col-sm-12">
                             <div class="footer-reserved">
                                 <ul>
-                                    <li>Copyright © 2019 Tohoney All rights reserved.</li>
+                                    <li>Copyright © {{now()->format('Y')}} {{config('app.name')}} All rights reserved.
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -452,7 +410,7 @@
         <script src="{{ asset('front/js/countdown.js') }}"></script>
         <!-- swiper.min.js -->
         <script src="{{ asset('front/js/swiper.min.js') }}"></script>
-        <script src="{{ asset('front/js/price_range_script.js') }}"></script>
+        {{-- <script src="{{ asset('front/js/price_range_script.js') }}"></script> --}}
         <!-- metisMenu.min.js -->
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="{{ asset('front/js/metisMenu.min.js') }}"></script>
@@ -464,6 +422,7 @@
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <!-- main js -->
 
+        <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
         <script src="{{ asset('front/js/selectsearch.js') }}"></script>
         <script src="{{ asset('front/js/scripts.js') }}"></script>
@@ -472,7 +431,7 @@
         <script>
             @guest
         
-        var delay = 5000; //in milleseconds
+        var delay = 10; //in milleseconds
         jQuery(document).ready(function($){
           setTimeout(function(){ showNewsletterPopup(); }, delay);
           
@@ -530,7 +489,5 @@
         </script>
 
     </body>
-    <!-- Mirrored from themepresss.com/tf/html/tohoney/index.html by HTTrack Website Copier/3.x
-            [XR&CO'2014], Fri, 13 Mar 2020 03:33:34 GMT -->
 
 </html>

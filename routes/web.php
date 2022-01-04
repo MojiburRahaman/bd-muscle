@@ -70,6 +70,7 @@ use App\Http\Controllers\SocialLoginController;
 
     // search route start
     Route::get('/product-category/{slug}', [SearchController::class, 'CategorySearch'])->name('CategorySearch');
+    Route::get('/brand/{slug}', [SearchController::class, 'BrandSearch'])->name('BrandSearch');
     // search route end
 
     // cart route start
@@ -145,6 +146,7 @@ use App\Http\Controllers\SocialLoginController;
         Route::get('orders/download-invoice/{id}', [OrderController::class, 'InvoiceDownload'])->name('InvoiceDownload');
         Route::resource('/orders', OrderController::class);
         
+        Route::get('settings/about', [SiteSettingController::class, 'SiteAbout'])->name('SiteAbout');
         Route::get('settings/banner-status/{id}', [SiteSettingController::class, 'SiteBannerStatus'])->name('SiteBannerStatus');
         Route::get('settings/banner-delete/{id}', [SiteSettingController::class, 'SiteBannerDelete'])->name('SiteBannerDelete');
         Route::post('settings/banner-post', [SiteSettingController::class, 'SiteBannerPost'])->name('SiteBannerPost');
@@ -161,7 +163,7 @@ use App\Http\Controllers\SocialLoginController;
 
         Route::resource('/blogs', BlogController::class);
         // best deal controller
-        Route::resource('/deals', BestDealController::class)->except('edit',);
+        Route::resource('/deals', BestDealController::class)->except('edit','update');
 
     });
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Banner;
 use App\Models\Product;
+use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
@@ -38,7 +39,43 @@ class SiteSettingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //    return $request->site_logo;
+        $request->validate([
+            'meta_title' => ['required', 'string', 'max:250'],
+            'meta_description' => ['required', 'string', 'max:250'],
+            'meta_keyword' => ['required', 'string', 'max:250'],
+            'email' => ['required', 'string', 'max:250'],
+            'number' => ['required',],
+            'address' => ['required', 'string', 'max:250'],
+            'facebook_link' => ['max:250'],
+            'instagram_link' => ['max:250'],
+            'footer_text' => ['required', 'string'],
+            'site_logo' => ['required', 'mimes:png'],
+        ]);
+
+        $setting = new SiteSetting;
+        $setting->meta_title = $request->meta_title;
+        $setting->meta_description = $request->meta_description;
+        $setting->meta_keyword = $request->meta_keyword;
+        $setting->email = $request->email;
+        $setting->number = $request->number;
+        $setting->address = $request->address;
+        $setting->facebook_link = $request->facebook_link;
+        $setting->instagram_link = $request->instagram_link;
+        $setting->footer_text = $request->footer_text;
+
+        if ($request->hasFile('site_logo')) {
+            $site_logo = $request->file('site_logo');
+            $extension = config('app.name') . '-' . Str::random(2) . '.' . $site_logo->getClientOriginalExtension();
+            Image::make($site_logo)->save(public_path('logo/' . $extension), 100);
+            $setting->site_logo = $extension;
+        }
+        $setting->save();
+
+        return back()->with('success', 'Addedd Successfully');
+
+
+        return $request;
     }
 
     /**
@@ -58,9 +95,11 @@ class SiteSettingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
-        //
+        abort_if(!$request->hasValidSignature(), 404);
+        $setting = SiteSetting::findorfail($id);
+        return view('backend.site-settings.edit', compact('setting'));
     }
 
     /**
@@ -72,7 +111,41 @@ class SiteSettingController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'meta_title' => ['required', 'string', 'max:250'],
+            'meta_description' => ['required', 'string', 'max:250'],
+            'meta_keyword' => ['required', 'string', 'max:250'],
+            'email' => ['required', 'string', 'max:250'],
+            'number' => ['required',],
+            'address' => ['required', 'string', 'max:250'],
+            'facebook_link' => ['max:250'],
+            'instagram_link' => ['max:250'],
+            'footer_text' => ['required', 'string'],
+            'site_logo' => [ 'mimes:png'],
+        ]);
+
+        $setting =SiteSetting::findorfail($id);
+        $setting->meta_title = $request->meta_title;
+        $setting->meta_description = $request->meta_description;
+        $setting->meta_keyword = $request->meta_keyword;
+        $setting->email = $request->email;
+        $setting->number = $request->number;
+        $setting->address = $request->address;
+        $setting->facebook_link = $request->facebook_link;
+        $setting->instagram_link = $request->instagram_link;
+        $setting->footer_text = $request->footer_text;
+
+        if ($request->hasFile('site_logo')) {
+            $site_logo = $request->file('site_logo');
+            $extension = config('app.name') . '-' . Str::random(2) . '.' . $site_logo->getClientOriginalExtension();
+            Image::make($site_logo)->save(public_path('logo/' . $extension), 100);
+            $setting->site_logo = $extension;
+        }
+        $setting->save();
+
+        return back()->with('success', 'Edited Successfully');
+
+
     }
 
     /**
@@ -139,5 +212,9 @@ class SiteSettingController extends Controller
         $banner->status = 1;
         $banner->save();
         return back()->with('success', 'Active Successfully');
+    }
+    public function SiteAbout()
+    {
+        return view('backend.site-settings.about');
     }
 }

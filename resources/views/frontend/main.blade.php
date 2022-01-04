@@ -1,7 +1,4 @@
 @extends('frontend.master')
-@section('title')
-BD Muscle - Home
-@endsection
 @section('content')
 <!-- slider-area start -->
 <div class="slider-area">
@@ -99,13 +96,21 @@ BD Muscle - Home
 </div>
 <!-- featured-area end -->
 <!-- start count-down-section -->
+<style>
+    .count-down-area {
+        background-image: url('{{asset('muscletechperformancefeat.jpg')}}')
+    }
+</style>
+@if ($deal != '')
+    
+@if ($deal->status == 1)   
+{{-- count-down-area --}}
 <div class="count-down-area count-down-area-sub">
     <section class="count-down-section section-padding parallax" data-speed="7">
         <div class="container">
             <div class="row">
                 <div class="col-12 col-lg-12 text-center">
-                    <h2 class="big">Deal Of the Day <span>Contrary to popular belief, Lorem Ipsum is not simply random
-                            text. It has roots in a piece of classical Latin</span></h2>
+                    <h2 class="big">{{$deal->title}} </h2>
                 </div>
                 <div class="col-12 col-lg-12 text-center">
                     <div class="count-down-clock text-center">
@@ -119,6 +124,8 @@ BD Muscle - Home
         <!-- end container -->
     </section>
 </div>
+@endif
+@endif
 <!-- end count-down-section -->
 <!-- product-area start -->
 <div class="product-area product-area-2">
@@ -464,8 +471,20 @@ BD Muscle - Home
 @endsection
 @section('script_js')
 <script>
-   
-  
+    @if ($deal != '')
+   @if ($deal->status == 1)   
+   if ($("#clock").length) {
+        $('#clock').countdown('{{$deal->expire_date}}', function(event) {
+            var $this = $(this).html(event.strftime('' +
+                '<div class="box"><div>%m</div> <span>month</span> </div>' +
+                '<div class="box"><div>%D</div> <span>Days</span> </div>' +
+                '<div class="box"><div>%H</div> <span>Hours</span> </div>' +
+                '<div class="box"><div>%M</div> <span>Mins</span> </div>' +
+                '<div class="box"><div>%S</div> <span>Secs</span> </div>'));
+        });
+    }
+   @endif
+   @endif
 @auth
 $.fn.cornerpopup({
 variant: 5,

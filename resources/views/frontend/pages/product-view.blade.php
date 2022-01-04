@@ -1,7 +1,10 @@
 @extends('frontend.master')
 @section('title')
-{{$product->title}}
-@endsection
+{{$product->title}} @endsection
+@section('meta_description')
+{{$product->meta_description}} @endsection
+@section('meta_keyword')
+{{$product->meta_keyword}} @endsection
 @section('content')
 <style>
     #wishlist {
@@ -16,9 +19,11 @@
         background-color: #ef4836;
         cursor: pointer;
     }
+
     /* .bg-img {
 	background: url('{{asset('0cb54dd53bd3565341b384d3b1d264e4.jpg')}}') no-repeat center center / cover;
 } */
+
 </style>
 <!-- .breadcumb-area start -->
 <div class="breadcumb-area bg-img ">
@@ -61,7 +66,6 @@
                     </div>
                 </div>
             </div>
-            {{-- <form action="{{route('CartPost')}}" method="POST"> --}}
             <div class="col-lg-6">
                 <div class="product-single-content">
                     <h3>{{$product->title}}</h3>
@@ -109,7 +113,7 @@
                     <form action="" id="Form_submit" method="POST">
                         @csrf
                         <p>{{$product->product_summary}}</p>
-                    @if ($product->Attribute->sum('quantity') != 0)
+                        @if ($product->Attribute->sum('quantity') != 0)
 
                         <ul class="input-style">
                             <li class="quantity cart-plus-minus">
@@ -180,7 +184,7 @@
                         @if ($product->flavour_count != 0)
 
                         <ul class="cetagory" style="margin-bottom: 10px">
-                            <li>Flavour:</p>
+                            <li>Flavour:</li>
                             <li>
                                 <select name="flavour_id"
                                     class="form-control ml-2 @error('flavour_id') is-invalid @enderror">
@@ -199,9 +203,9 @@
                         @if ($product->brand_id != '')
 
                         <ul class="cetagory" style="margin-bottom: 10px">
-                            <li>Brand:</p>
+                            <li>Brand:</li>
                             <li>
-                                <a href="">
+                                <a class="ml-2" href="{{route('BrandSearch',$product->Brand->slug)}}">
                                     <img width="60" src="{{asset('brand_img/'.$product->Brand->brand_img)}}"
                                         title="{{$product->Brand->brand_name}}" alt="{{$product->Brand->brand_name}}">
                                 </a>
@@ -222,9 +226,8 @@
                             <li><a href="#"><i class="fa fa-instagram"></i></a></li>
                             <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
                         </ul>
-
+                    </form>
                 </div>
-                </form>
             </div>
         </div>
         <div class="row mt-60">
@@ -468,71 +471,100 @@
             </div>
         </div>
     </div>
-</div>
-<!-- single-product-area end-->
-<!-- featured-product-area start -->
-@if ($product->Catagory->Product->count() != 1)
 
-<div class="featured-product-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="section-title text-left">
-                    <h2>Related Product</h2>
+    <!-- single-product-area end-->
+    <!-- featured-product-area start -->
+    @if ($product->Catagory->Product->count() != 1)
+
+    <div class="featured-product-area mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-title text-left">
+                        <h2>Related Product</h2>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            @foreach ($product->Catagory->Product as $Catgory_wise_product)
-            @if ($Catgory_wise_product->id != $product->id)
-            <div class="col-lg-3 col-sm-6 col-12">
-                <div class="featured-product-wrap">
-                    <div class="featured-product-img">
-                        <a href="{{route('SingleProductView',$Catgory_wise_product->slug)}}">
-                            <img src="{{asset('thumbnail_img/'.$Catgory_wise_product->thumbnail_img)}}"
-                                alt="{{$Catgory_wise_product->title}}">
-                        </a>
-                    </div>
-                    <div class="featured-product-content">
-                        <div class="row">
-                            <div class="col-7">
-                                <h3><a
-                                        href="{{route('SingleProductView',$Catgory_wise_product->slug)}}">{{$Catgory_wise_product->title}}</a>
-                                </h3>
-                                <p>৳
-                                    @php
-                                    $sale = collect($product->Attribute)->min('sell_price');
-                                    $regular = collect($product->Attribute)->min('regular_price');
-                                    if ($sale == '') {
-                                    echo $regular;
-                                    } else {
-                                    echo $sale;
-                                    }
-                                    @endphp
+            <div class="row">
+                @foreach ($product->Catagory->Product as $Catgory_wise_product)
+                @if ($Catgory_wise_product->id != $product->id)
+                <div class="col-lg-3 col-sm-6 col-12">
+                    <div class="featured-product-wrap">
+                        <div class="featured-product-img">
+                            <a href="{{route('SingleProductView',$Catgory_wise_product->slug)}}">
+                                <img src="{{asset('thumbnail_img/'.$Catgory_wise_product->thumbnail_img)}}"
+                                    alt="{{$Catgory_wise_product->title}}">
+                            </a>
+                        </div>
+                        <div class="featured-product-content">
+                            <div class="row">
+                                <div class="col-7">
+                                    <h3><a
+                                            href="{{route('SingleProductView',$Catgory_wise_product->slug)}}">{{$Catgory_wise_product->title}}</a>
+                                    </h3>
+                                    <p>৳
+                                        @php
+                                        $sale = collect($product->Attribute)->min('sell_price');
+                                        $regular = collect($product->Attribute)->min('regular_price');
+                                        if ($sale == '') {
+                                        echo $regular;
+                                        } else {
+                                        echo $sale;
+                                        }
+                                        @endphp
 
-                                </p>
-                            </div>
-                            <div class="col-5 text-right">
-                                <ul>
-                                    <li><a href="cart.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                    <li><a href="cart.html"><i class="fa fa-heart"></i></a></li>
-                                </ul>
+                                    </p>
+                                </div>
+                                <div class="col-5 text-right">
+                                    <ul>
+                                        <li><a href="{{route('SingleProductView',$Catgory_wise_product->slug)}}"><i
+                                                    class="fa fa-shopping-cart"></i></a></li>
+                                        <li><a href="{{route('SingleProductView',$Catgory_wise_product->slug)}}"><i
+                                                    class="fa fa-heart"></i></a></li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                @endif
+                @endforeach
             </div>
-            @endif
+        </div>
+
+    </div>
+    @endif
+
+
+
+    <div class="container">
+        {{-- <div class="row"> --}}
+        <div class="your-class one-time responsive">
+            @foreach ($brands as $brand)
+            <div>
+                <a href="{{route('BrandSearch',$brand->slug)}}">
+                    <img loading="lazy" src="{{asset('brand_img/'.$brand->brand_img)}}" alt="">
+                </a>
+            </div>
             @endforeach
         </div>
+        {{-- </div> --}}
     </div>
 </div>
-@endif
 <!-- featured-product-area end -->
 @endsection
 
 @section('script_js')
 <script>
+    $('.one-time').slick({
+  infinite: true,
+  speed: 300,
+  slidesToShow: 5,
+  adaptiveHeight: true,
+  autoplay: true,
+  arrows: false,
+});
+
     // if therese color available start
     $('.color_name').change(function() {
             var color_id = $(this).val();
