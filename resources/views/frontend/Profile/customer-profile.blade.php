@@ -1,20 +1,12 @@
 @extends('frontend.master')
-
+@section('title')
+{{config('app.name')}} - Profile
+@endsection
 @section('content')
 <style>
-    .nav-pills .nav-link.active,
-    .nav-pills .show>.nav-link {
-        color: #fff;
-        background-color: #ef4836;
-    }
-
-    .test {
-        color: #ef4836;
-    }
-
-    .order_table {
-        background-color: #ef4836;
-        color: white;
+    
+    li {
+        list-style: none;
     }
 
 </style>
@@ -49,12 +41,10 @@
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#Dashboard" role="tab"
                     aria-controls="Dashboard" aria-selected="true">Dashboard</a>
-                    <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#order-list" role="tab"
+                <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#order-list" role="tab"
                     aria-controls="v-pills-messages" aria-selected="false">Order</a>
-                    <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#change-passwords" role="tab"
-                        aria-controls="change-passwords" aria-selected="false">Change Password</a>
-                {{-- <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab"
-                    aria-controls="v-pills-settings" aria-selected="false">Settings</a> --}}
+                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#change-passwords" role="tab"
+                    aria-controls="change-passwords" aria-selected="false">Change Password</a>
                 <a class="nav-link" onclick="event.preventDefault();document.getElementById('from_logout').submit()"
                     href="{{ route('logout') }}">Log Out</a>
                 <form id="from_logout" action="{{ route('logout') }}" method="POST">
@@ -68,8 +58,8 @@
                     aria-labelledby="v-pills-home-tab">
                     <h3>Welcome, {{Str::ucfirst(auth()->user()->name)}}</h3>
                     <p>From your account dashboard. you can easily check & view your <a class="test" href=""> recent
-                            orders</a> and <a class="test"  href="">Change your
-                                password</a> and account details.</p>
+                            orders</a> and <a class="test" href="">Change your
+                            password</a>.</p>
                 </div>
                 <div class="tab-pane fade" id="change-passwords" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                     <div class="ml-5 col-lg-5">
@@ -99,7 +89,6 @@
                     <table class="table">
                         <thead class="order_table">
                             <tr>
-                                <th scope="col">#</th>
                                 <th scope="col">Order No</th>
                                 <th scope="col">Order Date</th>
                                 <th scope="col">Total Amount</th>
@@ -108,16 +97,14 @@
                         </thead>
                         <tbody>
                             @forelse ($orders as $order)
-                                
+
                             <tr>
-                                <th scope="row">{{$loop->index+1}}</th>
                                 @foreach ($order->order_summaries as $order_summaries)
-                                    
-                                <td>{{$order_summaries->order_number}}</td>
-                                <td>{{$order_summaries->created_at->format('d M Y')}}</td>
+                                <td>#{{$order_summaries->order_number}}</td>
+                                <td>{{$order_summaries->created_at->format('d/m/Y')}}</td>
                                 <td>৳ {{$order_summaries->subtotal}}</td>
                                 @if ($order_summaries->delivery_status == 1)
-                                    
+
                                 <td>Pending...</td>
                                 @elseif ($order_summaries->delivery_status === 2)
                                 <td>On the way</td>
@@ -127,17 +114,60 @@
                                 @endforeach
                             </tr>
                             @empty
-                            <td colspan="10">No Order</td>
+                            <td class="text-center" colspan="10">No Order</td>
                             @endforelse
+                            <tr id="">
+
+                            </tr>
+                        </tbody>
+                        <tbody id="ajax-data">
+
                         </tbody>
                     </table>
-                </div>
-                <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                    ...
-                </div>
+                    <div class="mt-2 text-center">
+                        <a href="javascript:void(0);" class="loadMore_btn">Load More</a>
+                    </div>
+                    <li class="col-12 text-center">
+                        <div class="load_image" style="display: none">
+                            <p>
+                                <img width="30%" src="{{asset('front/images/Reload-Image-Gif-1.gif')}}" alt="">
+                            </p>
+                        </div>
+                </div> 
             </div>
         </div>
     </div>
 </div>
 
+@endsection
+
+@section('script_js')
+<script>
+    var page = 1;
+    $(document).on('click', '.loadMore_btn', function(event){
+    page++;
+    loadMoreData(page)
+ });
+
+function loadMoreData(page){
+     $('.loadMore_btn').hide();
+    $('.load_image').show();
+    $.ajax({
+        url:'?page=' + page,
+        type:'get',
+    })
+    .done(function(data){
+        if(data.html == ""){
+         $('.loadMore_btn').hide();
+        $('.load_image').hide();
+        $('.no_data').show();
+           
+            return;
+        }
+        $('#ajax-data').append(data.html);
+        $('.load_image').hide();
+        $('.loadMore_btn').show();
+    })
+}
+</script>
 @endsection

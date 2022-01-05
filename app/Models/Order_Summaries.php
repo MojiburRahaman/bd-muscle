@@ -14,6 +14,10 @@ class Order_Summaries extends Model
     {
         return $this->belongsTo(billing_details::class, 'billing_details_id');
     }
+    function User()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
     function Order_Details()
     {
         return $this->hasMany(Order_Details::class, 'Order_Summaries_id');

@@ -152,7 +152,16 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        $product = Product::findorfail($id);
+        if ($product->certified == 2) {
+            $product->certified = 1;
+          $product->save();
+          return back()->with('success', 'Product Added into Certified');
+        }else {
+            $product->certified == 2;
+            $product->save();
+            return back()->with('warning', 'Product remove From Certified');
+        }
     }
 
     /**
@@ -210,7 +219,6 @@ class ProductController extends Controller
             'discount.*.max' => 'Maximum 99',
             // 'regular_price[].required' => 'Regular Price is required'
         ]);
-        // return $request;
         $product = Product::findorfail($id);
         $product->title = $request->product_name;
         $product->meta_description = $request->meta_description;
@@ -448,7 +456,6 @@ class ProductController extends Controller
         if ($product->status == 1) {
             $product->status = 2;
             $product->save();
-
             return back()->with('warning', 'Product Inactive Successfully');
         } else {
             $product->status = 1;

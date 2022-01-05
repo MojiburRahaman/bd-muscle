@@ -1,23 +1,7 @@
 @extends('frontend.master')
+@section('title',config('app.name')) 
 @section('content')
 <!-- header-area end -->
-<!-- .breadcumb-area start -->
-<div class="breadcumb-area bg-img-4 ptb-100">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="breadcumb-wrap text-center">
-                    <h2>Checkout</h2>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><span>Checkout</span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- .breadcumb-area end -->
 <!-- checkout-area start -->
 <div class="checkout-area ptb-100">
     <div class="container">
@@ -41,12 +25,6 @@
                                 <input class="@error('billing_user_name') is-invalid @enderror form-control" type="text"
                                     name="billing_user_name" @error('billing_user_name') required @enderror
                                     placeholder="Enter Name" autocomplete="none" value="{{old('billing_user_name')}}">
-                            </div>
-                            <div class="col-sm-12 col-12">
-                                <p>Email Address <span style="color: red">*</span></p>
-                                <input class="@error('user_email') is-invalid @enderror form-control" type="email"
-                                    name="user_email" placeholder="Enter Your Email" autocomplete="none"
-                                    value="{{old('user_email')}}">
                             </div>
                             <div class="col-sm-12 col-12">
                                 <p>Phone No.<span style="color: red">*</span> </p>
@@ -133,12 +111,12 @@
                                     </strong></span></li>
                         </ul>
                         <ul class="payment-method">
-                            <li>
+                            {{-- <li>
                                 <input @error('payment_option') required  @enderror name="payment_option" style="background: orange" id="bank" value="pay_now" type="radio">
                                 <label for="bank">Direct Bank Transfer</label>
-                            </li>
+                            </li> --}}
                             <li>
-                                <input @error('payment_option') required  @enderror name="payment_option" id="cash_on_delivery" value="cash_on_delivery" type="radio">
+                                <input checked @error('payment_option') required  @enderror name="payment_option" id="cash_on_delivery" value="cash_on_delivery" type="radio">
                                 <label for="cash_on_delivery">Cash On Delivery</label>
                             </li>
 
@@ -230,10 +208,10 @@ if (division_id) {
             }
             else{
                 @php
-                   session()->put('shipping',120);
+                   session()->put('shipping',100);
                @endphp
-                $('#shipping_id').html(120)
-                $('#sub_total').html(120 + parseInt(total_amount));
+                $('#shipping_id').html(100)
+                $('#sub_total').html(100 + parseInt(total_amount));
                 
            }
         $.ajaxSetup({

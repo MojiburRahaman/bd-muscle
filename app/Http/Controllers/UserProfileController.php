@@ -12,10 +12,19 @@ use Illuminate\Support\Facades\Crypt;
 class UserProfileController extends Controller
 {
 
-    function FrontendProfile()
+    function FrontendProfile(Request $request)
     {
-        $orders = billing_details::where('user_id', auth()->id())
-            ->with('order_summaries')->latest('id')->get();
+        if ($request->ajax()) {
+            # code...
+            $orders = billing_details::where('user_id', auth()->id())
+                ->with('order_summaries')->latest('id')->paginate(2);
+                $view = view('frontend.Profile.order-list-pagination-data', [
+                    'orders' => $orders,
+                ])->render();
+                return response()->json(['html' => $view,]);
+            }
+            $orders = billing_details::where('user_id', auth()->id())
+                ->with('order_summaries')->latest('id')->paginate(2);
         return view('frontend.Profile.customer-profile', [
             'orders' => $orders,
         ]);

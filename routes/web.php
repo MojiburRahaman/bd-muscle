@@ -1,7 +1,7 @@
  <?php
 
-use App\Http\Controllers\BestDealController;
-use Illuminate\Support\Facades\Route;
+    use App\Http\Controllers\BestDealController;
+    use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\BrandController;
     use App\Http\Controllers\CartController;
     use App\Http\Controllers\DashboardController;
@@ -21,8 +21,8 @@ use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\UserProfileController;
     use App\Http\Controllers\CheckoutController;
     use App\Http\Controllers\OrderController;
-use App\Http\Controllers\SiteSettingController;
-use App\Http\Controllers\SocialLoginController;
+    use App\Http\Controllers\SiteSettingController;
+    use App\Http\Controllers\SocialLoginController;
     use Illuminate\Support\Facades\Auth;
     /*
 |--------------------------------------------------------------------------
@@ -54,6 +54,7 @@ use App\Http\Controllers\SocialLoginController;
 
     // frontend route start
     Route::get('/', [FrontendController::class, 'Frontendhome'])->name('Frontendhome');
+    Route::get('/certified', [FrontendController::class, 'FrontendCertified'])->name('FrontendCertified');
     Route::post('/newsletter', [FrontendController::class, 'FrontenNewsLetter'])->name('FrontenNewsLetter');
     // Route::get('/search', [FrontendController::class, 'FrontendSearch'])->name('FrontendSearch');
     Route::get('/product/{slug}', [ProductViewController::class, 'SingleProductView'])->name('SingleProductView');
@@ -82,7 +83,7 @@ use App\Http\Controllers\SocialLoginController;
     Route::post('/cartpost', [CartController::class, 'CartPost'])->name('CartPost');
 
     // cart route end
-    Route::middleware(['auth', 'verified', 'checkcoustomer'])->group(function () {
+    Route::middleware(['auth', 'HtmlMinify', 'verified', 'checkcoustomer'])->group(function () {
         // Profile route
         Route::get('/profile', [UserProfileController::class, 'FrontendProfile'])->name('FrontendProfile');
         Route::post('/change-password', [UserProfileController::class, 'ChangeUserPass'])->name('ChangeUserPass');
@@ -108,8 +109,8 @@ use App\Http\Controllers\SocialLoginController;
 
     // backend route start
     Route::middleware(['auth', 'checkadminpanel'])->prefix('admin')->group(function () {
-        Route::get('/change-password', [DashboardController::class,'AdminChangePassword'])->name('AdminChangePassword');
-        Route::post('/change-password', [DashboardController::class,'AdminChangePasswordPost'])->name('AdminChangePasswordPost');
+        Route::get('/change-password', [DashboardController::class, 'AdminChangePassword'])->name('AdminChangePassword');
+        Route::post('/change-password', [DashboardController::class, 'AdminChangePasswordPost'])->name('AdminChangePasswordPost');
         Route::resource('dashboard', DashboardController::class);
 
         // catagory route 
@@ -122,7 +123,6 @@ use App\Http\Controllers\SocialLoginController;
 
         // product route
 
-        // Route::get('/products/best_seller/{id}', [ProductController::class, 'Best_seller'])->name('Best_seller');
         Route::get('/products/status/{id}', [ProductController::class, 'ProductStaus'])->name('ProductStaus');
         Route::post('/products/mark-delete/', [ProductController::class, 'MarkdeleteProduct'])->name('MarkdeleteProduct');
         Route::get('/products/edit/product-attribute-delete/{id}', [ProductController::class, 'ProducvtAtributeDelete'])->name('ProducvtAtributeDelete');
@@ -145,7 +145,7 @@ use App\Http\Controllers\SocialLoginController;
         Route::get('orders/status/{id}', [OrderController::class, 'DeliveryStatus'])->name('DeliveryStatus');
         Route::get('orders/download-invoice/{id}', [OrderController::class, 'InvoiceDownload'])->name('InvoiceDownload');
         Route::resource('/orders', OrderController::class);
-        
+
         Route::get('settings/about', [SiteSettingController::class, 'SiteAbout'])->name('SiteAbout');
         Route::get('settings/banner-status/{id}', [SiteSettingController::class, 'SiteBannerStatus'])->name('SiteBannerStatus');
         Route::get('settings/banner-delete/{id}', [SiteSettingController::class, 'SiteBannerDelete'])->name('SiteBannerDelete');
@@ -163,8 +163,7 @@ use App\Http\Controllers\SocialLoginController;
 
         Route::resource('/blogs', BlogController::class);
         // best deal controller
-        Route::resource('/deals', BestDealController::class)->except('edit','update');
-
+        Route::resource('/deals', BestDealController::class)->except('edit', 'update');
     });
 
 

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderDeliverdMail;
 use App\Models\Order_Summaries;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -104,14 +106,17 @@ class OrderController extends Controller
     public function DeliveryStatus($id)
     {
         $status =   Order_Summaries::findorfail($id);
-        // return 'ok';
+        $user = $status->User;
+        $email = $status->User->email;
         if ($status->delivery_status == 1) {
             $status->delivery_status = 2;
             $status->save();
             return back();
         } elseif ($status->delivery_status == 2) {
+            
             $status->delivery_status = 3;
             $status->save();
+            Mail::to($email)->send(new OrderDeliverdMail($user->name, $status));
             return back();
         } elseif ($status->delivery_status == 3) {
 

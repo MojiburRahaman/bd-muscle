@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderPlace;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Attribute;
@@ -15,6 +16,7 @@ use Illuminate\Support\Carbon;
 use App\Models\Coupon;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class CheckoutController extends Controller
 {
@@ -47,7 +49,7 @@ class CheckoutController extends Controller
         }
         $request->validate([
             'billing_user_name' => ['required', 'string', 'max:255'],
-            'user_email' => ['required'],
+            'billing_number' => ['required', 'numeric', 'min:9'],
             'division_name' => ['required'],
             'district_name' => ['required'],
             'upozila_name' => ['required'],
@@ -55,20 +57,24 @@ class CheckoutController extends Controller
             'billing_number' => ['required'],
             'payment_option' => ['required'],
         ]);
+        // for only cash_on delivery
+        abort_if($request->payment_option != 'cash_on_delivery', 404);
+
         if ($request->district_name == 47) {
             session()->put('shipping', 60);
         } else {
-            session()->put('shipping', 120);
+            session()->put('shipping', 100);
         }
-
+        $order_number = now()->format('dm') . Auth::id() . mt_rand(1, 1000);
         $billing_details = billing_details::insertGetId($request->except('_token') + [
             'created_at' => Carbon::now(),
+            'user_email' => auth()->user()->email,
             'user_id' => Auth::id(),
         ]);
         $Order_Summaries_id = Order_Summaries::insertGetId([
             'billing_details_id' => $billing_details,
             'user_id' => Auth::id(),
-            'order_number' => now()->format('dm').Auth::id().mt_rand(1,1000),
+            'order_number' => $order_number,
             'coupon_name' => session()->get('coupon_name'),
             'total' => session()->get('cart_total'),
             'subtotal' => session()->get('cart_subtotal') + session()->get('shipping'),
@@ -97,11 +103,12 @@ class CheckoutController extends Controller
         if (session()->get('coupon_name')) {
             Coupon::where('coupon_name', session()->get('coupon_name'))->decrement('coupon_limit', 1);
         }
+        Mail::to(auth()->user()->email)->send(new OrderPlace($order_number,auth()->user()->name));
         session()->forget('cart_total');
         session()->forget('coupon_name');
         session()->forget('cart_discount');
         session()->forget('cart_subtotal');
         session()->forget('shipping');
-        return redirect('/');
+        return redirect('/')->with('orderPlace', $order_number);
     }
 }

@@ -54,7 +54,7 @@ menu-open
                                     <th>Product Name</th>
                                     <th>Stock</th>
                                     <th class="text-center">Status</th>
-                                    {{-- <th class="text-center">Best Seller</th> --}}
+                                    <th class="text-center">Certified</th>
                                     @if (auth()->user()->can('Edit Product') || auth()->user()->can('Delete Product'))
                                     <th>Action</th>
                                     @endif
@@ -106,14 +106,14 @@ menu-open
 
                     @endif
                 </td>
-                {{-- <td class="text-center">
-                    @if ($product->best_seller == 1)
-                    <a href="{{route('Best_seller',$product->id)}}" class="btn-sm btn-success">Active</a>
+                <td class="text-center">
+                    @if ($product->certified == 1)
+                    <a href="{{route('products.show',$product->id)}}" class="btn-sm btn-success">Active</a>
                 @else
-                <a href="{{route('Best_seller',$product->id)}}" class="btn-sm btn-danger">Inactive</a>
+                <a href="{{route('products.show',$product->id)}}" class="btn-sm btn-danger">Inactive</a>
 
                 @endif
-                </td> --}}
+                </td>
                 <form action="{{route('products.destroy',$product->id)}}" method="post">
                     @if (auth()->user()->can('Edit Product') || auth()->user()->can('Delete Product'))
 

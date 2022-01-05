@@ -267,47 +267,6 @@ Swal.fire({text:'The Product Quantity is out of stock'});
           window.location.href = coupon_redirect_url;
          });
     });
-//     Swal.fire({
-//   title: 'Do you want to save the changes?',
-// //   showDenyButton: true,
-// //   showCancelButton: true,
-//   confirmButtonText: 'Ok',
-// //   denyButtonText: `Don't save`,
-// }).then((result) => {
-//   /* Read more about isConfirmed, isDenied below */
-//   if (result.isConfirmed) {
-//     Swal.fire('Saved!', '', 'success')
-//   } else if (result.isDenied) {
-//     Swal.fire('Changes are not saved', '', 'info')
-//   }
-// })
-
-
-// let timerInterval
-// Swal.fire({
-//   text: 'The Product Quantity is out of stock',
-// //   html: 'I will close in <b></b> milliseconds.',
-//   timer: 2000,
-//   timerProgressBar: true,
-//   didOpen: () => {
-//     Swal.showLoading()
-//     const b = Swal.getHtmlContainer().querySelector('b')
-//     timerInterval = setInterval(() => {
-//       b.textContent = Swal.getTimerLeft()
-//     }, 100)
-//   },
-//   willClose: () => {
-//     clearInterval(timerInterval)
-//   }
-// }).then((result) => {
-//   /* Read more about handling dismissals below */
-//   if (result.dismiss === Swal.DismissReason.timer) {
-//     window.location.href = '{{route('Frontendblog')}}'
-//   }
-// })
-
-    // // alert('You Clicked on Click Here Button');
-    // $('#exampleModal').modal('show');
     </script>
 
 

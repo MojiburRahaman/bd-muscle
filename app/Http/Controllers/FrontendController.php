@@ -165,4 +165,8 @@ class FrontendController extends Controller
     {
         return $request;
     }
+    function FrontendCertified(){
+        $products = Product::where('certified', 1)->where('status', 1)->get();
+        return view('frontend.pages.certifed',compact('products'));
+    }
 }

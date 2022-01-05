@@ -50,8 +50,11 @@
             @endif
             @if ($banner->banner_image != '')
             <style>
-                .slide{{
-                        $loop->index+1}}
+                .slide {
+                        {
+                        $loop->index+1
+                    }
+                }
 
                     {
                     background-image: url('{{asset('banner_image/'.$banner->banner_image)}}');
@@ -100,10 +103,11 @@
     .count-down-area {
         background-image: url('{{asset('muscletechperformancefeat.jpg')}}')
     }
+
 </style>
 @if ($deal != '')
-    
-@if ($deal->status == 1)   
+
+@if ($deal->status == 1)
 {{-- count-down-area --}}
 <div class="count-down-area count-down-area-sub">
     <section class="count-down-section section-padding parallax" data-speed="7">
@@ -471,6 +475,15 @@
 @endsection
 @section('script_js')
 <script>
+   @if (session('orderPlace'))
+       
+   Swal.fire(
+     'Thanks',
+    'Your order is placed order #{{session("orderPlace")}}',
+     'success'
+   )
+   @endif
+
     @if ($deal != '')
    @if ($deal->status == 1)   
    if ($("#clock").length) {

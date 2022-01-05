@@ -10,14 +10,12 @@
         <title>@yield('title') {{(url()->current() === route('Frontendhome'))? $setting->meta_title : ''}}</title>
         <meta name="title"
             content="@yield('title') {{(url()->current() == route('Frontendhome'))? $setting->meta_title : ''}}">
-        <meta name="description"
-            content="@yield('meta_description') {{(url()->current() == route('Frontendhome'))? $setting->meta_description : ''}}">
-        <meta name="keyword"
-            content="@yield('meta_keyword') {{(url()->current() == route('Frontendhome'))? $setting->meta_keyword : ''}}">
+        <meta name="description" content="@yield('meta_description',$setting->meta_description)">
+        <meta name="keyword" content="@yield('meta_keyword',$setting->meta_keyword)">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{csrf_token()}}">
-        <link rel="shortcut icon" type="image/png" href="{{ asset('logo/'.$setting->site_logo) }}">
         <link rel="canonical" href="{{url()->current()}}">
+        <link rel="shortcut icon" type="image/png" href="{{ asset('logo/'.$setting->site_logo) }}">
         <!-- Place favicon.ico in the root directory -->
         <!-- all css here -->
         <!-- bootstrap v4.0.0-beta.2 css -->
@@ -38,7 +36,6 @@
         <link rel="stylesheet" href="{{ asset('front/css/selectsearch.css') }}">
         <!-- swiper.min.css -->
         <link rel="stylesheet" href="{{ asset('front/css/swiper.min.css') }}">
-        {{-- <link rel="stylesheet" href="{{ asset('front/css/price_range_style.css') }}"> --}}
         <!-- style css -->
         <link rel="stylesheet" href="{{ asset('front/css/styles.css') }}">
         <!-- responsive css -->
@@ -81,7 +78,7 @@
                                 @auth
                                 <li>
                                     <a href="{{route('FrontendProfile')}}">
-                                         <i class="fa fa-user "><span class="pl-2">Profile</span></i>
+                                        <i class="fa fa-user "><span class="pl-2">Profile</span></i>
                                     </a>
                                 </li>
                                 @else
@@ -120,6 +117,9 @@
                                             Cart</a>
                                     </li>
                                     <li><a href="contact.html">Contact us</a></li>
+                                    <li><a class="{{route('FrontendCertified') == url()->current() ? 'active' : ''}}"
+                                            href="{{route('FrontendCertified')}}">Certified</a>
+                                    </li>
                                 </ul>
                             </nav>
                         </div>
@@ -419,7 +419,7 @@
         <!-- jquery-ui.min.js -->
         <script src="{{ asset('front/js/jquery-ui.min.js') }}"></script>
         <script src="{{ asset('front/js/corner-popup.min.js') }}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script src="//cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <!-- main js -->
 
         <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
