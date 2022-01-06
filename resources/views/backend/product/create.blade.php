@@ -184,7 +184,6 @@ menu-open
                                 <div class="col-lg-3 col-6">
                                     <label for="color_id" class="font-weight-bold">Color</label>
                                     <select class="form-control " name="color_id[]" id="color_id">
-                                        {{-- <option value>Select One</option> --}}
                                         @foreach ($colors as $color)
                                         <option value="{{ $color->id }}">{{ $color->color_name }}
                                         </option>

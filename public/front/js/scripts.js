@@ -437,5 +437,28 @@
     //     });
     // }
 
+    $('.one-time').slick({
+        infinite: true,
+        speed: 300,
+        slidesToShow: 4,
+        adaptiveHeight: true,
+        autoplay: true,
+        arrows: false,
+    });
+
+
+    $('#wishlist').click(function() {
+        // alert('ok');
+        var action = '/wishlist-post';
+        $('#Form_submit').attr('action', action);
+    });
+    // add cart
+    $('#Cart_add').click(function() {
+        // alert('ok');
+        var action = '/cartpost';
+        $('#Form_submit').attr('action', action);
+    });
+
+
 
 })(jQuery);

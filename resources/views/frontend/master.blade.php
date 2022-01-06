@@ -7,13 +7,16 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>@yield('title') {{(url()->current() === route('Frontendhome'))? $setting->meta_title : ''}}</title>
-        <meta name="title"
-            content="@yield('title') {{(url()->current() == route('Frontendhome'))? $setting->meta_title : ''}}">
+        <title>@yield('title',$setting->meta_title) </title>
+        <meta name="title" content="@yield('title',$setting->meta_title) ">
         <meta name="description" content="@yield('meta_description',$setting->meta_description)">
         <meta name="keyword" content="@yield('meta_keyword',$setting->meta_keyword)">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{csrf_token()}}">
+        <meta property="og:title" content="@yield('title',$setting->meta_title)" />
+        <meta property="og:description" content="@yield('meta_description',$setting->meta_description)" />
+        <meta property="og:url" content="{{url()->current()}}" />
+        <meta property="og:site_name" content="{{route('Frontendhome')}}" />
         <link rel="canonical" href="{{url()->current()}}">
         <link rel="shortcut icon" type="image/png" href="{{ asset('logo/'.$setting->site_logo) }}">
         <!-- Place favicon.ico in the root directory -->
@@ -104,7 +107,7 @@
                                 <ul class="d-flex">
                                     <li class="{{ route('Frontendhome') == url()->current() ? 'active' : '' }}"><a
                                             href="{{ route('Frontendhome') }}">Home</a></li>
-                                    <li><a href="about.html">About</a></li>
+                                    <li><a href="{{route('FrontendAbout')}}">About</a></li>
                                     <li class="{{ route('Frontendshop') == url()->current() ? 'active' : '' }}"><a
                                             href="{{ route('Frontendshop') }}">Shop</a></li>
 
@@ -116,7 +119,6 @@
                                             <i class="fa fa-shopping-cart"></i>
                                             Cart</a>
                                     </li>
-                                    <li><a href="contact.html">Contact us</a></li>
                                     <li><a class="{{route('FrontendCertified') == url()->current() ? 'active' : ''}}"
                                             href="{{route('FrontendCertified')}}">Certified</a>
                                     </li>
@@ -252,11 +254,11 @@
                             <div class="col-12 d-block d-lg-none">
                                 <ul class="metismenu">
                                     <li><a href="{{route('Frontendhome')}}">Home</a></li>
-                                    <li><a href="about.html">About</a></li>
+                                    <li><a href="{{route('FrontendAbout')}}">About</a></li>
                                     <li><a href="{{route('Frontendshop')}}">Shop</a></li>
                                     <li><a href="{{route('Frontendblog')}}">Blog</a></li>
                                     <li><a href="{{route('CartView')}}">Cart</a></li>
-                                    <li><a href="{{route('CartView')}}">Contact us</a></li>
+                                    <li><a href="{{route('FrontendCertified')}}">Certiified</a></li>
 
                                 </ul>
                             </div>
@@ -276,15 +278,16 @@
                         <div class="newsletter text-left">
                             <h3 style="color: black;margin-bottom:0">Subscribe Newsletter</h3>
                             <p style="color: black">
-                                Receive the latest news, offers and deals going on at Sporter
+                                Receive the latest news, offers and deals going on at {{config('app.name')}}
                             </p>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="newsletter-form">
-                            <form>
+                            <form action="{{route('FrontendNewsLetter')}}" method="post">
+                                @csrf
                                 <div class="input-group">
-                                    <input type="email" required style="padding: 10px 20px" type="text"
+                                    <input type="email" required style="padding: 10px 20px" name="email" type="email"
                                         class="form-control" placeholder="Enter Your Email Address...">
                                     <button style="padding: 5px 15px;background-color:black;color:white"
                                         type="submit">Submit</button>
@@ -308,7 +311,7 @@
                                 <div class="footer-top-text text-center">
                                     <ul>
                                         <li><a href="{{route('Frontendhome')}}">home</a></li>
-                                        <li><a href="#">about us</a></li>
+                                        <li><a href="{{route('FrontendAbout')}}">about us</a></li>
                                         <li><a href="{{route('Frontendshop')}}">shop</a></li>
                                         <li><a href="{{route('Frontendblog')}}">blog</a></li>
                                         <li><a href="contact.html">contact us</a></li>
@@ -326,13 +329,10 @@
                             <div class="footer-icon">
                                 <ul class="d-flex">
                                     @if ($setting->facebook_link != '')
-
                                     <li><a target="_blank" href="{{$setting->facebook_link}}"><i
                                                 class="fa fa-facebook"></i></a></li>
                                     @endif
-
                                     @if ($setting->instagram_link != '')
-
                                     <li><a target="_blank" href="{{$setting->instagram_link}}"><i
                                                 class="fa fa-instagram"></i></a></li>
                                     @endif
@@ -374,7 +374,7 @@
                 <a href="#" class="popup-close">X</a>
                 <div class="newsletter-in">
                     <h3>Join our Newsletter!</h3>
-                    <form class="validate" method="post" action="{{route('FrontenNewsLetter')}}">
+                    <form class="validate" method="post" action="{{route('FrontendNewsLetter')}}">
                         @csrf
                         <div class="form-group">
                             <input class="form-control" type="email" placeholder="Enter Your Email Address..." autofocus
@@ -476,7 +476,7 @@
                 $.fn.cornerpopup({
                     variant: 1,
                     slide: 1,
-                    popupImg: '{{asset('unnamed.png')}}',
+                    popupImg: '{{asset('icon/unnamed.png')}}',
                     position : 'left',
                     header : '<h6>Continue With Google</h6>',
                     link1: '{{route('GoogleRegister')}}',

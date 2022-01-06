@@ -192,17 +192,22 @@ Search Result for "{{$search}}" BD-Muscle
                                             <div class="product-single-content w-50">
                                                 <h3>{{ $product->title }}</h3>
                                                 <div class="rating-wrap fix">
-                                                    <span class="pull-left">৳
-                                                        @php
-                                                        $sale = collect($product->Attribute)->min('sell_price');
-                                                        $regular = collect($product->Attribute)->min('regular_price');
-                                                        if ($sale == '') {
-                                                        echo $regular;
-                                                        } else {
-                                                        echo $sale;
-                                                        }
-                                                        @endphp
-                                                    </span>
+                                                    @php
+                                                    $sale = collect($product->Attribute)->min('sell_price');
+                                                    $regular = collect($product->Attribute)->min('regular_price');
+                                                    @endphp
+                                                    @if ($sale == '')
+                                                    <p class="pull-left"> ৳
+                                                        {{$regular}}
+                                                    </p>
+                                                    @else
+                                                    <p class="pull-left "> ৳
+                                                        {{$sale}}
+                                                    </p>
+                                                    <p style="text-decoration:line-through" class="pull-left pl-2"> ৳
+                                                        {{$regular}}
+                                                    </p>
+                                                    @endif
                                                     <ul class="rating pull-right">
                                                         <li><i class="fa fa-star"></i></li>
                                                         <li><i class="fa fa-star"></i></li>

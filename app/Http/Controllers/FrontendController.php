@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AboutSite;
 use App\Models\Banner;
 use App\Models\BestDeal;
 use App\Models\Blog;
@@ -9,6 +10,7 @@ use App\Models\Catagory;
 use App\Models\Product;
 use App\Models\BlogComment;
 use App\Models\BlogReply;
+use App\Models\Newsletter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -32,7 +34,7 @@ class FrontendController extends Controller
         }
 
         if ($search == '') {
-            $deal = BestDeal::first();
+            $deal = BestDeal::where('status', 1)->first();
             $banners = Banner::latest('id')
                 ->with(['Product:id,title,slug,thumbnail_img', 'Product.Attribute:id,product_id,discount,regular_price'])
                 ->where('status', 1)->get();
@@ -40,13 +42,17 @@ class FrontendController extends Controller
             $best_seller = Product::with('Catagory:id,slug,catagory_name', 'Attribute:product_id,discount,regular_price,sell_price')->where('most_view', '!=', 0)
                 ->where('status', 1)->orderBy('most_view', 'DESC')
                 ->select('id', 'most_view', 'slug', 'catagory_id', 'thumbnail_img', 'product_summary', 'title')
+                ->withCount('ProductReview')
                 ->take(4)
                 ->get();
+
             $product = Product::with('Catagory', 'Attribute:product_id,discount,regular_price,sell_price')
                 ->where('status', 1)->latest('id')
                 ->select('id', 'slug', 'catagory_id', 'thumbnail_img', 'product_summary', 'title')
+                ->withCount('ProductReview')
                 ->take(8)
                 ->get();
+
             $blogs = Blog::latest('id')
                 ->select('id', 'title', 'add_to_goal', 'slug', 'blog_thumbnail', 'created_at')
                 ->where('add_to_goal', 1)
@@ -79,7 +85,7 @@ class FrontendController extends Controller
         if ($request->ajax()) {
             $Products = Product::with('Catagory', 'Attribute')->where('status', 1)
                 ->select('id', 'slug', 'title', 'thumbnail_img', 'product_summary', 'catagory_id')
-                ->latest('id')->simplePaginate(8);
+                ->latest('id')->simplePaginate(16);
 
             $view = view('frontend.pages.shop-pagination-data', compact('Products'))->render();
             return response()->json(['html' => $view,]);
@@ -161,12 +167,31 @@ class FrontendController extends Controller
         $blog_comment->save();
         return back();
     }
-    function FrontenNewsLetter(Request $request)
+    function FrontendNewsLetter(Request $request)
     {
-        return $request;
+        $request->validate([
+            'email' => ['required', 'email', 'unique:newsletters,email']
+        ]);
+
+        $email = strip_tags($request->email);
+        $newsletter = new Newsletter;
+        $newsletter->email = $email;
+        $newsletter->save();
+        return back()->with('subscribe', 'Subscribe Successfully');
     }
-    function FrontendCertified(){
-        $products = Product::where('certified', 1)->where('status', 1)->get();
-        return view('frontend.pages.certifed',compact('products'));
+    function FrontendCertified()
+    {
+        $products = Product::where('certified', 1)->where('status', 1)->latest('id')->paginate(16);
+        return view('frontend.pages.certifed', compact('products'));
+    }
+    function FrontendAbout()
+    {
+        $best_seller = Product::with('Catagory:id,slug,catagory_name', 'Attribute:product_id,discount,regular_price,sell_price')->where('most_view', '!=', 0)
+            ->where('status', 1)->orderBy('most_view', 'DESC')
+            ->select('id', 'most_view', 'slug', 'catagory_id', 'thumbnail_img', 'product_summary', 'title')
+            ->take(8)
+            ->get();
+        $about = AboutSite::first();
+        return view('frontend.pages.about', compact('about', 'best_seller'));
     }
 }

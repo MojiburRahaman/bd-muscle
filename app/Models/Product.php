@@ -40,4 +40,8 @@ class Product extends Model
     {
         return $this->hasMany(Banner::class, 'product_id');
     }
+    function ProductReview()
+    {
+        return $this->hasMany(ProductReview::class, 'product_id');
+    }
 }

@@ -18,7 +18,6 @@ class WishlistController extends Controller
     }
     function WishlistPost(Request $request)
     {
-        // return $request;
         $request->validate([
             'color_id' => ['required',],
             'size_id' => ['required',]
@@ -29,6 +28,8 @@ class WishlistController extends Controller
         if ($request->has('flavour_id')) {
             $request->validate([
                 'flavour_id' => ['required'],
+            ],[
+                'flavour_id.required' => 'Please Choose a Flavour',
             ]);
         }
         $product_already_add = Wishlist::Where('user_id', auth()->id())
@@ -43,7 +44,7 @@ class WishlistController extends Controller
                 ->Where('size_id', $request->size_id)
                 ->Where('flavour_id', $request->flavour_id)
                 ->increment('quantity', $request->cart_quantity);
-            return back();
+                return back()->with('cart_added', 'Prodcut add to Wishlist succcessfully');
         }
         $wish_list = new Wishlist;
         $wish_list->user_id = auth()->id();
@@ -53,7 +54,7 @@ class WishlistController extends Controller
         $wish_list->flavour_id = $request->flavour_id;
         $wish_list->quantity = $request->cart_quantity;
         $wish_list->save();
-        return back();
+        return back()->with('cart_added', 'Prodcut add to Wishlist succcessfully');
     }
     function WishlistRemove($id)
     {

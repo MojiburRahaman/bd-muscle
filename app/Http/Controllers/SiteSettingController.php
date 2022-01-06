@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AboutSite;
 use App\Models\Banner;
 use App\Models\Product;
 use App\Models\SiteSetting;
@@ -121,10 +122,10 @@ class SiteSettingController extends Controller
             'facebook_link' => ['max:250'],
             'instagram_link' => ['max:250'],
             'footer_text' => ['required', 'string'],
-            'site_logo' => [ 'mimes:png'],
+            'site_logo' => ['mimes:png'],
         ]);
 
-        $setting =SiteSetting::findorfail($id);
+        $setting = SiteSetting::findorfail($id);
         $setting->meta_title = $request->meta_title;
         $setting->meta_description = $request->meta_description;
         $setting->meta_keyword = $request->meta_keyword;
@@ -136,6 +137,10 @@ class SiteSettingController extends Controller
         $setting->footer_text = $request->footer_text;
 
         if ($request->hasFile('site_logo')) {
+            $old_thumbnail = public_path('logo/' . $setting->site_logo);
+            if (file_exists($old_thumbnail)) {
+                unlink($old_thumbnail);
+            }
             $site_logo = $request->file('site_logo');
             $extension = config('app.name') . '-' . Str::random(2) . '.' . $site_logo->getClientOriginalExtension();
             Image::make($site_logo)->save(public_path('logo/' . $extension), 100);
@@ -144,8 +149,6 @@ class SiteSettingController extends Controller
         $setting->save();
 
         return back()->with('success', 'Edited Successfully');
-
-
     }
 
     /**
@@ -213,8 +216,23 @@ class SiteSettingController extends Controller
         $banner->save();
         return back()->with('success', 'Active Successfully');
     }
-    public function SiteAbout()
+    public function SiteAbout($id, Request $request)
     {
-        return view('backend.site-settings.about');
+        abort_if(!$request->hasValidSignature(), 404);
+        $about = AboutSite::findorfail($id);
+        return view('backend.site-settings.about', compact('about'));
+    }
+    public function SiteAboutUpdate(Request $request)
+    {
+        $request->validate([
+            'heading' => ['required', 'max:250', 'string'],
+            'about' => ['required'],
+            'about_id' => ['required'],
+        ]);
+        $about = AboutSite::findorfail($request->about_id);
+        $about->heading = $request->heading;
+        $about->about = $request->about;
+        $about->save();
+        return back()->with('success', 'Edited Successfully');
     }
 }

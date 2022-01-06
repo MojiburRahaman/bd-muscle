@@ -43,21 +43,15 @@
 
     Auth::routes(['verify' => true]);
 
-    // socialite
-    // Route::get('/', function () {
-    //     return view('welcome');
-    // });
 
-    // Route::get('/dashboard', function () {
-    //     return view('dashboard');
-    // })->middleware(['auth'])->name('dashboard');
 
     // frontend route start
     Route::get('/', [FrontendController::class, 'Frontendhome'])->name('Frontendhome');
+    Route::get('/about', [FrontendController::class, 'FrontendAbout'])->name('FrontendAbout');
     Route::get('/certified', [FrontendController::class, 'FrontendCertified'])->name('FrontendCertified');
-    Route::post('/newsletter', [FrontendController::class, 'FrontenNewsLetter'])->name('FrontenNewsLetter');
-    // Route::get('/search', [FrontendController::class, 'FrontendSearch'])->name('FrontendSearch');
+    Route::post('/newsletter', [FrontendController::class, 'FrontendNewsLetter'])->name('FrontendNewsLetter');
     Route::get('/product/{slug}', [ProductViewController::class, 'SingleProductView'])->name('SingleProductView');
+    Route::post('/product/review', [ProductViewController::class, 'ProductReview'])->name('ProductReview');
     Route::post('/product/get-size', [ProductViewController::class, 'GetSizeByColor'])->name('GetSizeByColor');
     Route::post('/product/get-pricebysize', [ProductViewController::class, 'GetPriceBySize'])->name('GetPriceBySize');
     Route::get('/shop', [FrontendController::class, 'Frontendshop'])->name('Frontendshop');
@@ -146,7 +140,8 @@
         Route::get('orders/download-invoice/{id}', [OrderController::class, 'InvoiceDownload'])->name('InvoiceDownload');
         Route::resource('/orders', OrderController::class);
 
-        Route::get('settings/about', [SiteSettingController::class, 'SiteAbout'])->name('SiteAbout');
+        Route::get('settings/about/{id}', [SiteSettingController::class, 'SiteAbout'])->name('SiteAbout');
+        Route::post('settings/about', [SiteSettingController::class, 'SiteAboutUpdate'])->name('SiteAboutUpdate');
         Route::get('settings/banner-status/{id}', [SiteSettingController::class, 'SiteBannerStatus'])->name('SiteBannerStatus');
         Route::get('settings/banner-delete/{id}', [SiteSettingController::class, 'SiteBannerDelete'])->name('SiteBannerDelete');
         Route::post('settings/banner-post', [SiteSettingController::class, 'SiteBannerPost'])->name('SiteBannerPost');

@@ -6,43 +6,17 @@
 @section('meta_keyword')
 {{$product->meta_keyword}} @endsection
 @section('content')
-<style>
-    #wishlist {
-        padding: 4px 7px;
-        border: none;
-        color: #fff;
-        font-size: 18px;
-        margin-left: 2px;
-        justify-content: center;
-        align-items: center;
-        border-radius: 5px;
-        background-color: #ef4836;
-        cursor: pointer;
-    }
-
-    /* .bg-img {
-	background: url('{{asset('0cb54dd53bd3565341b384d3b1d264e4.jpg')}}') no-repeat center center / cover;
-} */
-
-</style>
-<!-- .breadcumb-area start -->
-<div class="breadcumb-area bg-img ">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="breadcumb-wrap text-center">
-                    <h2>Shop Page</h2>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><span>Shop</span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <!-- .breadcumb-area end -->
 <!-- single-product-area start-->
+@if (session('cart_added'))
+<div class="container">
+    <div class="alert alert-dismissible alert-success">{{session('cart_added')}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
+@endif
 <div class="single-product-area ptb-100">
     <div class="container">
         <div class="row">
@@ -52,7 +26,7 @@
                         @foreach ($product->Gallery as $Gallery)
 
                         <div class="item">
-                            <img src="{{asset('product_image/'.$Gallery->product_img)}}" alt="">
+                            <img loading="lazy" src="{{asset('product_image/'.$Gallery->product_img)}}" alt="">
                         </div>
                         @endforeach
                     </div>
@@ -60,7 +34,7 @@
                         @foreach ($product->Gallery as $Gallery)
 
                         <div class="item">
-                            <img src="{{asset('product_image/'.$Gallery->product_img)}}" alt="">
+                            <img loading="lazy" src="{{asset('product_image/'.$Gallery->product_img)}}" alt="">
                         </div>
                         @endforeach
                     </div>
@@ -220,11 +194,9 @@
                         </ul>
                         <ul class="socil-icon">
                             <li>Share :</li>
-                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                            <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                            <li> <a
+                                    href="https://www.facebook.com/sharer/sharer.php?u={{route('SingleProductView',$product->slug)}}&display=popup"><i
+                                        class="fa fa-facebook"></i></a></li>
                         </ul>
                     </form>
                 </div>
@@ -235,7 +207,6 @@
                 <div class="single-product-menu">
                     <ul class="nav">
                         <li><a class="active" data-toggle="tab" href="#description">Description</a> </li>
-                        <li><a data-toggle="tab" href="#tag">Faq</a></li>
                         <li><a data-toggle="tab" href="#review">Review</a></li>
                     </ul>
                 </div>
@@ -247,225 +218,147 @@
                             <p> {!! nl2br($product->product_description) !!}</p>
                         </div>
                     </div>
-                    <div class="tab-pane" id="tag">
-                        <div class="faq-wrap" id="accordion">
-                            <div class="card">
-                                <div class="card-header" id="headingOne">
-                                    <h5><button data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
-                                            aria-controls="collapseOne">General Inquiries ?</button> </h5>
-                                </div>
-                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
-                                    data-parent="#accordion">
-                                    <div class="card-body">
-                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                                        richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
-                                        brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-                                        sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
-                                        shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-                                        cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-                                        Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
-                                        you probably haven't heard of them accusamus labore sustainable VHS.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-header" id="headingTwo">
-                                    <h5><button class="collapsed" data-toggle="collapse" data-target="#collapseTwo"
-                                            aria-expanded="false" aria-controls="collapseTwo">How To Use ?</button></h5>
-                                </div>
-                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
-                                    data-parent="#accordion">
-                                    <div class="card-body">
-                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                                        richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
-                                        brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-                                        sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
-                                        shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-                                        cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-                                        Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
-                                        you probably haven't heard of them accusamus labore sustainable VHS.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-header" id="headingThree">
-                                    <h5><button class="collapsed" data-toggle="collapse" data-target="#collapseThree"
-                                            aria-expanded="false" aria-controls="collapseThree">Shipping & Delivery
-                                            ?</button></h5>
-                                </div>
-                                <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
-                                    data-parent="#accordion">
-                                    <div class="card-body">
-                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                                        richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
-                                        brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-                                        sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
-                                        shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-                                        cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-                                        Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
-                                        you probably haven't heard of them accusamus labore sustainable VHS.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-header" id="headingfour">
-                                    <h5><button class="collapsed" data-toggle="collapse" data-target="#collapsefour"
-                                            aria-expanded="false" aria-controls="collapsefour">Additional Information
-                                            ?</button></h5>
-                                </div>
-                                <div id="collapsefour" class="collapse" aria-labelledby="headingfour"
-                                    data-parent="#accordion">
-                                    <div class="card-body">
-                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                                        richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
-                                        brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-                                        sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
-                                        shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-                                        cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-                                        Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
-                                        you probably haven't heard of them accusamus labore sustainable VHS.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-header" id="headingfive">
-                                    <h5><button class="collapsed" data-toggle="collapse" data-target="#collapsefive"
-                                            aria-expanded="false" aria-controls="collapsefive">Return Policy ?</button>
-                                    </h5>
-                                </div>
-                                <div id="collapsefive" class="collapse" aria-labelledby="headingfive"
-                                    data-parent="#accordion">
-                                    <div class="card-body">
-                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                                        richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
-                                        brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-                                        sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
-                                        shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-                                        cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
-                                        Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
-                                        you probably haven't heard of them accusamus labore sustainable VHS.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="tab-pane" id="review">
                         <div class="review-wrap">
                             <ul>
+                                @forelse ($product->ProductReview as $review)
+                                    
                                 <li class="review-items">
-                                    <div class="review-img">
-                                        <img src="assets/images/comment/1.png" alt="">
-                                    </div>
                                     <div class="review-content">
-                                        <h3><a href="#">GERALD BARNES</a></h3>
-                                        <span>27 Jun, 2019 at 2:30pm</span>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan
-                                            egestas elese ifend. Phasellus a felis at estei to bibendum feugiat ut eget
-                                            eni Praesent et messages in con sectetur posuere dolor non.</p>
+                                        <h3><a href="#">{{$review->name}}</a></h3>
+                                        {{-- <span>27 Jun, 2019 at 2:30pm</span> --}}
+                                        <span>{{$review->created_at->format('d M, Y') }}</span>
+                                        <p>{{$review->message}}</p>
                                         <ul class="rating">
+                                            @if ($review->rating ==1)    
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star-o"></i></li>
+                                            <li><i class="fa fa-star-o"></i></li>
+                                            <li><i class="fa fa-star-o"></i></li>
+                                            <li><i class="fa fa-star-o"></i></li>
+                                            @endif
+                                            @if ($review->rating ==2)    
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star-o"></i></li>
+                                            <li><i class="fa fa-star-o"></i></li>
+                                            <li><i class="fa fa-star-o"></i></li>
+                                            @endif
+                                            @if ($review->rating ==3)    
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li class="review-items">
-                                    <div class="review-img">
-                                        <img src="assets/images/comment/2.png" alt="">
-                                    </div>
-                                    <div class="review-content">
-                                        <h3><a href="#">Olive Oil</a></h3>
-                                        <span>15 may, 2019 at 2:30pm</span>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan
-                                            egestas elese ifend. Phasellus a felis at estei to bibendum feugiat ut eget
-                                            eni Praesent et messages in con sectetur posuere dolor non.</p>
-                                        <ul class="rating">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star-half-o"></i></li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li class="review-items">
-                                    <div class="review-img">
-                                        <img src="assets/images/comment/3.png" alt="">
-                                    </div>
-                                    <div class="review-content">
-                                        <h3><a href="#">Nature Honey</a></h3>
-                                        <span>14 janu, 2019 at 2:30pm</span>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan
-                                            egestas elese ifend. Phasellus a felis at estei to bibendum feugiat ut eget
-                                            eni Praesent et messages in con sectetur posuere dolor non.</p>
-                                        <ul class="rating">
+                                            <li><i class="fa fa-star-o"></i></li>
+                                            <li><i class="fa fa-star-o"></i></li>
+                                            @endif
+                                            @if ($review->rating ==4)    
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star-o"></i></li>
+                                            @endif
+                                            @if ($review->rating ==5)    
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            @endif
                                         </ul>
                                     </div>
                                 </li>
+                                @empty
+                                    <li>
+                                        No Review
+                                    </li>
+                                @endforelse
                             </ul>
                         </div>
-                        <div class="add-review">
-                            <h4>Add A Review</h4>
-                            <div class="ratting-wrap">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>task</th>
-                                            <th>1 Star</th>
-                                            <th>2 Star</th>
-                                            <th>3 Star</th>
-                                            <th>4 Star</th>
-                                            <th>5 Star</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>How Many Stars?</td>
-                                            <td>
-                                                <input type="radio" name="a" />
-                                            </td>
-                                            <td>
-                                                <input type="radio" name="a" />
-                                            </td>
-                                            <td>
-                                                <input type="radio" name="a" />
-                                            </td>
-                                            <td>
-                                                <input type="radio" name="a" />
-                                            </td>
-                                            <td>
-                                                <input type="radio" name="a" />
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        <style>
+                            .rate {
+                                float: left;
+                                height: 46px;
+                                padding: 0 10px;
+                            }
+
+                            .rate:not(:checked)>input {
+                                position: absolute;
+                                left: -9999px;
+                            }
+
+                            .rate:not(:checked)>label {
+                                float: right;
+                                width: 1em;
+                                overflow: hidden;
+                                white-space: nowrap;
+                                cursor: pointer;
+                                font-size: 30px;
+                                color: #ccc;
+                            }
+
+                            .rate:not(:checked)>label:before {
+                                content: '★ ';
+                            }
+
+                            .rate>input:checked~label {
+                                color: #ffc700;
+                            }
+
+                            .rate:not(:checked)>label:hover,
+                            .rate:not(:checked)>label:hover~label {
+                                color: #deb217;
+                            }
+
+                            .rate>input:checked+label:hover,
+                            .rate>input:checked+label:hover~label,
+                            .rate>input:checked~label:hover,
+                            .rate>input:checked~label:hover~label,
+                            .rate>label:hover~input:checked~label {
+                                color: #c59b08;
+                            }
+
+                        </style>
+                        <form action="{{route('ProductReview')}}" method="post">
+                            @csrf
+                            <div class="add-review">
+
+                                <div class="row">
+                                    <div class="col-lg-12 ">
+                                        <h4>Rate this Product</h4>
+                                        <div class="rate ">
+                                            <input type="radio" id="star5" name="rate" value="5" />
+                                            <label for="star5" title="5 star">5 stars</label>
+                                            <input type="radio" id="star4" name="rate" value="4" />
+                                            <label for="star4" title="4 star">4 stars</label>
+                                            <input type="radio" id="star3" name="rate" value="3" />
+                                            <label for="star3" title="3 star">3 stars</label>
+                                            <input type="radio" id="star2" name="rate" value="2" />
+                                            <label for="star2" title="2 star">2 stars</label>
+                                            <input type="hidden" name="product_id" value="{{$product->id}}">
+                                            <input type="radio" id="star1" name="rate" value="1" />
+                                            <label for="star1" title="1 star">1 star</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <h4>Name:</h4>
+                                        <input type="text" name="name" placeholder="Your name here..." />
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <h4>Email:</h4>
+                                        <input type="email" name="email" placeholder="Your Email here..." />
+                                    </div>
+                                    <div class="col-12">
+                                        <h4>Your Review:</h4>
+                                        <textarea name="massage" id="massage" cols="30" rows="10"
+                                            placeholder="Your review here..."></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn-style">Submit</button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6 col-12">
-                                    <h4>Name:</h4>
-                                    <input type="text" placeholder="Your name here..." />
-                                </div>
-                                <div class="col-md-6 col-12">
-                                    <h4>Email:</h4>
-                                    <input type="email" placeholder="Your Email here..." />
-                                </div>
-                                <div class="col-12">
-                                    <h4>Your Review:</h4>
-                                    <textarea name="massage" id="massage" cols="30" rows="10"
-                                        placeholder="Your review here..."></textarea>
-                                </div>
-                                <div class="col-12">
-                                    <button class="btn-style">Submit</button>
-                                </div>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -531,14 +424,10 @@
                 @endforeach
             </div>
         </div>
-
     </div>
     @endif
 
-
-
     <div class="container">
-        {{-- <div class="row"> --}}
         <div class="your-class one-time responsive">
             @foreach ($brands as $brand)
             <div>
@@ -548,7 +437,6 @@
             </div>
             @endforeach
         </div>
-        {{-- </div> --}}
     </div>
 </div>
 <!-- featured-product-area end -->
@@ -556,15 +444,27 @@
 
 @section('script_js')
 <script>
-    $('.one-time').slick({
-  infinite: true,
-  speed: 300,
-  slidesToShow: 5,
-  adaptiveHeight: true,
-  autoplay: true,
-  arrows: false,
-});
-
+    @error('color_id')
+        
+    Swal.fire({
+        icon: 'warning',
+        text: '{{$message}}',
+    })
+      @enderror
+    @error('size_id')
+        
+    Swal.fire({
+        icon: 'warning',
+        text: '{{$message}}',
+    })
+      @enderror
+    @error('flavour_id')
+        
+    Swal.fire({
+        icon: 'warning',
+        text: '{{$message}}',
+    })
+      @enderror
     // if therese color available start
     $('.color_name').change(function() {
             var color_id = $(this).val();
@@ -587,17 +487,18 @@
                             var regular_price = $(this).attr('data-regular_price');
                             var selling_price = $(this).attr('data-sell_price');
                             var quantity = $(this).attr('data-quantity');
-                            $('.sell_Price').html(selling_price);
                             $('.available').html(quantity);
                             if (selling_price == '') {
+                            $('.sell_Price').html( selling_price);
                                 // if theres no selling price
                                 $('.regular_Price').empty();
-                                $('.regular_Price_if_selling_null').html(
+                                $('.regular_Price_if_selling_null').html('৳' +
                                     regular_price);
                             } else {
+                            $('.sell_Price').html('৳' + selling_price);
                                 // if theres a selling price
                                 $('.regular_Price_if_selling_null').empty();
-                                $('.regular_Price').html(regular_price);
+                                $('.regular_Price').html('৳'+regular_price);
                             }
                         })
 
@@ -626,16 +527,17 @@
                         $('.available').html(res);
                         var regular_price = $('.quantityadd').attr('data-regularprice');
                         var selling_price = $('.quantityadd').attr('data-sellprice');
-                        $('.sell_Price').html(selling_price);
                         if (selling_price == '') {
                             // if theres no selling price
+                        $('.sell_Price').html(selling_price);
                             $('.regular_Price').empty();
-                            $('.regular_Price_if_selling_null').html(
+                            $('.regular_Price_if_selling_null').html('৳' +
                                 regular_price);
                         } else {
+                        $('.sell_Price').html('৳' +selling_price);
                             // if theres a selling price
                             $('.regular_Price_if_selling_null').empty();
-                            $('.regular_Price').html(regular_price);
+                            $('.regular_Price').html('৳' +regular_price);
                         }
                     }
                 }
@@ -644,7 +546,6 @@
     // if therese color but no size available end
 
     // if therese only size available start
-
     $('.SizebyPrice').change(function() {
             var size_id = $(this).val();
             var product_id = $(this).attr('data-product');
@@ -663,39 +564,23 @@
                         $('.available').html(res);
                         var regular_price = $('.quantityadd').attr('data-regularprice');
                         var selling_price = $('.quantityadd').attr('data-sellprice');
-                        $('.sell_Price').html(selling_price);
                         if (selling_price == '') {
                             // if theres no selling price
+                        $('.sell_Price').html(selling_price);
                             $('.regular_Price').empty();
-                            $('.regular_Price_if_selling_null').html(
+                            $('.regular_Price_if_selling_null').html( '৳' +
                                 regular_price);
                         } else {
                             // if theres a selling price
+                        $('.sell_Price').html('৳' +selling_price);
                             $('.regular_Price_if_selling_null').empty();
-                            $('.regular_Price').html(regular_price);
+                            $('.regular_Price').html('৳' +regular_price);
                         }
                     }
                 }
             })
         });
       // if therese only size available end
-
-
-// add wishlist
-$('#wishlist').click(function(){
-        // alert('ok');
-        var action =  '/wishlist-post';
-        $('#Form_submit').attr('action', action);
-        // $('#Form_submit').submit();
-    });
-// add cart
-$('#Cart_add').click(function(){
-        // alert('ok');
-        var action =  '/cartpost';
-        $('#Form_submit').attr('action', action);
-        // $('#Form_submit').submit();
-    });
-
 
 </script>
 @endsection

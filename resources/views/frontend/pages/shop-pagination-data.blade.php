@@ -19,18 +19,22 @@
         </div>
         <div class="product-content">
             <h3><a href="{{route('SingleProductView',$product->slug)}}">{{ $product->title }}</a></h3>
+            @php
+            $sale = collect($product->Attribute)->min('sell_price');
+            $regular = collect($product->Attribute)->min('regular_price');
+            @endphp
+            @if ($sale == '')
             <p class="pull-left"> ৳
-                @php
-                $sale = collect($product->Attribute)->min('sell_price');
-                $regular = collect($product->Attribute)->min('regular_price');
-                if ($sale == '') {
-                echo $regular;
-                } else {
-                echo $sale;
-                }
-                @endphp
-
+                {{$regular}}
             </p>
+            @else
+            <p class="pull-left "> ৳
+                {{$sale}}
+            </p>
+            <p style="text-decoration:line-through" class="pull-left pl-2"> ৳
+                {{$regular}}
+            </p>
+            @endif
             <ul class="pull-right d-flex">
                 <li><i class="fa fa-star"></i></li>
                 <li><i class="fa fa-star"></i></li>
@@ -50,11 +54,9 @@
             <div class="modal-body d-flex">
                 <div class="product-single-img w-50  mt-5">
                     @if (collect($product->Attribute)->max('discount') != '')
-                    <span
-                        class="discount_tag">{{collect($product->Attribute)->max('discount')}}%</span>
+                    <span class="discount_tag">{{collect($product->Attribute)->max('discount')}}%</span>
                     @endif
-                    <img src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}"
-                        alt="{{ $product->title }}">
+                    <img src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}" alt="{{ $product->title }}">
                 </div>
                 <div class="product-single-content w-50">
                     <h3>{{ $product->title }}</h3>

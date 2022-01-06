@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Attribute;
 use App\Models\Brand;
+use App\Models\ProductReview;
 use Illuminate\Http\Request;
 
 class ProductViewController extends Controller
@@ -63,5 +64,28 @@ class ProductViewController extends Controller
             $Attr = $Attr . '<span class="quantityadd" data-sellprice="' . $value->sell_price . '" data-regularprice="' . $value->regular_price . '" >' . $value->quantity . '</span>';
         }
         return response()->json($Attr);
+    }
+    function ProductReview(Request $request){
+        $request->validate([
+            'rate'=> ['required','numeric','max:5'],
+            'name'=> ['required','string','max:250'],
+            'email'=> ['required','email',],
+            'massage'=> ['required','string',],
+            'product_id'=> ['required','numeric',],
+        ]);
+        $rate = strip_tags($request->rate);
+        $name = strip_tags($request->name);
+        $email = strip_tags($request->email);
+        $massage = strip_tags($request->massage);
+        $product_id = strip_tags($request->product_id);
+        
+        $review =new ProductReview;
+        $review->rating = $rate;
+        $review->name = $name;
+        $review->email = $email;
+        $review->message = $massage;
+        $review->product_id = $product_id;
+        $review->save();
+        return back();
     }
 }

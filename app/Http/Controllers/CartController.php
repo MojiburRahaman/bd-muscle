@@ -54,6 +54,8 @@ class CartController extends Controller
         if ($request->has('flavour_id')) {
             $request->validate([
                 'flavour_id' => ['required'],
+            ],[
+                'flavour_id.required' => 'Please Choose a Flavour',
             ]);
         }
 
@@ -72,7 +74,7 @@ class CartController extends Controller
         } else {
             // if user dont have cookie
             $cookie_id_generate = time() . Str::random(10);
-            Cookie::queue('cookie_id', $cookie_id_generate, 43200);
+            Cookie::queue('cookie_id', $cookie_id_generate, 129600);
         }
         $product_already_add = Cart::Where('cookie_id', Cookie::get('cookie_id'))
             ->Where('color_id', $request->color_id)
@@ -87,7 +89,7 @@ class CartController extends Controller
                 ->Where('size_id', $request->size_id)
                 ->Where('flavour_id', $request->flavour_id)
                 ->increment('quantity', $request->cart_quantity);
-            return back()->with('cart_added', 'Prodcut add to cart succcessfully');;
+            return back()->with('cart_added', 'Prodcut add to cart succcessfully');
         }
         // new data add
         $cart = new Cart;

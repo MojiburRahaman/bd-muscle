@@ -1,30 +1,13 @@
 @extends('frontend.master')
+@section('title')
+ {{config('app.name')}} - Register
+@endsection
 @section('content')
-<!-- .breadcumb-area start -->
-<div class="breadcumb-area bg-img-4 ptb-100">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="breadcumb-wrap text-center">
-                    <h2>Account</h2>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><span>Register</span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- .breadcumb-area end -->
-<!-- checkout-area start -->
 <div class="account-area ptb-100">
     <div class="container">
         <div class="row">
             <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-12">
-                <!-- Session Status -->
                 <x-auth-session-status class="mb-4" :status="session('status')" />
-                {{-- <x-auth-validation-errors class="mb-4" :errors="$errors" /> --}}
                 <!-- Validation Errors -->
                 @if ($errors->any())
                 <div class="alert alert-danger">
@@ -71,16 +54,15 @@
                     </form>
                     <div class="text-center">
                         <div>
-
-                            <a style="padding: 10px 190px" class="btn btn-danger mb-4"
-                                href="{{route('GoogleRegister')}}">Register with Gmail</a>
+                            <a class="btn btn-regular mb-4"
+                                href="{{route('GoogleRegister')}}"><img width="7%" src="{{asset('icon/unnamed.png')}}" alt="google">
+                                Register with Gmail</a>
                         </div>
-                        <a href="register.html">Or Creat an Account</a>
+                        <a href="{{route('login')}}">Already Register? login</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- checkout-area end -->
 @endsection

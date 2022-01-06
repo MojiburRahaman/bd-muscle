@@ -1,25 +1,8 @@
 @extends('frontend.master')
 @section('title')
-Login - {{config('app.name')}} 
+ {{config('app.name')}} - Login
 @endsection
 @section('content')
-<!-- .breadcumb-area start -->
-<div class="breadcumb-area bg-img-4 ptb-100">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="breadcumb-wrap text-center">
-                    <h2>Account</h2>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><span>Login</span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- .breadcumb-area end -->
 <!-- checkout-area start -->
 <div class="account-area ptb-100">
     <div class="container">
@@ -72,9 +55,8 @@ Login - {{config('app.name')}}
                     </form>
                     <div class="text-center">
                         <div class="col-lg-12 col-12">
-
-                            <a style="width: 100%" class="btn btn-danger mb-4 ptb-2"
-                                href="{{route('GoogleLogin')}}">Login with Gmail</a>
+                            <a  class="btn btn-regular mb-4 ptb-2"
+                                href="{{route('GoogleLogin')}}"><img width="7%" src="{{asset('icon/unnamed.png')}}" alt="google">Login with Gmail</a>
                         </div>
                         <a href="{{route('register')}}">Or Creat an Account</a>
                     </div>

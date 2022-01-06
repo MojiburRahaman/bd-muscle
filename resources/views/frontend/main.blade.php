@@ -7,7 +7,7 @@
             @forelse ($banners as $banner)
             @if ($banner->product_id != '')
             <div class="swiper-slide overlay">
-                <div style="border-bottom: 1px solid red" class="single-slider slide-inner ">
+                <div class="single-slider slide-inner ">
                     <div class="container">
                         <div class="row">
                             <div class=" col-lg-6 col-7 col-sm-6">
@@ -101,13 +101,11 @@
 <!-- start count-down-section -->
 <style>
     .count-down-area {
-        background-image: url('{{asset('muscletechperformancefeat.jpg')}}')
+        background-image: url('{{asset('deal_banner/muscletechperformancefeat.jpg')}}')
     }
 
 </style>
 @if ($deal != '')
-
-@if ($deal->status == 1)
 {{-- count-down-area --}}
 <div class="count-down-area count-down-area-sub">
     <section class="count-down-section section-padding parallax" data-speed="7">
@@ -128,7 +126,6 @@
         <!-- end container -->
     </section>
 </div>
-@endif
 @endif
 <!-- end count-down-section -->
 <!-- product-area start -->
@@ -165,17 +162,22 @@
                     </div>
                     <div class="product-content">
                         <h3><a href="{{route('SingleProductView',$product->slug)}}">{{ $product->title }}</a></h3>
+                        @php
+                        $sale = collect($product->Attribute)->min('sell_price');
+                        $regular = collect($product->Attribute)->min('regular_price');
+                        @endphp
+                        @if ($sale == '')
                         <p class="pull-left"> ৳
-                            @php
-                            $sale = collect($product->Attribute)->min('sell_price');
-                            $regular = collect($product->Attribute)->min('regular_price');
-                            if ($sale == '') {
-                            echo $regular;
-                            } else {
-                            echo $sale;
-                            }
-                            @endphp
+                            {{$regular}}
                         </p>
+                        @else
+                        <p class="pull-left "> ৳
+                            {{$sale}}
+                        </p>
+                        <p style="text-decoration:line-through" class="pull-left pl-2"> ৳
+                            {{$regular}}
+                        </p>
+                        @endif
                         <ul class="pull-right d-flex">
                             <li><i class="fa fa-star"></i></li>
                             <li><i class="fa fa-star"></i></li>
@@ -215,14 +217,16 @@
                                         }
                                         @endphp
                                     </span>
+                                    @if ($product->product_review_count > 0)
                                     <ul class="rating pull-right">
                                         <li><i class="fa fa-star"></i></li>
                                         <li><i class="fa fa-star"></i></li>
                                         <li><i class="fa fa-star"></i></li>
                                         <li><i class="fa fa-star"></i></li>
                                         <li><i class="fa fa-star"></i></li>
-                                        <li>(05 Customar Review)</li>
+                                        <li>({{$product->product_review_count}} Customar Review)</li>
                                     </ul>
+                                    @endif
                                 </div>
                                 <p>{{ $product->product_summary }}</p>
                                 <ul class="input-style">
@@ -241,11 +245,9 @@
                                 </ul>
                                 <ul class="socil-icon">
                                     <li>Share :</li>
-                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                    <li><a
+                                            href="https://www.facebook.com/sharer/sharer.php?u={{route('SingleProductView',$product->slug)}}&display=popup"><i
+                                                class="fa fa-facebook"></i></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -272,7 +274,7 @@
         </div>
         <ul class="row">
             @foreach ($latest_product as $product)
-            <li class="col-xl-3 col-lg-4 col-sm-6 col-12">
+            <li class="mb-4 col-xl-3 col-lg-4 col-sm-6 col-12">
                 <div class="product-wrap">
                     <div class="product-img">
                         @if (collect($product->Attribute)->min('discount') != '')
@@ -294,18 +296,22 @@
                     </div>
                     <div class="product-content">
                         <h3><a href="{{route('SingleProductView',$product->slug)}}">{{ $product->title }}</a></h3>
+                        @php
+                        $sale = collect($product->Attribute)->min('sell_price');
+                        $regular = collect($product->Attribute)->min('regular_price');
+                        @endphp
+                        @if ($sale == '')
                         <p class="pull-left"> ৳
-                            @php
-                            $sale = collect($product->Attribute)->min('sell_price');
-                            $regular = collect($product->Attribute)->min('regular_price');
-                            if ($sale == '') {
-                            echo $regular;
-                            } else {
-                            echo $sale;
-                            }
-                            @endphp
-
+                            {{$regular}}
                         </p>
+                        @else
+                        <p class="pull-left "> ৳
+                            {{$sale}}
+                        </p>
+                        <p style="text-decoration:line-through" class="pull-left pl-2"> ৳
+                            {{$regular}}
+                        </p>
+                        @endif
                         <ul class="pull-right d-flex">
                             <li><i class="fa fa-star"></i></li>
                             <li><i class="fa fa-star"></i></li>
@@ -341,14 +347,16 @@
                                         }
                                         @endphp
                                     </span>
+                                    @if ($product->product_review_count > 0)
                                     <ul class="rating pull-right">
                                         <li><i class="fa fa-star"></i></li>
                                         <li><i class="fa fa-star"></i></li>
                                         <li><i class="fa fa-star"></i></li>
                                         <li><i class="fa fa-star"></i></li>
                                         <li><i class="fa fa-star"></i></li>
-                                        <li>(05 Customar Review)</li>
+                                        <li>({{$product->product_review_count}} Customar Review)</li>
                                     </ul>
+                                    @endif
                                 </div>
                                 <p>{{ $product->product_summary }}</p>
                                 <ul class="input-style">
@@ -367,11 +375,12 @@
                                 </ul>
                                 <ul class="socil-icon">
                                     <li>Share :</li>
-                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                    <li>
+                                        <a
+                                            href="https://www.facebook.com/sharer/sharer.php?u={{route('SingleProductView',$product->slug)}}&display=popup"><i
+                                                class="fa fa-facebook"></i></a>
+                                    </li>
+
                                 </ul>
                             </div>
                         </div>
@@ -379,9 +388,8 @@
                 </div>
             </div>
             @endforeach
-
             <li class="col-12 text-center">
-                <a class="loadmore-btn" href="javascript:void(0);">Load More</a>
+                <a class="loadmore-btn" href="{{route('Frontendshop')}}">Load More</a>
             </li>
         </ul>
     </div>
@@ -394,15 +402,12 @@
             <div class="col-md-12">
                 <div class="section-title text-center mb-30px0px">
                     <h2 class="title">Whats your <span style="color:#ef4836">Goal?</span></h2>
-                    {{-- <p class="sub-title">Lorem ipsum dolor sit amet consectetur adipisicing eiusmod. --}}
-                    </p>
                 </div>
             </div>
         </div>
 
         <div class="row">
             @forelse ($blogs as $blog)
-
             <div class="col-lg-4 mb-md-30px mb-lm-30px">
                 <div class="single-blog ">
                     <div class="blog-image">
@@ -475,8 +480,14 @@
 @endsection
 @section('script_js')
 <script>
-   @if (session('orderPlace'))
-       
+    @if (session('subscribe'))
+   Swal.fire(
+     'Thanks',
+    '{{session("subscribe")}}',
+     'success'
+   )
+   @endif
+    @if (session('orderPlace'))
    Swal.fire(
      'Thanks',
     'Your order is placed order #{{session("orderPlace")}}',
@@ -484,8 +495,7 @@
    )
    @endif
 
-    @if ($deal != '')
-   @if ($deal->status == 1)   
+    @if ($deal != '') 
    if ($("#clock").length) {
         $('#clock').countdown('{{$deal->expire_date}}', function(event) {
             var $this = $(this).html(event.strftime('' +
@@ -497,12 +507,10 @@
         });
     }
    @endif
-   @endif
 @auth
 $.fn.cornerpopup({
 variant: 5,
 slide: 1,
-// stickToBottom:true,
 displayOnce : 1,
 position : 'left',
 timeOut : '10000',
