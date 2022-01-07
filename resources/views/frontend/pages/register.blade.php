@@ -58,7 +58,7 @@
                                 href="{{route('GoogleRegister')}}"><img width="7%" src="{{asset('icon/unnamed.png')}}" alt="google">
                                 Register with Gmail</a>
                         </div>
-                        <a href="{{route('login')}}">Already Register? login</a>
+                       <span>Already Register?<a href="{{route('login')}}"> login</a></span> 
                     </div>
                 </div>
             </div>

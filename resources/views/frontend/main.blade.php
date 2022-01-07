@@ -50,13 +50,9 @@
             @endif
             @if ($banner->banner_image != '')
             <style>
-                .slide {
-                        {
-                        $loop->index+1
-                    }
-                }
+                .slide@php echo $loop->index+1;
 
-                    {
+                @endphp {
                     background-image: url('{{asset('banner_image/'.$banner->banner_image)}}');
                     background-position: center;
                     background-size: cover;

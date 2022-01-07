@@ -25,6 +25,7 @@ class CreateProductsTable extends Migration
             $table->string('thumbnail_img');
             $table->string('status')->default(1)->comment('1=active , 2=Inactive');
             $table->integer('most_view')->default(0);
+            $table->string('certified')->default('2');
             $table->text('product_summary');
             $table->text('product_description');
             $table->timestamps();

@@ -214,10 +214,9 @@
                         </td>
                         <td style="text-align: right">
                             @php
-                            $product =$order_product->Product->Attribute
+                            $product =$order_product->Product->WithTrash_Attribute
                             ->where('color_id',$order_product->color_id)
                             ->where('size_id',$order_product->size_id)->first();
-
                             $sale_price = $product->sell_price;
                             $regular_price = $product->regular_price;
                             if ($sale_price) {

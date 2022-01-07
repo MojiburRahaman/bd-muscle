@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Blog;
 use App\Models\Order_Summaries;
 use App\Models\Product;
+use App\Models\ProductReview;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
@@ -19,10 +21,14 @@ class DashboardController extends Controller
     public function index()
     {
         $order =Order_Summaries::get();
+        $Blog =Blog::count();
+        $ProductReview =ProductReview::count();
         $product =Product::where('status',1)->count();
         $user = Role::where('name','Customer')->count();
        return view('backend.main',[
            'order'=> $order,
+           'Blog'=> $Blog,
+           'ProductReview'=> $ProductReview,
            'product'=> $product,
            'user'=> $user,
        ]);

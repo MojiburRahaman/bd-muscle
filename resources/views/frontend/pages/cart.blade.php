@@ -47,6 +47,12 @@ Cart - BD Muscle
                         $total_cart_amount = 0;
                         @endphp
                         @forelse ($Carts as $item)
+                        @php
+                        $product =$item->Product->Attribute
+                        ->where('color_id',$item->color_id)
+                        ->where('size_id',$item->size_id)->first();
+                        @endphp
+                        @if ($product != '')
 
                         <tr style="border-bottom: 1px solid rgb(211, 211, 211)">
                             <td style="border:none" class="images">
@@ -71,10 +77,6 @@ Cart - BD Muscle
                             </td>
                             <td style="border:none" class="ptice">৳<span class="singlesub_price">
                                     @php
-                                    $product =$item->Product->Attribute
-                                    ->where('color_id',$item->color_id)
-                                    ->where('size_id',$item->size_id)->first();
-
                                     $sale_price = $product->sell_price;
                                     $regular_price = $product->regular_price;
                                     $quantity = $product->quantity;
@@ -118,27 +120,54 @@ Cart - BD Muscle
                                 @section('script_js')
                                 <script>
                                     let timerInterval
-                                Swal.fire({
-                                icon : 'warning',
-                                text: '{{ $item->Product->title }} Quantity is out of stock ',
-                                timer: 2500,
-                                timerProgressBar: true,
-                                didOpen: () => {
-                                    Swal.showLoading()
-                                    const b = Swal.getHtmlContainer().querySelector('b')
-                                    timerInterval = setInterval(() => {
-                                    b.textContent = Swal.getTimerLeft()
-                                    }, 100)
-                                },
-                                willClose: () => {
-                                    clearInterval(timerInterval)
-                                }
-                                }).then((result) => {
-                                /* Read more about handling dismissals below */
-                                if (result.dismiss === Swal.DismissReason.timer) {
-                                    window.location.href = '{{route('CartDelete',$item->id)}}'
-                                }
-                                })
+                                 Swal.fire({
+                                 icon : 'warning',
+                                 text: '{{ $item->Product->title }} Quantity is out of stock ',
+                                 timer: 2500,
+                                 timerProgressBar: true,
+                                 didOpen: () => {
+                                     Swal.showLoading()
+                                     const b = Swal.getHtmlContainer().querySelector('b')
+                                     timerInterval = setInterval(() => {
+                                     b.textContent = Swal.getTimerLeft()
+                                     }, 100)
+                                 },
+                                 willClose: () => {
+                                     clearInterval(timerInterval)
+                                 }
+                                 }).then((result) => {
+                                 if (result.dismiss === Swal.DismissReason.timer) {
+                                     window.location.href = '{{route('CartDelete',$item->id)}}'
+                                 }
+                                 })
+                                </script>
+                                @endsection
+                                @endif
+                                @else
+                                @section('script_js')
+                                <script>
+                                    let timerInterval
+                         Swal.fire({
+                         icon : 'warning',
+                         text: '{{ $item->Product->title }} Quantity is out of stock ',
+                         timer: 2500,
+                         timerProgressBar: true,
+                         didOpen: () => {
+                             Swal.showLoading()
+                             const b = Swal.getHtmlContainer().querySelector('b')
+                             timerInterval = setInterval(() => {
+                             b.textContent = Swal.getTimerLeft()
+                             }, 100)
+                         },
+                         willClose: () => {
+                             clearInterval(timerInterval)
+                         }
+                         }).then((result) => {
+                         /* Read more about handling dismissals below */
+                         if (result.dismiss === Swal.DismissReason.timer) {
+                             window.location.href = '{{route('CartDelete',$item->id)}}'
+                         }
+                         })
                                 </script>
                                 @endsection
                                 @endif

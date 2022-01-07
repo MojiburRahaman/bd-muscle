@@ -24,6 +24,7 @@ class CreateAttributesTable extends Migration
             $table->string('discount')->nullable();
             $table->string('sell_price')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

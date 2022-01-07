@@ -113,13 +113,12 @@ class OrderController extends Controller
             $status->save();
             return back();
         } elseif ($status->delivery_status == 2) {
-            
+
             $status->delivery_status = 3;
             $status->save();
             Mail::to($email)->send(new OrderDeliverdMail($user->name, $status));
             return back();
         } elseif ($status->delivery_status == 3) {
-
             return back();
         }
     }

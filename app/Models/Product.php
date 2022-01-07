@@ -20,6 +20,10 @@ class Product extends Model
     {
         return $this->belongsTo(Subcatagory::class, 'catagory_id');
     }
+    function WithTrash_Attribute()
+    {
+        return $this->hasMany(Attribute::class, 'product_id')->withTrashed();
+    }
     function Attribute()
     {
         return $this->hasMany(Attribute::class, 'product_id');

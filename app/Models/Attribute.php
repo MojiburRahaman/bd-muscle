@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use \Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 
 class Attribute extends Model
 {
-    use HasFactory,HasEagerLimit;
+    use HasFactory,HasEagerLimit,SoftDeletes;
 
     function Product()
     {

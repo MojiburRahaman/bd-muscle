@@ -132,23 +132,6 @@
     </div>
     <section id="security" class="container">
         <div class="row mt-5">
-            <div class="col-lg-4 col-12 mb-5  ">
-                <div class="secure-box">
-
-                    <i class="fa fa-unlock"></i>
-                    <h4>
-                        MONEY BACK GUARANTEE</h4>
-                    <p>Return Within 7 Day..</p>
-                </div>
-            </div>
-            <div class="col-lg-4 col-12 mb-5  ">
-                <div class="secure-box">
-
-                    <i class="fa fa-lock"></i>
-                    <h4>100% Authentic Products</h4>
-                    <p>We only deal with original products.</p>
-                </div>
-            </div>
             <div class="col-lg-4  col-12 mb-5 ">
                 <div class="secure-box">
 
@@ -158,6 +141,41 @@
                     <p>Fast delivery, competitive prices and excellent services.</p>
                 </div>
             </div>
+            <div class="col-lg-4  col-12 mb-5 ">
+                <div class="secure-box">
+
+                    <i class="fa fa-truck"></i>
+                    <h4>Fast Delivery Service
+                    </h4>
+                    <p>Fast delivery, competitive prices and excellent services.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-12 mb-5  ">
+                <div class="secure-box">
+
+                    <i class="fa fa-unlock"></i>
+                    <h4>
+                        MONEY BACK GUARANTEE</h4>
+                    <p>Return Within 7 Day..</p>
+                </div>
+            </div>
+            <div class="col-lg-4 ml-5 col-12 mb-5  ">
+                <div class="secure-box">
+
+                    <i class="fa fa-lock"></i>
+                    <h4>Informed Sports Certified</h4>
+                    <p>This Product 100% Informed Sports Certified.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 ml-5  col-12 mb-5 ">
+                <div class="secure-box">
+
+                    <i class="fa fa-truck"></i>
+                    <h4>Banned Substance Free </h4>
+                    <p>Every Product 100% Dopping free.</p>
+                </div>
+            </div>
+            
         </div>
     </section>
 </div>

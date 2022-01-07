@@ -107,10 +107,21 @@
                                 <ul class="d-flex">
                                     <li class="{{ route('Frontendhome') == url()->current() ? 'active' : '' }}"><a
                                             href="{{ route('Frontendhome') }}">Home</a></li>
-                                    <li><a href="{{route('FrontendAbout')}}">About</a></li>
-                                    <li class="{{ route('Frontendshop') == url()->current() ? 'active' : '' }}"><a
-                                            href="{{ route('Frontendshop') }}">Shop</a></li>
+                                    <li>
+                                        <a href="{{ route('Frontendshop') }}">Shop <i class="fa fa-angle-down"></i></a>
+                                        <ul class="dropdown_style">
+                                            @forelse (catagory() as $catagory )
+                                            <li>
+                                                <a href="{{route('CategorySearch',$catagory->slug)}}">{{$catagory->catagory_name}}</a>
+                                            </li>
+                                            @empty
 
+                                            @endforelse
+                                        </ul>
+                                    </li>
+                                    <li><a class="{{route('FrontendCertified') == url()->current() ? 'active' : ''}}"
+                                            href="{{route('FrontendCertified')}}">Sports Certified</a>
+                                    </li>
                                     <li class="{{route('Frontendblog') == url()->current() ? 'active' : ''}}">
                                         <a href="{{route('Frontendblog')}}">Blog </a>
                                     </li>
@@ -119,9 +130,7 @@
                                             <i class="fa fa-shopping-cart"></i>
                                             Cart</a>
                                     </li>
-                                    <li><a class="{{route('FrontendCertified') == url()->current() ? 'active' : ''}}"
-                                            href="{{route('FrontendCertified')}}">Certified</a>
-                                    </li>
+
                                 </ul>
                             </nav>
                         </div>
@@ -138,6 +147,12 @@
                                         <span>{{wish_list_count()}}</span></a>
                                     <ul class="cart-wrap dropdown_style">
                                         @forelse (wish_list_products() as $wish_list)
+                                        @php
+                                        $Attribute =$wish_list->Product->Attribute
+                                        ->where('color_id',$wish_list->color_id)
+                                        ->where('size_id',$wish_list->size_id)->first();
+                                        @endphp
+                                        @if ($Attribute != '')
                                         <li class="cart-items">
                                             <div>
                                                 <img style="width:40%;margin-right:10px;float: left;"
@@ -149,10 +164,8 @@
                                                     href="{{ route('SingleProductView', $wish_list->Product->slug) }}">{{ $wish_list->Product->title }}</a>
                                                 <span>QTY : {{ $wish_list->quantity }}</span>
                                                 <p>৳
+
                                                     @php
-                                                    $Attribute =$wish_list->Product->Attribute
-                                                    ->where('color_id',$wish_list->color_id)
-                                                    ->where('size_id',$wish_list->size_id)->first();
                                                     $regular_price =$Attribute->regular_price;
                                                     $sell_price = $Attribute->sell_price;
                                                     @endphp
@@ -165,6 +178,7 @@
 
                                             </div>
                                         </li>
+                                        @endif
                                         @empty
                                         <li>
                                             No Product In Your Wishlist
@@ -190,6 +204,12 @@
 
                                     <ul class="cart-wrap dropdown_style">
                                         @forelse (cart_product_view() as $cart_product)
+                                        @php
+                                        $Attribute =$cart_product->Product->Attribute
+                                        ->where('color_id',$cart_product->color_id)
+                                        ->where('size_id',$cart_product->size_id)->first();
+                                        @endphp
+                                        @if ($Attribute != '')
                                         <li class="cart-items">
                                             <div>
                                                 <img style="width:40%;margin-right:10px;float: left;"
@@ -202,9 +222,6 @@
                                                 <span>QTY : {{ $cart_product->quantity }}</span>
                                                 <p>৳
                                                     @php
-                                                    $Attribute =$cart_product->Product->Attribute
-                                                    ->where('color_id',$cart_product->color_id)
-                                                    ->where('size_id',$cart_product->size_id)->first();
                                                     $regular_price =$Attribute->regular_price;
                                                     $sell_price = $Attribute->sell_price;
                                                     @endphp
@@ -217,6 +234,7 @@
 
                                             </div>
                                         </li>
+                                        @endif
                                         @empty
                                         <li>
                                             No Product In Your Cart
@@ -253,12 +271,61 @@
                         <div class="row">
                             <div class="col-12 d-block d-lg-none">
                                 <ul class="metismenu">
+                                    
+                                {{-- <li class="sidemenu-items active">
+                                    <a class="has-arrow" aria-expanded="true" href="javascript:void(0);">Home</a>
+                                    <ul aria-expanded="true" class="collapse in" style="">
+                                        <li><a href="index.html">Home Main</a></li>
+                                        <li><a href="index2.html">Home Two</a></li>
+                                        <li><a href="index3.html">Home Three</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="about.html" aria-expanded="false">About</a></li>
+                                <li class="sidemenu-items">
+                                    <a class="has-arrow" aria-expanded="false" href="javascript:void(0);">Shop </a>
+                                    <ul aria-expanded="false" class="collapse">
+                                        <li><a href="shop.html">Shop Page</a></li>
+                                        <li><a href="shop-sidebar.html">Shop Sidebar</a></li>
+                                        <li><a href="single-product.html">Product Details</a></li>
+                                        <li><a href="cart.html">Shopping cart</a></li>
+                                        <li><a href="checkout.html">Checkout</a></li>
+                                        <li><a href="wishlist.html">Wishlist</a></li>
+                                    </ul>
+                                </li>
+                                <li class="sidemenu-items">
+                                    <a class="has-arrow" aria-expanded="false" href="javascript:void(0);">Pages </a>
+                                    <ul aria-expanded="false" class="collapse">
+                                        <li><a href="about.html">About Page</a></li>
+                                        <li><a href="single-product.html">Product Details</a></li>
+                                        <li><a href="cart.html">Shopping cart</a></li>
+                                        <li><a href="checkout.html">Checkout</a></li>
+                                        <li><a href="wishlist.html">Wishlist</a></li>
+                                    </ul>
+                                </li>
+                                <li class="sidemenu-items">
+                                    <a class="has-arrow" aria-expanded="false" href="javascript:void(0);">Blog</a>
+                                    <ul aria-expanded="false" class="collapse">
+                                        <li><a href="blog.html">Blog</a></li>
+                                        <li><a href="blog-details.html">Blog Details</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="contact.html" aria-expanded="false">Contact</a></li> --}}
+                            
                                     <li><a href="{{route('Frontendhome')}}">Home</a></li>
-                                    <li><a href="{{route('FrontendAbout')}}">About</a></li>
-                                    <li><a href="{{route('Frontendshop')}}">Shop</a></li>
+                                    <li class="sidemenu-items">
+                                    <a class="has-arrow" aria-expanded="false" href="{{route('Frontendshop')}}">Shop </a>
+                                    <ul aria-expanded="false" class="collapse">
+                                        @forelse (catagory() as $catagory)
+                                            
+                                        <li><a href="{{route('CategorySearch',$catagory->slug)}}">{{$catagory->catagory_name}}</a></li>
+                                        @empty
+                                            <li>No Catagory</li>
+                                        @endforelse
+                                    </ul>
+                                </li>
+                                    <li><a href="{{route('FrontendCertified')}}">Sports Certiified</a></li>
                                     <li><a href="{{route('Frontendblog')}}">Blog</a></li>
                                     <li><a href="{{route('CartView')}}">Cart</a></li>
-                                    <li><a href="{{route('FrontendCertified')}}">Certiified</a></li>
 
                                 </ul>
                             </div>
@@ -314,7 +381,7 @@
                                         <li><a href="{{route('FrontendAbout')}}">about us</a></li>
                                         <li><a href="{{route('Frontendshop')}}">shop</a></li>
                                         <li><a href="{{route('Frontendblog')}}">blog</a></li>
-                                        <li><a href="contact.html">contact us</a></li>
+                                        {{-- <li><a href="contact.html">contact us</a></li> --}}
                                     </ul>
                                 </div>
                             </div>
@@ -348,9 +415,9 @@
                         <div class="col-lg-3 col-md-8 col-sm-12">
                             <div class="footer-adress">
                                 <ul>
-                                    <li><a href="#"><span>Email:</span> {{$setting->email}}</a></li>
-                                    <li><a href="#"><span>Tel:</span>{{$setting->number}}</a></li>
-                                    <li><a href="#"><span>Adress:</span> {{$setting->address}}</a>
+                                    <li><a><span>Email:</span> {{$setting->email}}</a></li>
+                                    <li><a><span>Tel:</span>{{$setting->number}}</a></li>
+                                    <li><a><span>Adress:</span> {{$setting->address}}</a>
                                     </li>
                                 </ul>
                             </div>

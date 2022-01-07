@@ -46,6 +46,13 @@
                     </thead>
                     <tbody>
                         @forelse ($wish_lists as $wish_list)
+                        @php
+                        $product =$wish_list->Product->Attribute
+                        ->where('color_id',$wish_list->color_id)
+                        ->where('size_id',$wish_list->size_id)->first();
+                        @endphp
+                        @if ($product != '')
+
                         <tr>
                             <form action="{{route('CartPost')}}" method="POST">
                                 @csrf
@@ -55,8 +62,7 @@
                                             alt="">
                                     </a>
                                 </td>
-                                <td class="product"><a
-                                        href="{{route('SingleProductView',$wish_list->Product->slug)}}">
+                                <td class="product"><a href="{{route('SingleProductView',$wish_list->Product->slug)}}">
                                         {{$wish_list->Product->title}}
                                         @if ($wish_list->flavour_count != '')
                                         <br>
@@ -65,11 +71,8 @@
                                     </a>
                                 </td>
                                 <td class="ptice">৳
-                                    @php
-                                    $product =$wish_list->Product->Attribute
-                                    ->where('color_id',$wish_list->color_id)
-                                    ->where('size_id',$wish_list->size_id)->first();
 
+                                    @php
                                     $sale_price = $product->sell_price;
                                     $regular_price = $product->regular_price;
                                     $quantity = $product->quantity;
@@ -109,6 +112,34 @@
                                 </td>
                             </form>
                         </tr>
+                        @else
+                        @section('script_js')
+                        <script>
+                            let timerInterval
+                        Swal.fire({
+                        icon : 'warning',
+                        text: '{{$wish_list->Product->title}} Quantity is out of stock ',
+                        timer: 2500,
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading()
+                            const b = Swal.getHtmlContainer().querySelector('b')
+                            timerInterval = setInterval(() => {
+                            b.textContent = Swal.getTimerLeft()
+                            }, 100)
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval)
+                        }
+                        }).then((result) => {
+                        /* Read more about handling dismissals below */
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            window.location.href = '{{route('WishlistRemove',$wish_list->id)}}'
+                        }
+                        })
+                        </script>
+                        @endsection
+                        @endif
                         @empty
                         <tr>
                             <td colspan="10">No item</td>
