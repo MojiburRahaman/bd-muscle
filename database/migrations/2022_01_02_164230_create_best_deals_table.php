@@ -18,6 +18,8 @@ class CreateBestDealsTable extends Migration
             $table->string('title');
             $table->string('status')->default('1');
             $table->string('discount');
+            $table->string('deal_banner')->nullable();
+            $table->string('deal_backgraound_color')->nullable();
             $table->string('expire_date');
             $table->timestamps();
         });

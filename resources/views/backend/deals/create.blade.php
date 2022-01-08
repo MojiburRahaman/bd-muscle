@@ -31,7 +31,7 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <form action="{{route('deals.store')}}" method="POST">
+            <form action="{{route('deals.store')}}" method="POST" enctype="multipart/form-data">
                 <div class="col-lg-12">
                     @csrf
                     <div class="form-group">
@@ -55,6 +55,20 @@
                         @enderror
                     </div>
                     <div class="form-group">
+                        <label for="deal_banner">Banner</label>
+                        <input  type="file" name="deal_banner" id="discount" class="form-control @error('deal_banner') is-invalid @enderror">
+                        @error('deal_banner')
+                        <div class="alert alert-danger"> {{$message}}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="deal_backgraound_color">Background Color Code</label>
+                        <input  type="text" name="deal_backgraound_color" id="discount" class="form-control @error('deal_backgraound_color') is-invalid @enderror">
+                        @error('deal_backgraound_color')
+                        <div class="alert alert-danger"> {{$message}}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
                         <label for="discount">Discount</label>
                         <input required type="number" name="discount" id="discount" class="form-control @error('discount') is-invalid @enderror">
                         @error('discount')
@@ -62,13 +76,27 @@
                             
                         @enderror
                     </div>
-                    <div class="form-group">
-                        <label for="date">Select Date</label>
-                        <input type="date" id="date" name="date" class="form-control @error('date') is-invalid @enderror">
-                        @error('date')
-                        <div class="alert alert-danger"> {{$message}}</div>
-                            
-                        @enderror
+                    <div class="row">
+
+                        <div class="col-lg-6">
+    
+                            <div class="form-group">
+                                <label for="date">Select Date</label>
+                                <input type="date" id="date" name="date" class="form-control @error('date') is-invalid @enderror">
+                                @error('date')
+                                <div class="alert alert-danger"> {{$message}}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="time"> Time</label>
+                                <input required type="time" id="time" name="time" class="form-control @error('time') is-invalid @enderror">
+                                @error('time')
+                                <div class="alert alert-danger"> {{$message}}</div>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
                    
                     <button class="btn btn-success" type="submit">Submit</button>

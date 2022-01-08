@@ -56,7 +56,7 @@ active
                                 
                             <tr>
                                 <td>{{$best_deal->title}}</td>
-                                <td>{{$best_deal->expire_date}}</td>
+                                <td>{{$best_deal->expire_date . ',' .$best_deal->expire_time}}</td>
                                 <td>{{$best_deal->discount}}%</td>
                                 <td>
                                     @if ($best_deal->status == 1)

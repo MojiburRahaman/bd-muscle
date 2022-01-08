@@ -8,6 +8,8 @@ use App\Models\BestDealProduct;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 class BestDealController extends Controller
 {
@@ -41,8 +43,10 @@ class BestDealController extends Controller
      */
     public function store(Request $request)
     {
+        // return $request;
         $request->validate([
-            'date' => ['date', 'required', 'after:tomorrow',],
+            'date' => ['date', 'required',],
+            'time' => [ 'required',],
             'discount' => ['required', 'numeric', 'min:2', 'max:99'],
             'title' => ['required',],
             'product_id.*' => ['required'],
@@ -52,8 +56,20 @@ class BestDealController extends Controller
             $deal->title = $request->title;
             $deal->discount = $request->discount;
             $deal->expire_date = $request->date;
+            $deal->expire_time = $request->time;
+            if ($request->deal_banner != '') {
+                if ($request->hasFile('deal_banner')) {
+                    $deal_banner = $request->file('deal_banner');
+                    $extension = config('app.name') . '-' . Str::random(2) . '.' . $deal_banner->getClientOriginalExtension();
+                    Image::make($deal_banner)->save(public_path('deal_banner/' . $extension), 90);
+                    $deal->deal_banner = $extension;
+                }
+            } else {
+                $request->validate(['deal_backgraound_color' => ['required']]);
+                $deal->deal_backgraound_color = $request->deal_backgraound_color;
+            }
             $deal->save();
-            # code...
+
             foreach ($request->product_id as $key => $product_id) {
 
                 $attributes = Attribute::where('product_id', $product_id)->get();
@@ -126,14 +142,6 @@ class BestDealController extends Controller
      */
     public function edit($id)
     {
-        $best_deal = BestDeal::findorfail($id);
-        $products = Product::where('status', 1)->select('id', 'title')->get();
-        $best_deal_product = BestDealProduct::where('best_deal_id', $best_deal->id)->get();
-        return view('backend.deals.edit', [
-            'best_deal' => $best_deal,
-            'products' => $products,
-            'best_deal_product' => $best_deal_product,
-        ]);
     }
 
     /**
@@ -156,6 +164,12 @@ class BestDealController extends Controller
     public function destroy($id)
     {
         $BestDeal =  BestDeal::findorfail($id);
+        if ($BestDeal->deal_banner) {
+            $old_banner = public_path('deal_banner/' . $BestDeal->deal_banner);
+            if (file_exists($old_banner)) {
+                unlink($old_banner);
+            }
+        }
         $best_deal_product = BestDealProduct::where('best_deal_id', $BestDeal->id)->get();
         foreach ($best_deal_product as $key => $deal_product) {
             $attributes = Attribute::where('product_id', $deal_product->product_id)->get();

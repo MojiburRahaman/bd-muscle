@@ -32,6 +32,10 @@ class Product extends Model
     {
         return $this->hasMany(Gallery::class, 'product_id');
     }
+    function BestDealProduct()
+    {
+        return $this->hasMany(BestDealProduct::class, 'product_id');
+    }
     function Flavour()
     {
         return $this->hasMany(Flavour::class, 'product_id');

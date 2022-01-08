@@ -1,7 +1,8 @@
  <?php
 
-    use App\Http\Controllers\BestDealController;
     use Illuminate\Support\Facades\Route;
+    use Illuminate\Support\Facades\Auth;
+    use App\Http\Controllers\BestDealController;
     use App\Http\Controllers\BrandController;
     use App\Http\Controllers\CartController;
     use App\Http\Controllers\DashboardController;
@@ -23,7 +24,6 @@
     use App\Http\Controllers\OrderController;
     use App\Http\Controllers\SiteSettingController;
     use App\Http\Controllers\SocialLoginController;
-    use Illuminate\Support\Facades\Auth;
     /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -48,6 +48,7 @@
     // frontend route start
     Route::get('/', [FrontendController::class, 'Frontendhome'])->name('Frontendhome');
     Route::get('/about', [FrontendController::class, 'FrontendAbout'])->name('FrontendAbout');
+    Route::get('/deals', [FrontendController::class, 'FrontendDeals'])->name('FrontendDeals');
     Route::get('/certified', [FrontendController::class, 'FrontendCertified'])->name('FrontendCertified');
     Route::post('/newsletter', [FrontendController::class, 'FrontendNewsLetter'])->name('FrontendNewsLetter');
     Route::get('/product/{slug}', [ProductViewController::class, 'SingleProductView'])->name('SingleProductView');

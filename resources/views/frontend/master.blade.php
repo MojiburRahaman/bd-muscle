@@ -1,7 +1,8 @@
 <!doctype html>
 <html class="no-js" lang="en">
     @php
-    $setting = App\Models\SiteSetting::first();
+    // $setting = App\Models\SiteSetting::first();
+    // $catagory =App\Models\Catagory::select('id','catagory_name','slug')->latest('id')->take(5)->get();
     @endphp
 
     <head>
@@ -110,9 +111,9 @@
                                     <li>
                                         <a href="{{ route('Frontendshop') }}">Shop <i class="fa fa-angle-down"></i></a>
                                         <ul class="dropdown_style">
-                                            @forelse (catagory() as $catagory )
+                                            @forelse ($catagory_menu as $cat )
                                             <li>
-                                                <a href="{{route('CategorySearch',$catagory->slug)}}">{{$catagory->catagory_name}}</a>
+                                                <a href="{{route('CategorySearch',$cat->slug)}}">{{$cat->catagory_name}}</a>
                                             </li>
                                             @empty
 
@@ -271,53 +272,13 @@
                         <div class="row">
                             <div class="col-12 d-block d-lg-none">
                                 <ul class="metismenu">
-                                    
-                                {{-- <li class="sidemenu-items active">
-                                    <a class="has-arrow" aria-expanded="true" href="javascript:void(0);">Home</a>
-                                    <ul aria-expanded="true" class="collapse in" style="">
-                                        <li><a href="index.html">Home Main</a></li>
-                                        <li><a href="index2.html">Home Two</a></li>
-                                        <li><a href="index3.html">Home Three</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="about.html" aria-expanded="false">About</a></li>
-                                <li class="sidemenu-items">
-                                    <a class="has-arrow" aria-expanded="false" href="javascript:void(0);">Shop </a>
-                                    <ul aria-expanded="false" class="collapse">
-                                        <li><a href="shop.html">Shop Page</a></li>
-                                        <li><a href="shop-sidebar.html">Shop Sidebar</a></li>
-                                        <li><a href="single-product.html">Product Details</a></li>
-                                        <li><a href="cart.html">Shopping cart</a></li>
-                                        <li><a href="checkout.html">Checkout</a></li>
-                                        <li><a href="wishlist.html">Wishlist</a></li>
-                                    </ul>
-                                </li>
-                                <li class="sidemenu-items">
-                                    <a class="has-arrow" aria-expanded="false" href="javascript:void(0);">Pages </a>
-                                    <ul aria-expanded="false" class="collapse">
-                                        <li><a href="about.html">About Page</a></li>
-                                        <li><a href="single-product.html">Product Details</a></li>
-                                        <li><a href="cart.html">Shopping cart</a></li>
-                                        <li><a href="checkout.html">Checkout</a></li>
-                                        <li><a href="wishlist.html">Wishlist</a></li>
-                                    </ul>
-                                </li>
-                                <li class="sidemenu-items">
-                                    <a class="has-arrow" aria-expanded="false" href="javascript:void(0);">Blog</a>
-                                    <ul aria-expanded="false" class="collapse">
-                                        <li><a href="blog.html">Blog</a></li>
-                                        <li><a href="blog-details.html">Blog Details</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="contact.html" aria-expanded="false">Contact</a></li> --}}
-                            
+                             
                                     <li><a href="{{route('Frontendhome')}}">Home</a></li>
                                     <li class="sidemenu-items">
                                     <a class="has-arrow" aria-expanded="false" href="{{route('Frontendshop')}}">Shop </a>
                                     <ul aria-expanded="false" class="collapse">
-                                        @forelse (catagory() as $catagory)
-                                            
-                                        <li><a href="{{route('CategorySearch',$catagory->slug)}}">{{$catagory->catagory_name}}</a></li>
+                                        @forelse ($catagory_menu as $cat)
+                                        <li><a href="{{route('CategorySearch',$cat->slug)}}">{{$cat->catagory_name}}</a></li>
                                         @empty
                                             <li>No Catagory</li>
                                         @endforelse

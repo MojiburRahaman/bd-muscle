@@ -16,10 +16,20 @@
                                         <h2 class="text-left">{{$banner->Product->title}}</h2>
                                         @if (collect($banner->Product->Attribute)->max('discount') != '')
                                         <h6>
-                                            <span style="color: red;font-size:25px">
+                                            <p style="padding-bottom: 0"> 
+                                                <span style="color: red;font-size:25px">
+                                                   ৳  {{collect($banner->product->Attribute)->min('sell_price')}}
+                                               </span>
+                                               <span style="font-size:25px;text-decoration:line-through" class="pl-2">
+                                                   ৳  {{collect($banner->Product->Attribute)->min('regular_price')}}
+                                           </span>
+                                        </p>
+                                        <br>
+                                             <span style="color: red;font-size:25px" >
                                                 {{collect($banner->Product->Attribute)->max('discount')}}%
                                             </span>
-                                            Discount
+                                            Discount 
+                                           
                                         </h6>
                                         @else
                                         <h6>
@@ -48,11 +58,10 @@
                 </div>
             </div>
             @endif
+
             @if ($banner->banner_image != '')
             <style>
-                .slide@php echo $loop->index+1;
-
-                @endphp {
+                .slide{{$loop->index+1}} {
                     background-image: url('{{asset('banner_image/'.$banner->banner_image)}}');
                     background-position: center;
                     background-size: cover;
@@ -95,13 +104,19 @@
 </div>
 <!-- featured-area end -->
 <!-- start count-down-section -->
+@if ($deal != '')
 <style>
     .count-down-area {
-        background-image: url('{{asset('deal_banner/muscletechperformancefeat.jpg')}}')
+        @if ($deal->deal_banner != '')
+            
+        background-image: url('{{asset('deal_banner/'.$deal->deal_banner)}}')
+        @else
+        background-image: none;
+            background-color:@php echo $deal->deal_backgraound_color; @endphp;
+        @endif
     }
 
 </style>
-@if ($deal != '')
 {{-- count-down-area --}}
 <div class="count-down-area count-down-area-sub">
     <section class="count-down-section section-padding parallax" data-speed="7">
@@ -115,6 +130,7 @@
                         <div id="clock">
                         </div>
                     </div>
+                    <a  class="loadmore-btn" href="{{route('FrontendDeals')}}">View Items</a>
                 </div>
             </div>
             <!-- end row -->
@@ -493,7 +509,8 @@
 
     @if ($deal != '') 
    if ($("#clock").length) {
-        $('#clock').countdown('{{$deal->expire_date}}', function(event) {
+        $('#clock').countdown('{{$deal->expire_date .','. $deal->expire_time}}', function(event) {
+        // $('#clock').countdown('2022-01-09,10:00', function(event) {
             var $this = $(this).html(event.strftime('' +
                 '<div class="box"><div>%m</div> <span>month</span> </div>' +
                 '<div class="box"><div>%D</div> <span>Days</span> </div>' +

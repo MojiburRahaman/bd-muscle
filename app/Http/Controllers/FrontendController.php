@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AboutSite;
 use App\Models\Banner;
 use App\Models\BestDeal;
+use App\Models\BestDealProduct;
 use App\Models\Blog;
 use App\Models\Catagory;
 use App\Models\Product;
@@ -36,7 +37,7 @@ class FrontendController extends Controller
         if ($search == '') {
             $deal = BestDeal::where('status', 1)->first();
             $banners = Banner::latest('id')
-                ->with(['Product:id,title,slug,thumbnail_img', 'Product.Attribute:id,product_id,discount,regular_price'])
+                ->with(['Product:id,title,slug,thumbnail_img', 'Product.Attribute:id,product_id,discount,regular_price',])
                 ->where('status', 1)->get();
 
             $best_seller = Product::with('Catagory:id,slug,catagory_name', 'Attribute:product_id,discount,regular_price,sell_price')->where('most_view', '!=', 0)
@@ -193,5 +194,17 @@ class FrontendController extends Controller
             ->get();
         $about = AboutSite::first();
         return view('frontend.pages.about', compact('about', 'best_seller'));
+    }
+    function FrontendDeals()
+    {
+        $Best_deal = BestDeal::where('status', 1)->first();
+        abort_if($Best_deal == '', 404);
+        $deal_products = BestDealProduct::with(['Product.Attribute:id,product_id,discount,sell_price,regular_price', 'Product.Catagory:id,slug,catagory_name', 'Product:id,slug,catagory_id,product_summary,thumbnail_img'])
+            ->where('best_deal_id', $Best_deal->id)->paginate(1);
+        // return $deal_products;
+        return view('frontend.pages.deal', [
+            'Best_deal' => $Best_deal,
+            'deal_products' => $deal_products,
+        ]);
     }
 }

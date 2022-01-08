@@ -13,9 +13,6 @@ function cart_product_view(){
 function wish_list_products(){
     return App\Models\Wishlist::with(['Product.Attribute',])
     ->Where('user_id', auth()->id())->get();
-}
-function catagory(){
-    return App\Models\Catagory::select('id','catagory_name','slug')->latest('id')->take(5)->get();
-}
+}   
 
 ?>
