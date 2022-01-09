@@ -18,17 +18,20 @@
 	margin: 30px 0px 0px;
     height: 40px;
 }
+.bg-img-4{
+        background-image: url('{{asset('banner_image/blog.jpeg')}}');
+        padding:120px 0;
+    }
 </style>
-<!-- .breadcumb-area start -->
-<div class="breadcumb-area bg-img-4 ptb-100">
+<div class="breadcumb-area bg-img-4 ">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <div class="breadcumb-wrap text-center">
-                    <h2>Blog Details</h2>
+                    <h2>Blog Page</h2>
                     <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><span>Blog Details</span></li>
+                        <li><a href="{{route('Frontendhome')}}">Home</a></li>
+                        <li><span>Blog</span></li>
                     </ul>
                 </div>
             </div>
@@ -54,16 +57,13 @@
                             <div class="col-sm-7 ">
                                 <ul class="socil-icon d-flex">
                                     <li>share it on :</li>
-                                    <li><a href="javascript:void(0);"><i class="fa fa-facebook"></i></a></li>
-                                    <li><a href="javascript:void(0);"><i class="fa fa-twitter"></i></a></li>
-                                    <li><a href="javascript:void(0);"><i class="fa fa-linkedin"></i></a></li>
-                                    <li><a href="javascript:void(0);"><i class="fa fa-google-plus"></i></a></li>
-                                    <li><a href="javascript:void(0);"><i class="fa fa-instagram"></i></a></li>
+                                    <li><a href="https://www.facebook.com/sharer/sharer.php?u={{route('FrontenblogView',$blog->slug)}}&display=popup"><i class="fa fa-facebook"></i></a></li>
+                                   
                                 </ul>
                             </div>
                             @if ($next)
                             <div class="col-sm-5 text-right">
-                                <a href="{{route('FrontenblogView',$next->slug)}}">Next Post <i
+                                <a title="Next" href="{{route('FrontenblogView',$next->slug)}}">Next Post <i
                                         class="fa fa-long-arrow-right"></i></a>
                             </div>
                             @endif
@@ -105,20 +105,20 @@
                                     <div class="sewl-form-inputs no-padding-left">
                                         <div class="row">
                                             <div class="col-sm-6 col-12">
-                                                <input id="name" name="user_name" value="" tabindex="2" placeholder="Name"
+                                                <input required id="name" name="user_name" value="" tabindex="2" placeholder="Name"
                                                     type="text">
                                             </div>
                                             <div class="col-sm-6 col-12">
-                                                <input id="email" name="email" value="" tabindex="3" placeholder="Email"
+                                                <input required id="email" name="email" value="" tabindex="3" placeholder="Email"
                                                     type="email">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <input type="hidden" name="blog_id" value="{{$blog->id}}">
+                                    <input required type="hidden" name="blog_id" value="{{$blog->id}}">
                                     <div class="sewl-form-textarea no-padding-right">
-                                        <textarea id="comment" name="comment" tabindex="4" rows="3" cols="30"
+                                        <textarea required id="comment" name="comment" tabindex="4" rows="3" cols="30"
                                             placeholder="Write Your Comments..."></textarea>
                                     </div>
                                 </div>

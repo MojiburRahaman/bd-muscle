@@ -5,65 +5,6 @@ Search Result for "{{$search}}" BD-Muscle
 {{$category}} BD-Mucle
 @endif @endsection
 @section('content')
-<style>
-    li {
-        list-style: none;
-    }
-
-    * {
-        margin: 0px;
-        padding-top: 0px;
-    }
-
-    i {
-        padding-top: 10px;
-    }
-
-    .loadMore_btn {
-        display: inline-block;
-        padding: 8px 40px;
-        border: 1px solid #ef4836;
-        font-weight: 500;
-        color: #ef4836;
-        margin: 30px 0 0;
-    }
-
-    .loadMore_btn:hover {
-
-        background-color: #ef4836;
-        color: white;
-    }
-
-    .max_price {
-        float: right;
-        padding-left: 30px;
-        color: black;
-        background: white;
-    }
-
-    .min_price {
-        color: black;
-        background: white;
-    }
-
-</style>
-<div class="breadcumb-area bg-img-4 ptb-100">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="breadcumb-wrap text-center">
-                    <h2>Shop Page</h2>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><span>Shop</span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-{{-- product area start --}}
 <div class="product-area ptb-100 product-sidebar-area">
     <div class="container">
         <div class="row revarce-wrap">
@@ -76,36 +17,10 @@ Search Result for "{{$search}}" BD-Muscle
                             <button type="submit"><i class="fa fa-search"></i></button>
                         </form>
                     </div>
-                    {{-- @if (url()->current() != route('Frontendhome'))
-                    <div class="product-filter">
-                        <h4 class="widget-title">Filter by Price</h4>
-                        <div class="filter-price">
-                            <form action="{{url()->current()}}" method="GET">
-                                <input type="text" name="min_price" min=0 max="9900" value="0"
-                                    oninput="validity.valid||(value='0');" id="min_price"
-                                    class="price-range-field min_price" />
-                                <div id="slider-range" class="price-filter-range" name="rangeInput">
-                                    <input type="text" min=0 max="10000" value="10000" name="max_price"
-                                        oninput="validity.valid||(value='10000');" id="max_price"
-                                        class="price-range-field max_price" />
-                                </div>
-                                <div class="row mt-4">
-                                    <div class="col-7">
-
-                                    </div>
-                                    <div class="col-5  text-right">
-                                        <button type="submit" style="margin-left:90px;margin-top:10px">filter</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    @endif --}}
                     <div class="widget widget_categories">
                         <h4 class="widget-title">Categories</h4>
                         <ul>
                             @foreach ($Categories as $catagory)
-
                             <li><a href="{{route('CategorySearch',$catagory->slug)}}">{{$catagory->catagory_name}}</a>
                             </li>
                             @endforeach
@@ -119,7 +34,6 @@ Search Result for "{{$search}}" BD-Muscle
                         @if ($category != '')
                         <h3 style="color: #ef4836;">{{Str::ucfirst($category)}}</h3>
                         @endif
-                        {{-- <p class="test">Result : <span class="result">{{$Products->count()}}</span> Product </p> --}}
                     </div>
 
                 </div>
@@ -130,23 +44,27 @@ Search Result for "{{$search}}" BD-Muscle
                             <li class="col-lg-4 col-sm-6 col-12">
                                 <div class="product-wrap">
                                     <div class="product-img">
+                                        @if (collect($product->Attribute)->max('discount') != '')
+                                        <span
+                                            style=" z-index: 2">{{collect($product->Attribute)->max('discount')}}%</span>
+                                        @endif
                                         <img src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}"
                                             alt="{{ $product->title }}">
                                         <div class="product-icon flex-style">
                                             <ul>
                                                 <li>
-                                                    <a data-toggle="modal" style="padding-top: 7px"
+                                                    <a data-toggle="modal"
                                                         data-target="#exampleModalCenter{{ $product->id }}"
                                                         href="javascript:void(0);"><i style="padding-top: 0"
                                                             class="fa fa-eye"></i>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="wishlist.html" style="padding-top: 7px"><i
-                                                            style="padding-top: 0" class="fa fa-heart"></i></a>
+                                                    <a href="{{route('SingleProductView',$product->slug)}}" "><i
+                                                           class=" fa fa-heart"></i></a>
                                                 </li>
                                                 <li>
-                                                    <a href="cart.html" style="padding-top: 7px"><i
+                                                    <a href="{{route('SingleProductView',$product->slug)}}"><i
                                                             style="padding-top: 0" class="fa fa-shopping-bag"></i></a>
                                                 </li>
                                             </ul>
@@ -156,18 +74,24 @@ Search Result for "{{$search}}" BD-Muscle
                                         <h3><a
                                                 href="{{route('SingleProductView',$product->slug)}}">{{ $product->title }}</a>
                                         </h3>
+                                        @php
+                                        $sale = collect($product->Attribute)->min('sell_price');
+                                        $regular = collect($product->Attribute)->min('regular_price');
+                                        @endphp
+                                        @if ($sale == '')
                                         <p class="pull-left"> ৳
-                                            @php
-                                            $sale = collect($product->Attribute)->min('sell_price');
-                                            $regular = collect($product->Attribute)->min('regular_price');
-                                            if ($sale == '') {
-                                            echo $regular;
-                                            } else {
-                                            echo $sale;
-                                            }
-                                            @endphp
-
+                                            {{$regular}}
                                         </p>
+                                        @else
+                                        <p class="pull-left "> ৳
+                                            {{$sale}}
+                                        </p>
+                                        <p style="text-decoration:line-through" class="pull-left pl-2"> ৳
+                                            {{$regular}}
+                                        </p>
+                                        @endif
+                                        @if ($product->product_review_count)
+
                                         <ul class="pull-right d-flex">
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star"></i></li>
@@ -175,6 +99,7 @@ Search Result for "{{$search}}" BD-Muscle
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star-half-o"></i></li>
                                         </ul>
+                                        @endif
                                     </div>
                                 </div>
                             </li>
@@ -185,44 +110,46 @@ Search Result for "{{$search}}" BD-Muscle
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                         <div class="modal-body d-flex">
-                                            <div class="product-single-img w-50 text-center mt-5">
+                                            <div class="product-single-img w-50  mt-5">
+                                                @if (collect($product->Attribute)->max('discount') != '')
+                                                <span
+                                                    class="discount_tag">{{collect($product->Attribute)->max('discount')}}%</span>
+                                                @endif
                                                 <img src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}"
                                                     alt="{{ $product->title }}">
                                             </div>
                                             <div class="product-single-content w-50">
                                                 <h3>{{ $product->title }}</h3>
                                                 <div class="rating-wrap fix">
-                                                    @php
-                                                    $sale = collect($product->Attribute)->min('sell_price');
-                                                    $regular = collect($product->Attribute)->min('regular_price');
-                                                    @endphp
-                                                    @if ($sale == '')
-                                                    <p class="pull-left"> ৳
-                                                        {{$regular}}
-                                                    </p>
-                                                    @else
-                                                    <p class="pull-left "> ৳
-                                                        {{$sale}}
-                                                    </p>
-                                                    <p style="text-decoration:line-through" class="pull-left pl-2"> ৳
-                                                        {{$regular}}
-                                                    </p>
-                                                    @endif
-                                                    <ul class="rating pull-right">
+                                                    <span class="pull-left">৳
+                                                        @php
+                                                        $sale = collect($product->Attribute)->min('sell_price');
+                                                        $regular = collect($product->Attribute)->min('regular_price');
+                                                        if ($sale == '') {
+                                                        echo $regular;
+                                                        } else {
+                                                        echo $sale;
+                                                        }
+                                                        @endphp
+                                                    </span>
+                                                    @if ($product->product_review_count)
+
+                                                    <ul class="pull-right d-flex">
                                                         <li><i class="fa fa-star"></i></li>
                                                         <li><i class="fa fa-star"></i></li>
                                                         <li><i class="fa fa-star"></i></li>
                                                         <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li>(05 Customar Review)</li>
+                                                        <li><i class="fa fa-star-half-o"></i></li>
                                                     </ul>
+                                                    @endif
                                                 </div>
                                                 <p>{{ $product->product_summary }}</p>
                                                 <ul class="input-style">
                                                     <li class="quantity cart-plus-minus">
                                                         <input type="text" value="1" />
                                                     </li>
-                                                    <li><a href="cart.html">Add to Cart</a></li>
+                                                    <li><a href="{{route('SingleProductView',$product->slug)}}">Add to
+                                                            Cart</a></li>
                                                 </ul>
                                                 <ul class="cetagory">
                                                     <li>Categories:</li>
@@ -230,21 +157,13 @@ Search Result for "{{$search}}" BD-Muscle
                                                             href="{{route('CategorySearch',$product->Catagory->slug )}}">{{ $product->Catagory->catagory_name }}</a>
                                                     </li>
                                                 </ul>
-                                                {{-- <ul class="socil-icon">
-                                                    <li>Share :</li>
-                                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                                    <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                                                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                                                </ul> --}}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             @empty
-                           <li class="text-center"> No Product</li>
+                            <li class="text-center"> No Product</li>
                             @endforelse
                         </ul>
                         <ul id="ajax-data">

@@ -93,7 +93,7 @@
                     </div>
                 </div>
             </div>
-            <div class="header-bottom">
+            <div class="header-bottom sticky sticky--top">
                 <div class="fluid-container">
                     <div class="row">
                         <div class="col-lg-3 col-md-7 col-sm-6 col-6">
@@ -113,7 +113,8 @@
                                         <ul class="dropdown_style">
                                             @forelse ($catagory_menu as $cat )
                                             <li>
-                                                <a href="{{route('CategorySearch',$cat->slug)}}">{{$cat->catagory_name}}</a>
+                                                <a
+                                                    href="{{route('CategorySearch',$cat->slug)}}">{{$cat->catagory_name}}</a>
                                             </li>
                                             @empty
 
@@ -272,18 +273,21 @@
                         <div class="row">
                             <div class="col-12 d-block d-lg-none">
                                 <ul class="metismenu">
-                             
+
                                     <li><a href="{{route('Frontendhome')}}">Home</a></li>
                                     <li class="sidemenu-items">
-                                    <a class="has-arrow" aria-expanded="false" href="{{route('Frontendshop')}}">Shop </a>
-                                    <ul aria-expanded="false" class="collapse">
-                                        @forelse ($catagory_menu as $cat)
-                                        <li><a href="{{route('CategorySearch',$cat->slug)}}">{{$cat->catagory_name}}</a></li>
-                                        @empty
+                                        <a class="has-arrow" aria-expanded="false" href="{{route('Frontendshop')}}">Shop
+                                        </a>
+                                        <ul aria-expanded="false" class="collapse">
+                                            @forelse ($catagory_menu as $cat)
+                                            <li><a
+                                                    href="{{route('CategorySearch',$cat->slug)}}">{{$cat->catagory_name}}</a>
+                                            </li>
+                                            @empty
                                             <li>No Catagory</li>
-                                        @endforelse
-                                    </ul>
-                                </li>
+                                            @endforelse
+                                        </ul>
+                                    </li>
                                     <li><a href="{{route('FrontendCertified')}}">Sports Certiified</a></li>
                                     <li><a href="{{route('Frontendblog')}}">Blog</a></li>
                                     <li><a href="{{route('CartView')}}">Cart</a></li>
@@ -315,7 +319,7 @@
                             <form action="{{route('FrontendNewsLetter')}}" method="post">
                                 @csrf
                                 <div class="input-group">
-                                    <input type="email" required style="padding: 10px 20px" name="email" type="email"
+                                    <input type="email" required style="padding: 10px 20px" name="email"
                                         class="form-control" placeholder="Enter Your Email Address...">
                                     <button style="padding: 5px 15px;background-color:black;color:white"
                                         type="submit">Submit</button>

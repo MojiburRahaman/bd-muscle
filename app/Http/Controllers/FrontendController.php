@@ -28,8 +28,8 @@ class FrontendController extends Controller
                 ->where('title', 'LIKE', "%$search%")
                 ->where('status', 1)
                 ->select('id', 'slug', 'catagory_id', 'thumbnail_img', 'product_summary', 'title')
-                ->latest()->simplePaginate(1);
-
+                ->withCount('ProductReview')
+                ->latest()->simplePaginate(15);
             $view = view('frontend.search.pagination-data', compact('Products'))->render();
             return response()->json(['html' => $view,]);
         }
@@ -71,7 +71,8 @@ class FrontendController extends Controller
             ->where('title', 'LIKE', "%$search%")
             ->where('status', 1)
             ->select('id', 'slug', 'catagory_id', 'thumbnail_img', 'product_summary', 'title')
-            ->latest()->simplePaginate(1);
+            ->withCount('ProductReview')
+            ->latest()->simplePaginate(15);
         $categories = Catagory::select('slug', 'catagory_name')->get();
 
         return view('frontend.search.search-data', [
@@ -94,8 +95,10 @@ class FrontendController extends Controller
 
         $catagories = Catagory::with('Product.Attribute', 'Product.Catagory')->select('slug', 'id', 'catagory_name',)->latest('id')->get();
         $product = Product::with('Catagory', 'Attribute')->where('status', 1)
-            ->select('id', 'slug', 'title', 'thumbnail_img', 'product_summary', 'catagory_id')
-            ->latest('id')->simplePaginate(16);
+        ->select('id', 'slug', 'title', 'thumbnail_img', 'product_summary', 'catagory_id')
+            ->latest('id')
+            ->withCount('ProductReview')
+            ->simplePaginate(16);
         return view('frontend.pages.shop', [
             'catagories' => $catagories,
             'latest_product' => $product,
@@ -103,7 +106,8 @@ class FrontendController extends Controller
     }
     function Frontendblog()
     {
-        $blogs = Blog::latest('id')->select('id', 'title', 'slug', 'blog_thumbnail', 'blog_description', 'created_at')->paginate(15);
+        $blogs = Blog::latest('id')->select('id', 'title', 'slug', 'blog_thumbnail', 'blog_description', 'created_at')
+        ->paginate(12);
         return view('frontend.pages.blogs', [
             'blogs' => $blogs,
         ]);
@@ -153,12 +157,10 @@ class FrontendController extends Controller
             'blog_id' => ['required'],
 
         ]);
-
         $user_id =  auth()->id();
         $reply =  strip_tags($request->reply);
         $blogcomment_id =  strip_tags($request->blogcomment_id);
         $blog_id =  strip_tags($request->blog_id);
-
 
         $blog_comment = new BlogReply;
         $blog_comment->user_id = $user_id;
@@ -173,7 +175,6 @@ class FrontendController extends Controller
         $request->validate([
             'email' => ['required', 'email', 'unique:newsletters,email']
         ]);
-
         $email = strip_tags($request->email);
         $newsletter = new Newsletter;
         $newsletter->email = $email;
@@ -182,7 +183,12 @@ class FrontendController extends Controller
     }
     function FrontendCertified()
     {
-        $products = Product::where('certified', 1)->where('status', 1)->latest('id')->paginate(16);
+        $products = Product::where('certified', 1)->where('status', 1)
+        ->with(['Catagory:id,slug,catagory_name', 'Attribute:product_id,discount,regular_price,sell_price'])
+        ->latest('id')
+        ->withCount('ProductReview')
+        ->select('id', 'slug', 'catagory_id', 'thumbnail_img', 'product_summary', 'title')
+        ->paginate(16);
         return view('frontend.pages.certifed', compact('products'));
     }
     function FrontendAbout()
@@ -190,6 +196,7 @@ class FrontendController extends Controller
         $best_seller = Product::with('Catagory:id,slug,catagory_name', 'Attribute:product_id,discount,regular_price,sell_price')->where('most_view', '!=', 0)
             ->where('status', 1)->orderBy('most_view', 'DESC')
             ->select('id', 'most_view', 'slug', 'catagory_id', 'thumbnail_img', 'product_summary', 'title')
+            ->withCount('ProductReview')
             ->take(8)
             ->get();
         $about = AboutSite::first();
@@ -200,8 +207,7 @@ class FrontendController extends Controller
         $Best_deal = BestDeal::where('status', 1)->first();
         abort_if($Best_deal == '', 404);
         $deal_products = BestDealProduct::with(['Product.Attribute:id,product_id,discount,sell_price,regular_price', 'Product.Catagory:id,slug,catagory_name', 'Product:id,slug,catagory_id,product_summary,thumbnail_img'])
-            ->where('best_deal_id', $Best_deal->id)->paginate(1);
-        // return $deal_products;
+            ->where('best_deal_id', $Best_deal->id)->paginate(16);
         return view('frontend.pages.deal', [
             'Best_deal' => $Best_deal,
             'deal_products' => $deal_products,

@@ -1,8 +1,6 @@
 @extends('backend.master')
 
 @section('content')
-
-
 <div class="content-wrapper">
     <!-- Main content -->
     <!-- Content Header (Page header) -->
@@ -28,7 +26,7 @@
         <div class="container-fluid">
             <div class="col-12">
                 <div class="card-body table-responsive p-0">
-                    <table class="table table-hover text-nowrap" id="order_table">
+                    <table style="overflow-x:auto;" class="table  text-nowrap" id="order_table">
                         <thead>
                             <tr>
                                 <th>SL</th>
@@ -46,9 +44,11 @@
                                 <td>{{$order->created_at->diffForHumans()}}</td>
                                 <td>
                                     @if ($order->delivery_status == 1)
-                                    <a href="{{route('DeliveryStatus',$order->id)}}" class="btn-sm btn-danger">pending</a>
+                                    <a href="{{route('DeliveryStatus',$order->id)}}"
+                                        class="btn-sm btn-danger">pending</a>
                                     @elseif ($order->delivery_status == 2)
-                                    <a href="{{route('DeliveryStatus',$order->id)}}" class="btn-sm btn-warning">On The way</a>
+                                    <a href="{{route('DeliveryStatus',$order->id)}}" class="btn-sm btn-warning">On The
+                                        way</a>
                                     @else
                                     <a class="btn-sm btn-success">Deliverd</a>
 
@@ -56,16 +56,18 @@
                                 </td>
                                 <td>
                                     <a class="btn-sm btn-primary" href="{{route('orders.show',$order->id)}}">Details</a>
-                                    <a class="btn-sm btn-success" href="{{route('InvoiceDownload',$order->id)}}"><i class="fa fa-download"></i></a>
+                                    <a class="btn-sm btn-success" href="{{route('InvoiceDownload',$order->id)}}"><i
+                                            class="fa fa-download"></i></a>
                                 </td>
                             </tr>
                             @empty
-
+                            <tr>
+                                <td colspan="10">No Record</td>
+                            </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
-                <!-- /.card -->
             </div>
         </div>
     </section>

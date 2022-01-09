@@ -3,12 +3,9 @@
 @section('content')
 <style>
     .count-down-area {
-        @if ($Best_deal->deal_banner != '')
-            
-        background-image: url('{{asset('deal_banner/'.$Best_deal->deal_banner)}}')
-        @else
-        background-image: none;
-            background-color:@php echo $Best_deal->deal_backgraound_color; @endphp;
+        @if ($Best_deal->deal_banner !='') background-image: url('{{asset('deal_banner/'.$Best_deal->deal_banner)}}') @else background-image: none;
+        background-color: @php echo $Best_deal->deal_backgraound_color;
+        @endphp;
         @endif
     }
 
@@ -38,11 +35,11 @@
 <div class="ptb-100">
     <div class="container">
         <ul class="row">
-            @foreach ($deal_products as $deal)
+            @forelse ($deal_products as $deal)
             <li class="col-xl-3 col-lg-4 col-sm-6 col-12">
                 <div class="product-wrap">
                     <div class="product-img">
-                        @if (collect($deal->Product->Attribute)->min('discount') != '')
+                        @if (collect($deal->Product->Attribute)->max('discount') != '')
                         <span style=" z-index: 2">{{collect($deal->Product->Attribute)->max('discount')}}%</span>
                         @endif
                         <img loading="lazy" src="{{ asset('thumbnail_img/' . $deal->Product->thumbnail_img) }}"
@@ -59,7 +56,8 @@
                         </div>
                     </div>
                     <div class="product-content">
-                        <h3><a href={{route('SingleProductView',$deal->Product->slug)}}>{{ $deal->Product->title }}</a></h3>
+                        <h3><a href={{route('SingleProductView',$deal->Product->slug)}}>{{ $deal->Product->title }}</a>
+                        </h3>
                         @php
                         $sale = collect($deal->Product->Attribute)->min('sell_price');
                         $regular = collect($deal->Product->Attribute)->min('regular_price');
@@ -76,13 +74,6 @@
                             {{$regular}}
                         </p>
                         @endif
-                        <ul class="pull-right d-flex">
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star-half-o"></i></li>
-                        </ul>
                     </div>
                 </div>
             </li>
@@ -95,7 +86,8 @@
                         <div class="modal-body d-flex">
                             <div class="product-single-img w-50  mt-5">
                                 @if (collect($deal->Product->Attribute)->max('discount') != '')
-                                <span class="discount_tag">{{collect($deal->Product->Attribute)->max('discount')}}%</span>
+                                <span
+                                    class="discount_tag">{{collect($deal->Product->Attribute)->max('discount')}}%</span>
                                 @endif
                                 <img src="{{ asset('thumbnail_img/' . $deal->Product->thumbnail_img) }}"
                                     alt="{{ $deal->Product->title }}">
@@ -129,14 +121,7 @@
                                             href="{{route('CategorySearch',$deal->Product->Catagory->catagory_name)}}">{{ $deal->Product->Catagory->catagory_name }}</a>
                                     </li>
                                 </ul>
-                                <ul class="socil-icon">
-                                    <li>Share :</li>
-                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                                </ul>
+
                             </div>
                         </div>
                     </div>
@@ -148,18 +133,16 @@
             {{$deal_products->links('frontend.paginator')}}
         </div>
     </div>
-    
+
 </div>
 
 
 @endsection
 @section('script_js')
 <script>
-     @if ($deal != '') 
+    @if ($deal != '') 
    if ($("#clock").length) {
         $('#clock').countdown('{{$Best_deal->expire_date .','. $Best_deal->expire_time}}', function(event) {
-        // $('#clock').countdown('{{$Best_deal->expire_date}},{{$deal->expire_time}}', function(event) {
-        // $('#clock').countdown('2022-01-09,10:00', function(event) {
             var $this = $(this).html(event.strftime('' +
                 '<div class="box"><div>%m</div> <span>month</span> </div>' +
                 '<div class="box"><div>%D</div> <span>Days</span> </div>' +

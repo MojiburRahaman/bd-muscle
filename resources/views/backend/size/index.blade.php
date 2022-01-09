@@ -17,7 +17,7 @@ menu-open
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="m-0">Sizes</h1>
-                </div><!-- /.col -->
+                </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{route('dashboard.index')}}">Home</a></li>
@@ -33,11 +33,8 @@ menu-open
     <section class="content">
         <div class="container-fluid">
             <div class="col-12">
-                {{-- <form action="{{route('Markdeletebrand')}}" method="post"> --}}
-                @csrf
                 <div class="text-right">
                     @can('Create Size')
-
                     <a href="{{route('size.create')}}" class="btn-sm btn-info">Add Size</a>
                     @endcan
                 </div>

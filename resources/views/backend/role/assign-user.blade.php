@@ -88,7 +88,6 @@ active
                                         Name: {{$user->name}}
                                         <br>
                                         Email: {{$user->email}}
-                                    
                                     </td>
                                     <td>
                                         <ul>
@@ -119,7 +118,6 @@ active
     </section>
 </div>
 @endsection
-
 
 @section('script_js')
 <script>

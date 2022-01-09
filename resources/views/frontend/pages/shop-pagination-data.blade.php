@@ -35,13 +35,16 @@
                 {{$regular}}
             </p>
             @endif
-            <ul class="pull-right d-flex">
+            @if ($product->product_review_count)
+            <ul class="rating pull-right">
                 <li><i class="fa fa-star"></i></li>
                 <li><i class="fa fa-star"></i></li>
                 <li><i class="fa fa-star"></i></li>
                 <li><i class="fa fa-star"></i></li>
-                <li><i class="fa fa-star-half-o"></i></li>
+                <li><i class="fa fa-star"></i></li>
+                <li>({{$product->product_review_count}} Customar Review)</li>
             </ul>
+            @endif
         </div>
     </div>
 </li>
@@ -72,14 +75,16 @@
                             }
                             @endphp
                         </span>
+                        @if ($product->product_review_count)
                         <ul class="rating pull-right">
                             <li><i class="fa fa-star"></i></li>
                             <li><i class="fa fa-star"></i></li>
                             <li><i class="fa fa-star"></i></li>
                             <li><i class="fa fa-star"></i></li>
                             <li><i class="fa fa-star"></i></li>
-                            <li>(05 Customar Review)</li>
+                            <li>({{$product->product_review_count}} Customar Review)</li>
                         </ul>
+                        @endif
                     </div>
                     <p>{{ $product->product_summary }}</p>
                     <ul class="input-style">
@@ -94,14 +99,6 @@
                         <li><a
                                 href="{{route('CategorySearch',$product->Catagory->catagory_name)}}">{{ $product->Catagory->catagory_name }}</a>
                         </li>
-                    </ul>
-                    <ul class="socil-icon">
-                        <li>Share :</li>
-                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
                     </ul>
                 </div>
             </div>

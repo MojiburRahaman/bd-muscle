@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Validation\Rules\Password;
 
 class UserProfileController extends Controller
 {
@@ -33,7 +34,7 @@ class UserProfileController extends Controller
     {
         $request->validate([
             'current_pass' => ['required', 'min:8'],
-            'new_pass' => ['required', 'min:8'],
+            'new_pass' => ['required', Password::min(8)],
             'confirm_pass' => ['required', 'same:new_pass', 'min:8'],
         ], [
             'current_pass.min' => 'Current Password must be minimum 8 Charecter',

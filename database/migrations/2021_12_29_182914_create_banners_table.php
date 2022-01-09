@@ -18,6 +18,7 @@ class CreateBannersTable extends Migration
             $table->foreignId('product_id')->nullable();
             $table->string('status')->default('1')->comment('1=active', '2=inactive');
             $table->string('banner_image')->nullable();
+            $table->string('center_banner')->nullable();
             $table->timestamps();
         });
     }

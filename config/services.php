@@ -32,7 +32,8 @@ return [
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' => 'http://localhost:8000/login/callback',
+        // 'redirect' => 'http://localhost:8000/login/callback',
+        'redirect' => 'https://bdmuscle.com//login/callback',
     ],
 
 ];

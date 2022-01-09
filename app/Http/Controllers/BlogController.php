@@ -16,11 +16,14 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blogs = Blog::latest('id')->simplepaginate(10);
-        // $blogs = Blog::latest()->simplepaginate(2);
-        return view('backend.blogs.index', [
-            'blogs' => $blogs,
-        ]);
+        if (auth()->user()->can('View Blog')) {
+            $blogs = Blog::latest('id')->simplepaginate(10);
+            return view('backend.blogs.index', [
+                'blogs' => $blogs,
+            ]);
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -30,8 +33,11 @@ class BlogController extends Controller
      */
     public function create()
     {
-        // return 'hello';
-        return view('backend.blogs.create');
+        if (auth()->user()->can('Create Blog')) {
+            return view('backend.blogs.create');
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -42,38 +48,41 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        //    return $request->blog_description;
+        if (auth()->user()->can('Create Blog')) {
 
-        $request->validate([
-            'title' => ['required', 'string', 'unique:blogs,title'],
-            'meta_description' => ['required'],
-            'thumbnail' => ['required', 'image'],
-            'blog_image' => ['required', 'image'],
-            'blog_description' => ['required'],
-        ]);
-        // return $request;
-        $Blog = new Blog;
-        $Blog->title = $request->title;
-        $Blog->slug = Str::slug($request->title);
-        $Blog->meta_description = $request->meta_description;
-        $Blog->blog_description = $request->blog_description;
+            $request->validate([
+                'title' => ['required', 'string', 'unique:blogs,title'],
+                'meta_description' => ['required'],
+                'thumbnail' => ['required', 'image'],
+                'blog_image' => ['required', 'image'],
+                'blog_description' => ['required'],
+            ]);
 
-        if ($request->hasFile('thumbnail')) {
-            $blog_thumbnail = $request->file('thumbnail');
-            $Blog_thumb_extension = Str::slug($request->title) . '-' . 'thumbnail' . '.' . $blog_thumbnail->getClientOriginalExtension();
-            Image::make($blog_thumbnail)->save(public_path('blogs/thumbnail/' . $Blog_thumb_extension));
+            $Blog = new Blog;
+            $Blog->title = $request->title;
+            $Blog->slug = Str::slug($request->title);
+            $Blog->meta_description = $request->meta_description;
+            $Blog->blog_description = $request->blog_description;
+
+            if ($request->hasFile('thumbnail')) {
+                $blog_thumbnail = $request->file('thumbnail');
+                $Blog_thumb_extension = Str::slug($request->title) . '-' . 'thumbnail' . '.' . $blog_thumbnail->getClientOriginalExtension();
+                Image::make($blog_thumbnail)->save(public_path('blogs/thumbnail/' . $Blog_thumb_extension));
+            }
+            if ($request->hasFile('blog_image')) {
+                $blog_image = $request->file('blog_image');
+                $Blog_image_extension = Str::slug($request->title) . '-' . Str::random(3) . '.' . $blog_image->getClientOriginalExtension();
+                Image::make($blog_image)->save(public_path('blogs/blog_image/' . $Blog_image_extension));
+            }
+            $Blog->blog_thumbnail = $Blog_thumb_extension;
+            $Blog->blog_image = $Blog_image_extension;
+            $Blog->save();
+
+
+            return redirect()->route('blogs.index')->with('success', 'Blog Added Successfully');
+        } else {
+            abort('404');
         }
-        if ($request->hasFile('blog_image')) {
-            $blog_image = $request->file('blog_image');
-            $Blog_image_extension = Str::slug($request->title) . '-' . Str::random(3) . '.' . $blog_image->getClientOriginalExtension();
-            Image::make($blog_image)->save(public_path('blogs/blog_image/' . $Blog_image_extension));
-        }
-        $Blog->blog_thumbnail = $Blog_thumb_extension;
-        $Blog->blog_image = $Blog_image_extension;
-        $Blog->save();
-
-
-        return redirect()->route('blogs.index')->with('success', 'Blog Added Successfully');
     }
 
     /**
@@ -84,7 +93,6 @@ class BlogController extends Controller
      */
     public function show($id)
     {
-        // return $id;
         $blog = Blog::findorfail($id);
         if ($blog->add_to_goal == '') {
             $blog->add_to_goal = 1;
@@ -94,7 +102,6 @@ class BlogController extends Controller
             $blog->add_to_goal = '';
             $blog->save();
             return back();
-            # code...
         }
     }
 
@@ -106,10 +113,13 @@ class BlogController extends Controller
      */
     public function edit($id)
     {
-
-        return view('backend.blogs.edit', [
-            'Blog' => Blog::findorfail($id),
-        ]);
+        if (auth()->user()->can('Edit Blog')) {
+            return view('backend.blogs.edit', [
+                'Blog' => Blog::findorfail($id),
+            ]);
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -121,35 +131,37 @@ class BlogController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // return $request;
-        $request->validate([
-            'title' => ['required', 'string', 'unique:blogs,title,' . $id],
-            'meta_description' => ['required'],
-            'thumbnail' => ['nullable', 'image'],
-            'blog_image' => ['nullable', 'image'],
-            'blog_description' => ['required'],
-        ]);
-        // return $request;
-        $Blog = Blog::findorfail($id);
-        $Blog->title = $request->title;
-        $Blog->meta_description = $request->meta_description;
-        $Blog->blog_description = $request->blog_description;
+        if (auth()->user()->can('Edit Blog')) {
+            $request->validate([
+                'title' => ['required', 'string', 'unique:blogs,title,' . $id],
+                'meta_description' => ['required'],
+                'thumbnail' => ['nullable', 'image'],
+                'blog_image' => ['nullable', 'image'],
+                'blog_description' => ['required'],
+            ]);
+            $Blog = Blog::findorfail($id);
+            $Blog->title = $request->title;
+            $Blog->meta_description = $request->meta_description;
+            $Blog->blog_description = $request->blog_description;
 
-        if ($request->hasFile('thumbnail')) {
-            $blog_thumbnail = $request->file('thumbnail');
-            $Blog_thumb_extension = Str::slug($request->title) . '-' . 'thumbnail' . '.' . $blog_thumbnail->getClientOriginalExtension();
-            Image::make($blog_thumbnail)->save(public_path('blogs/thumbnail/' . $Blog_thumb_extension), 100);
-            $Blog->blog_thumbnail = $Blog_thumb_extension;
-        }
-        if ($request->hasFile('blog_image')) {
-            $blog_image = $request->file('blog_image');
-            $Blog_image_extension = Str::slug($request->title) . '-' . Str::random(3) . '.' . $blog_image->getClientOriginalExtension();
-            Image::make($blog_image)->save(public_path('blogs/blog_image/' . $Blog_image_extension), 100);
-            $Blog->blog_image = $Blog_image_extension;
-        }
+            if ($request->hasFile('thumbnail')) {
+                $blog_thumbnail = $request->file('thumbnail');
+                $Blog_thumb_extension = Str::slug($request->title) . '-' . 'thumbnail' . '.' . $blog_thumbnail->getClientOriginalExtension();
+                Image::make($blog_thumbnail)->save(public_path('blogs/thumbnail/' . $Blog_thumb_extension), 100);
+                $Blog->blog_thumbnail = $Blog_thumb_extension;
+            }
+            if ($request->hasFile('blog_image')) {
+                $blog_image = $request->file('blog_image');
+                $Blog_image_extension = Str::slug($request->title) . '-' . Str::random(3) . '.' . $blog_image->getClientOriginalExtension();
+                Image::make($blog_image)->save(public_path('blogs/blog_image/' . $Blog_image_extension), 100);
+                $Blog->blog_image = $Blog_image_extension;
+            }
 
-        $Blog->save();
-        return redirect()->route('blogs.index')->with('warning', 'Blog Edited Successfully');
+            $Blog->save();
+            return redirect()->route('blogs.index')->with('warning', 'Blog Edited Successfully');
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -160,16 +172,20 @@ class BlogController extends Controller
      */
     public function destroy($id)
     {
-        $blog = Blog::findorfail($id);
-        $thumb = public_path('blog/thumbnail' . $blog->blog_thumbnail);
-        $image = public_path('blog/blog_image' . $blog->blog_image);
-        if (file_exists($thumb)) {
-            unlink($thumb);
+        if (auth()->user()->can('Edit Blog')) {
+            $blog = Blog::findorfail($id);
+            $thumb = public_path('blog/thumbnail' . $blog->blog_thumbnail);
+            $image = public_path('blog/blog_image' . $blog->blog_image);
+            if (file_exists($thumb)) {
+                unlink($thumb);
+            }
+            if (file_exists($image)) {
+                unlink($image);
+            }
+            $blog->delete();
+            return back()->with('delete', 'Blog Deleted Successfully');
+        } else {
+            abort('404');
         }
-        if (file_exists($image)) {
-            unlink($image);
-        }
-        $blog->delete();
-        return back()->with('delete', 'Blog Deleted Successfully');
     }
 }

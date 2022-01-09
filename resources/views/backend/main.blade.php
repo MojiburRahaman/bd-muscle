@@ -1,4 +1,7 @@
 @extends('backend.master')
+@section('dashboard_active')
+active
+@endsection
 @section('content')
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -32,8 +35,6 @@
                             <span class="info-box-text">Total Order</span>
                             <span class="info-box-number">
                                 {{$order->count()}}
-
-                                {{-- <small>%</small> --}}
                             </span>
                         </div>
                         <!-- /.info-box-content -->
@@ -91,7 +92,6 @@
                 <div class="col-12 col-sm-6 col-md-3">
                     <div class="info-box mb-3">
                         <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
-
                         <div class="info-box-content">
                             <span class="info-box-text">Customer</span>
                             <span class="info-box-number">{{$user}}</span>
@@ -115,6 +115,15 @@
                         <div class="info-box-content">
                             <span class="info-box-text">Total Reviews</span>
                             <span class="info-box-number">{{$ProductReview}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-heart"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Subscribers</span>
+                            <span class="info-box-number">{{$subscribes}}</span>
                         </div>
                     </div>
                 </div>

@@ -56,7 +56,7 @@
                     <div class="text-center">
                         <div class="col-lg-12 col-12">
                             <a  class="btn btn-regular mb-4 ptb-2"
-                                href="{{route('GoogleLogin')}}"><img width="7%" src="{{asset('icon/unnamed.png')}}" alt="google">Login with Gmail</a>
+                                href="{{route('GoogleLogin')}}"><img width="7%" src="{{asset('icon/unnamed.png')}}" alt="google">Login with Google</a>
                         </div>
                         <a href="{{route('register')}}">Or Creat an Account</a>
                     </div>

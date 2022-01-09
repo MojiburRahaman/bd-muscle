@@ -13,7 +13,6 @@ class SearchController extends Controller
 {
     function CategorySearch($slug, Request $request)
     {
-
         $search = '';
         $min_price = strip_tags($request->min_price);
         $max_price = strip_tags($request->max_price);
@@ -24,14 +23,14 @@ class SearchController extends Controller
             $Products = Product::with('Attribute', 'Catagory:id,catagory_name,slug')
                 ->where('catagory_id', $category->id)
                 ->where('status', 1)
-                ->latest()->paginate(1);
+                ->latest()->simplepaginate(15);
             $view = view('frontend.search.pagination-data', compact('Products'))->render();
             return response()->json(['html' => $view,]);
         }
         if ($min_price != '') {
             $request->validate([
-                'min_price' => ['required', 'integer'],
-                'max_price' => ['required', 'integer'],
+                'min_price' => ['required', 'numeric'],
+                'max_price' => ['required', 'numeric'],
             ]);
             $Products = DB::table('products')->join('attributes', 'products.id', '=', 'product_id')
                 ->join('catagories', 'products.catagory_id', '=', 'catagories.id')
@@ -49,7 +48,7 @@ class SearchController extends Controller
         $Products = Product::with('Attribute', 'Catagory:id,catagory_name,slug')
             ->where('catagory_id', $category->id)
             ->where('status', 1)
-            ->latest('id')->simplepaginate(1);
+            ->latest('id')->simplepaginate(15);
         $category = $category->catagory_name;
         return view('frontend.search.search-data', [
             'Products' => $Products,
@@ -68,14 +67,14 @@ class SearchController extends Controller
             $Products = Product::with('Attribute', 'Catagory:id,catagory_name,slug')
                 ->where('brand_id', $brand->id)
                 ->where('status', 1)
-                ->latest()->paginate(1);
+                ->latest()->simplepaginate(15);
             $view = view('frontend.search.pagination-data', compact('Products'))->render();
             return response()->json(['html' => $view,]);
         }
         $Products = Product::with('Attribute', 'Catagory:id,catagory_name,slug')
             ->where('brand_id', $brand->id)
             ->where('status', 1)
-            ->latest('id')->simplepaginate(1);
+            ->latest('id')->simplepaginate(15);
         return view('frontend.search.search-data', [
             'Products' => $Products,
             'Categories' => $categories,

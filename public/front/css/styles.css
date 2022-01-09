@@ -205,6 +205,43 @@ div {
 }
 
 
+li {
+    list-style: none;
+}
+
+* {
+    margin: 0px;
+    padding-top: 0px;
+}
+
+.loadMore_btn {
+    display: inline-block;
+    padding: 8px 40px;
+    border: 1px solid #ef4836;
+    font-weight: 500;
+    color: #ef4836;
+    margin: 30px 0 0;
+}
+
+.loadMore_btn:hover {
+
+    background-color: #ef4836;
+    color: white;
+}
+
+.max_price {
+    float: right;
+    padding-left: 30px;
+    color: black;
+    background: white;
+}
+
+.min_price {
+    color: black;
+    background: white;
+}
+
+
 
 
 /* secure box */

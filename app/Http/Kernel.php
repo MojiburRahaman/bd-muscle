@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'checkcoustomer' =>\App\Http\Middleware\CustomerCheck::class,
         'checkadminpanel' =>\App\Http\Middleware\AdminPanelCheck::class,
         'HtmlMinify' =>\App\Http\Middleware\HtmlMinify::class,
+        'XssFilter' =>\App\Http\Middleware\XssFilter::class,
     ];
 }

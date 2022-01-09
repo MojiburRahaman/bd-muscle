@@ -564,6 +564,7 @@
                         $('.available').html(res);
                         var regular_price = $('.quantityadd').attr('data-regularprice');
                         var selling_price = $('.quantityadd').attr('data-sellprice');
+                        // alert(selling_price);
                         if (selling_price == '') {
                             // if theres no selling price
                         $('.sell_Price').html(selling_price);

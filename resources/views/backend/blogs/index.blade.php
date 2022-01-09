@@ -31,17 +31,16 @@ active
         <div class="container-fluid">
             <div class="col-12">
                 <div class="card-body table-responsive p-0">
-                    <table class="table table-hover text-nowrap">
+                    <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th>SL</th>
                                 <th>Title</th>
                                 <th>Add To Goal</th>
                                 <th>Created At</th>
-                                {{-- @if (auth()->user()->can('Delete Color') || auth()->user()->can('Edit Color')) --}}
-
+                                @if (auth()->user()->can('Edit Blog') || auth()->user()->can('Delete Blog'))
                                 <th>Action</th>
-                                {{-- @endif --}}
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -56,31 +55,29 @@ active
                                 </td>
                                 <td>
                                     @if ($blog->add_to_goal != '')
-                                    
+
                                     <a href="{{route('blogs.show',$blog->id)}}" class="btn-sm btn-success">Active</a>
                                     @else
                                     <a href="{{route('blogs.show',$blog->id)}}" class="btn-sm btn-warning">Inactive</a>
-                                        
+
                                     @endif
                                 </td>
                                 <td>{{$blog->created_at->diffForHumans()}}</td>
-                                {{-- @if (auth()->user()->can('Delete Color') || auth()->user()->can('Edit Color')) --}}
+                                @if (auth()->user()->can('Edit Blog') || auth()->user()->can('Delete Blog'))
                                 <form action="{{route('blogs.destroy',$blog->id)}}" method="post">
                                     <td>
-                                        {{-- @can('Edit Color') --}}
-
+                                        @can('Edit Blog')
                                         <a style="padding: 7px 8px" href="{{route('blogs.edit',$blog->id)}}"
                                             class="btn-sm btn-primary">Edit</a>
-                                        {{-- @endcan --}}
+                                        @endcan
                                         @csrf
-                                        {{-- @can('Delete Color') --}}
+                                        @can('Delete Blog')
                                         @method('delete')
                                         <button class="btn-sm btn-danger" type="submit">Delete</button>
-
-                                        {{-- @endcan --}}
+                                        @endcan
                                 </form>
                                 </td>
-                                {{-- @endif  --}}
+                                @endif
                             </tr>
                             @empty
                             <td class="text-center" colspan="10">No Data Available</td>
@@ -91,7 +88,6 @@ active
                 <div class="mt-4">
                     {{$blogs->links()}}
                 </div>
-                <!-- /.card -->
             </div>
         </div>
     </section>

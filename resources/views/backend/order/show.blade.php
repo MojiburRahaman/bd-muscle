@@ -53,11 +53,10 @@
                     <a href="" class="btn-sm btn-warning">On The way</a>
                     @else
                     <a class="btn-sm btn-success">Deliverd</a>
-
                     @endif
                     <a class="btn-sm btn-success" href="{{route('InvoiceDownload',$order->id)}}"><i
-                            class="fa fa-download"></i></a>
-
+                            class="fa fa-download"></i>
+                    </a>
                 </div>
             </div>
             <div class="col-12">
@@ -99,7 +98,9 @@
                                 </td>
                             </tr>
                             @empty
-
+                            <tr>
+                                <td colspan="10">No Record</td>
+                            </tr>
                             @endforelse
                         </tbody>
                     </table>

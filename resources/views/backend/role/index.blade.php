@@ -33,10 +33,7 @@ menu-open
     <section class="content">
         <div class="container-fluid">
             <div class="col-12">
-                {{-- <form action="{{route('Markdeletebrand')}}" method="post"> --}}
-                @csrf
                 @can('Create Role')
-
                 <div class="text-right">
                     <a href="{{route('roles.create')}}" class="btn-sm btn-info">Add Role</a>
                 </div>
@@ -54,7 +51,6 @@ menu-open
                         </thead>
                         <tbody>
                             @forelse ($roles as $role)
-
                             <tr>
                                 <td>
                                     {{$loop->index+1}}
@@ -71,21 +67,19 @@ menu-open
                                 </td>
                                 <td>{{$role->created_at->format('D-M-Y')}}</td>
                                 <td>
-                                    <form action="{{route('roles.destroy',$role->id)}}" method="post">
+                                    {{-- <form action="{{route('roles.destroy',$role->id)}}" method="post"> --}}
                                         @can('Edit Role')
-
                                         <a style="padding: 7px 8px" href="{{route('roles.edit',$role->id)}}"
                                             class="btn-sm btn-primary">Edit</a>
                                         @endcan
-                                        @csrf
+                                        {{-- @csrf
                                         @can('Delete Role')
                                         @if ($role->id != 1)
-
                                         @method('delete')
                                         <button class="btn-sm btn-danger" type="submit">Delete</button>
                                         @endif
-                                        @endcan
-                                    </form>
+                                        @endcan --}}
+                                    {{-- </form> --}}
                                 </td>
                             </tr>
                             @empty
@@ -97,7 +91,6 @@ menu-open
                 <div class="mt-4">
                     {{$roles->links()}}
                 </div>
-                <!-- /.card -->
             </div>
         </div>
     </section>

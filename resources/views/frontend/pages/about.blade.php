@@ -7,9 +7,9 @@
             <div class="col-12">
                 <div class="about-wrap text-center">
                     <h3>{{$about->heading}} </h3>
-                   <p>
-                       {!!$about->about!!}
-                   </p>
+                    <p>
+                        {!!$about->about!!}
+                    </p>
                 </div>
             </div>
         </div>
@@ -63,6 +63,8 @@
                                 {{$regular}}
                             </p>
                             @endif
+                            @if ($product->product_review_count)
+
                             <ul class="pull-right d-flex">
                                 <li><i class="fa fa-star"></i></li>
                                 <li><i class="fa fa-star"></i></li>
@@ -70,10 +72,11 @@
                                 <li><i class="fa fa-star"></i></li>
                                 <li><i class="fa fa-star-half-o"></i></li>
                             </ul>
+                            @endif
                         </div>
                     </div>
                 </li>
-    
+
                 <div class="modal fade" id="exampleModalCenter{{ $product->id }}" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
@@ -83,7 +86,7 @@
                             <div class="modal-body d-flex">
                                 <div class="product-single-img w-50">
                                     @if (collect($product->Attribute)->max('discount') != '')
-                                    <span class="discount_tag">{{collect($product->Attribute)->min('discount')}}%</span>
+                                    <span class="discount_tag">{{collect($product->Attribute)->max('discount')}}%</span>
                                     @endif
                                     <img loading="lazy" src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}"
                                         alt="{{ $product->title }}">
@@ -102,14 +105,16 @@
                                             }
                                             @endphp
                                         </span>
+                                        @if ($product->product_review_count)
                                         <ul class="rating pull-right">
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star"></i></li>
-                                            <li>(05 Customar Review)</li>
+                                            <li>({{$product->product_review_count}} Customar Review)</li>
                                         </ul>
+                                        @endif
                                     </div>
                                     <p>{{ $product->product_summary }}</p>
                                     <ul class="input-style">

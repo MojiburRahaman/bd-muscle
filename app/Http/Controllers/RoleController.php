@@ -13,6 +13,8 @@ use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 
+use function PHPUnit\Framework\returnSelf;
+
 class RoleController extends Controller
 {
     /**
@@ -40,7 +42,13 @@ class RoleController extends Controller
     public function create()
     {
         if (auth()->user()->can('Create Role')) {
-            // $permission = Permission::create(['name' => 'View Category']);
+            // $permission = Permission::create(['name' => 'About']);
+            // $permission = Permission::create(['name' => 'Subscriber']);
+            // $permission = Permission::create(['name' => 'Add User']);
+            // $permission = Permission::create(['name' => 'Admin Dashboard']);
+            // $permission = Permission::create(['name' => 'Setting']);
+            // $permission = Permission::create(['name' => 'Banner']);
+            // $permission = Permission::create(['name' => 'Order']);
             // $permission = Permission::create(['name' => 'Create Category']);
             // $permission = Permission::create(['name' => 'Edit Category']);
             // $permission = Permission::create(['name' => 'Delete Category']);
@@ -93,7 +101,6 @@ class RoleController extends Controller
     {
         if (auth()->user()->can('Create Role')) {
 
-
             $request->validate([
                 'role_name' => ['required'],
                 'permission' => ['required'],
@@ -125,15 +132,15 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        // if (auth()->user()->can('Edit Role')) {
+        if (auth()->user()->can('Edit Role')) {
             return view('backend.role.edit', [
                 'role' => Role::find($id),
                 'permissions' => Permission::all()
 
             ]);
-        // } else {
-        //     abort('404');
-        // }
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -145,13 +152,15 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // if (auth()->user()->can('Edit Role')) {
+        if (auth()->user()->can('Edit Role')) {
             $role = Role::findorfail($id);
             $role->syncPermissions($request->permission);
+            $role->name = $request->role_name;
+            $role->save();
             return redirect('/admin/roles')->with('success', 'Role Edited Successfully');
-        // } else {
-        //     abort('404');
-        // }
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -162,12 +171,12 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        // if (auth()->user()->can('Delete Role')) {
+        if (auth()->user()->can('Delete Role')) {
             Role::find($id)->delete();
             return back()->with('warning', 'Role Deleted Successfully');
-        // } else {
-            // abort('404');
-        // }
+        } else {
+            abort('404');
+        }
     }
     public function AssignUser()
     {
@@ -251,6 +260,5 @@ class RoleController extends Controller
         $user->assignRole($request->role_name);
         Mail::to($request->user_email)->send(new NewAccountCreated($random_pass_genarate, $request->user_name));
         return back()->with('success','User Created Successfully');
-        // $user->name = $request->role_name;
     }
 }

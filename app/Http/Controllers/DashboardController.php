@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\Newsletter;
 use App\Models\Order_Summaries;
 use App\Models\Product;
 use App\Models\ProductReview;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class DashboardController extends Controller
 {
@@ -20,18 +23,20 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $order =Order_Summaries::get();
-        $Blog =Blog::count();
-        $ProductReview =ProductReview::count();
-        $product =Product::where('status',1)->count();
-        $user = Role::where('name','Customer')->count();
-       return view('backend.main',[
-           'order'=> $order,
-           'Blog'=> $Blog,
-           'ProductReview'=> $ProductReview,
-           'product'=> $product,
-           'user'=> $user,
-       ]);
+        $order = Order_Summaries::get();
+        $Blog = Blog::count();
+        $subscribes = Newsletter::count();
+        $ProductReview = ProductReview::count();
+        $product = Product::where('status', 1)->count();
+        $user = Role::where('name', 'Customer')->count();
+        return view('backend.main', [
+            'order' => $order,
+            'Blog' => $Blog,
+            'subscribes' => $subscribes,
+            'ProductReview' => $ProductReview,
+            'product' => $product,
+            'user' => $user,
+        ]);
     }
 
     /**
@@ -99,13 +104,15 @@ class DashboardController extends Controller
     {
         //
     }
-    public function AdminChangePassword(){
+    public function AdminChangePassword()
+    {
         return view('backend.change-password');
     }
-    public function AdminChangePasswordPost(Request $request){
+    public function AdminChangePasswordPost(Request $request)
+    {
         $request->validate([
             'current_pass' => ['required', 'min:8'],
-            'new_pass' => ['required', 'min:8'],
+            'new_pass' => ['required', 'min:8', Password::min(8)],
             'confirm_pass' => ['required', 'same:new_pass', 'min:8'],
         ], [
             'current_pass.min' => 'Current Password must be minimum 8 Charecter',
@@ -130,5 +137,30 @@ class DashboardController extends Controller
 
             return back()->with('warning', 'Password not matched');
         }
+    }
+    public function AdminLogin()
+    {
+        return view('backend.login');
+    }
+    public function AdminLoginPost(Request $request)
+    {
+        $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required', Password::min(8),],
+        ]);
+        $email = strip_tags($request->email);
+        $password = strip_tags($request->password);
+        $user =  User::where('email', $email)->first();
+        if ($user) {
+            if (Hash::check($password, $user->password)) {
+                abort_if($user->roles->first()->name == 'Customer', 404);
+                $credentials = $request->only('email', 'password');
+                if (Auth::attempt($credentials)) {
+                    return redirect()->route('dashboard.index');
+                }
+            }
+            return 'ok';
+        }
+        return back();
     }
 }

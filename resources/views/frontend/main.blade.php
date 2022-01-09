@@ -273,6 +273,30 @@
     </div>
 </div>
 <!-- product-area end -->
+@forelse ($banners as $center_image)
+    @if ($center_image->center_banner != '')
+        <style>
+            .bg-img-8{
+                background-image: url('{{asset('banner_image/'.$center_image->center_banner)}}')
+            }
+        </style>
+    <div class="banner-area bg-img-8">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-6 col-md-8 offset-md-4">
+                    <div class="banner-wrap">
+                        <a style="margin:135px 0 0px" href="{{route('Frontendshop')}}">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+@empty
+    
+@endforelse
+
+
 <!-- product-area start -->
 <div class="product-area">
     <div class="fluid-container">
@@ -285,7 +309,7 @@
             </div>
         </div>
         <ul class="row">
-            @foreach ($latest_product as $product)
+            @forelse ($latest_product as $product)
             <li class="mb-4 col-xl-3 col-lg-4 col-sm-6 col-12">
                 <div class="product-wrap">
                     <div class="product-img">
@@ -399,7 +423,8 @@
                     </div>
                 </div>
             </div>
-            @endforeach
+            @empty
+            @endforelse
             <li class="col-12 text-center">
                 <a class="loadmore-btn" href="{{route('Frontendshop')}}">Load More</a>
             </li>
@@ -510,7 +535,6 @@
     @if ($deal != '') 
    if ($("#clock").length) {
         $('#clock').countdown('{{$deal->expire_date .','. $deal->expire_time}}', function(event) {
-        // $('#clock').countdown('2022-01-09,10:00', function(event) {
             var $this = $(this).html(event.strftime('' +
                 '<div class="box"><div>%m</div> <span>month</span> </div>' +
                 '<div class="box"><div>%D</div> <span>Days</span> </div>' +

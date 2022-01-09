@@ -53,7 +53,7 @@ class CouponController extends Controller
                 'coupon_limit' => ['min:2', 'numeric', 'nullable'],
                 'coupon_expire_date' => ['date','required', 'after:tomorrow', 'nullable']
             ]);
-            // return $request;
+            
             $coupon = new Coupon;
             $coupon->coupon_name = $request->coupon_name;
             $coupon->coupon_amount = $request->coupon_amount;

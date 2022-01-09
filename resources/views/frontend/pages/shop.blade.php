@@ -51,7 +51,7 @@ BD Muscle - Shop
                     <li class="col-xl-3 col-lg-4 col-sm-6 col-12">
                         <div class="product-wrap">
                             <div class="product-img">
-                                @if (collect($product->Attribute)->min('discount') != '')
+                                @if (collect($product->Attribute)->max('discount') != '')
                                 <span style=" z-index: 2">{{collect($product->Attribute)->max('discount')}}%</span>
                                 @endif
                                 <img loading="lazy" src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}"
@@ -83,6 +83,8 @@ BD Muscle - Shop
                                     {{$regular}}
                                 </p>
                                 @endif
+                                @if ($product->product_review_count)
+                                            
                                 <ul class="pull-right d-flex">
                                     <li><i class="fa fa-star"></i></li>
                                     <li><i class="fa fa-star"></i></li>
@@ -90,6 +92,8 @@ BD Muscle - Shop
                                     <li><i class="fa fa-star"></i></li>
                                     <li><i class="fa fa-star-half-o"></i></li>
                                 </ul>
+                                @endif
+                              
                             </div>
                         </div>
                     </li>
@@ -122,14 +126,16 @@ BD Muscle - Shop
                                                 }
                                                 @endphp
                                             </span>
+                                            @if ($product->product_review_count)
                                             <ul class="rating pull-right">
                                                 <li><i class="fa fa-star"></i></li>
                                                 <li><i class="fa fa-star"></i></li>
                                                 <li><i class="fa fa-star"></i></li>
                                                 <li><i class="fa fa-star"></i></li>
                                                 <li><i class="fa fa-star"></i></li>
-                                                <li>(05 Customar Review)</li>
+                                                <li>({{$product->product_review_count}} Customar Review)</li>
                                             </ul>
+                                            @endif
                                         </div>
                                         <p>{{ $product->product_summary }}</p>
                                         <ul class="input-style">
@@ -142,7 +148,7 @@ BD Muscle - Shop
                                         <ul class="cetagory">
                                             <li>Categories:</li>
                                             <li><a
-                                                    href="{{route('CategorySearch',$product->Catagory->catagory_name)}}">{{ $product->Catagory->catagory_name }}</a>
+                                                    href="{{route('CategorySearch',$product->Catagory->slug)}}">{{ $product->Catagory->catagory_name }}</a>
                                             </li>
                                         </ul>
                                         <ul class="socil-icon">

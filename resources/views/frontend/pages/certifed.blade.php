@@ -16,7 +16,7 @@
             <li class="col-xl-3 col-lg-4 col-sm-6 col-12">
                 <div class="product-wrap">
                     <div class="product-img">
-                        @if (collect($product->Attribute)->min('discount') != '')
+                        @if (collect($product->Attribute)->max('discount') != '')
                         <span style=" z-index: 2">{{collect($product->Attribute)->max('discount')}}%</span>
                         @endif
                         <img loading="lazy" src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}"
@@ -50,6 +50,8 @@
                             {{$regular}}
                         </p>
                         @endif
+                        @if ($product->product_review_count)
+                            
                         <ul class="pull-right d-flex">
                             <li><i class="fa fa-star"></i></li>
                             <li><i class="fa fa-star"></i></li>
@@ -57,6 +59,7 @@
                             <li><i class="fa fa-star"></i></li>
                             <li><i class="fa fa-star-half-o"></i></li>
                         </ul>
+                        @endif
                     </div>
                 </div>
             </li>
@@ -88,14 +91,16 @@
                                         }
                                         @endphp
                                     </span>
+                                    @if ($product->product_review_count)
                                     <ul class="rating pull-right">
                                         <li><i class="fa fa-star"></i></li>
                                         <li><i class="fa fa-star"></i></li>
                                         <li><i class="fa fa-star"></i></li>
                                         <li><i class="fa fa-star"></i></li>
                                         <li><i class="fa fa-star"></i></li>
-                                        <li>(05 Customar Review)</li>
+                                        <li>({{$product->product_review_count}} Customar Review)</li>
                                     </ul>
+                                    @endif
                                 </div>
                                 <p>{{ $product->product_summary }}</p>
                                 <ul class="input-style">
@@ -108,17 +113,10 @@
                                 <ul class="cetagory">
                                     <li>Categories:</li>
                                     <li><a
-                                            href="{{route('CategorySearch',$product->Catagory->catagory_name)}}">{{ $product->Catagory->catagory_name }}</a>
+                                            href="{{route('CategorySearch',$product->Catagory->slug)}}">{{ $product->Catagory->catagory_name }}</a>
                                     </li>
                                 </ul>
-                                <ul class="socil-icon">
-                                    <li>Share :</li>
-                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                                </ul>
+                                
                             </div>
                         </div>
                     </div>
@@ -159,18 +157,18 @@
                     <p>Return Within 7 Day..</p>
                 </div>
             </div>
-            <div class="col-lg-4 ml-5 col-12 mb-5  ">
+            <div class="col-lg-6  col-12 mb-5  ">
                 <div class="secure-box">
 
-                    <i class="fa fa-lock"></i>
+                    <i ><img style="filter: grayscale(100%);margin:18px 0" width="15%" src="{{asset('icon/sss.png')}}" alt=""></i>
                     <h4>Informed Sports Certified</h4>
                     <p>This Product 100% Informed Sports Certified.</p>
                 </div>
             </div>
-            <div class="col-lg-4 ml-5  col-12 mb-5 ">
+            <div class="col-lg-6  col-12 mb-5 ">
                 <div class="secure-box">
 
-                    <i class="fa fa-truck"></i>
+                    <i ><img  style="filter: grayscale(100%);margin:18px 0" width="25%" src="{{asset('icon/www.png')}}" alt=""></i>
                     <h4>Banned Substance Free </h4>
                     <p>Every Product 100% Dopping free.</p>
                 </div>

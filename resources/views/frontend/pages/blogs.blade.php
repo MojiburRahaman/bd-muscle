@@ -5,14 +5,20 @@ Blog - BD Mucle
 
 @section('content')
 <!-- .breadcumb-area start -->
-<div class="breadcumb-area bg-img-4 ptb-100">
+<style>
+    .bg-img-4{
+        background-image: url('{{asset('banner_image/blog.jpeg')}}');
+        padding:120px 0;
+    }
+</style>
+<div class="breadcumb-area bg-img-4 ">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <div class="breadcumb-wrap text-center">
                     <h2>Blog Page</h2>
                     <ul>
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="{{route('Frontendhome')}}">Home</a></li>
                         <li><span>Blog</span></li>
                     </ul>
                 </div>
@@ -26,13 +32,12 @@ Blog - BD Mucle
     <div class="container">
         <div class="col-lg-12">
             <div class="section-title  text-center">
-                <h2>Latest News</h2>
+                <h2>Latest Blogs</h2>
                 <img src="assets/images/section-title.png" alt="">
             </div>
         </div>
         <div class="row">
             @forelse ($blogs as $blog)
-
             <div class="col-lg-4  col-md-6 col-12">
                 <div class="blog-wrap">
                     <div class="blog-image">

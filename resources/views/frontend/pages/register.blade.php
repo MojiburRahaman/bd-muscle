@@ -56,7 +56,7 @@
                         <div>
                             <a class="btn btn-regular mb-4"
                                 href="{{route('GoogleRegister')}}"><img width="7%" src="{{asset('icon/unnamed.png')}}" alt="google">
-                                Register with Gmail</a>
+                                Register with Google</a>
                         </div>
                        <span>Already Register?<a href="{{route('login')}}"> login</a></span> 
                     </div>

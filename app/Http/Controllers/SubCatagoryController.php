@@ -59,7 +59,6 @@ class SubCatagoryController extends Controller
     public function store(Request $request)
     {
         if (auth()->user()->can('Create Sub-Category')) {
-
             $request->validate([
                 'subcatagory_name' => ['required', 'unique:subcatagories,subcatagory_name'],
                 'catagory_id' => ['required']
