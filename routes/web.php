@@ -25,7 +25,9 @@
     use App\Http\Controllers\SiteSettingController;
     use App\Http\Controllers\SocialLoginController;
 
-
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
     // socialite
     Route::get('login/google', [SocialLoginController::class, 'GoogleLogin'])->name('GoogleLogin');
     Route::get('register/google', [SocialLoginController::class, 'GoogleRegister'])->name('GoogleRegister');
@@ -87,7 +89,7 @@
     Route::get('/admin/login', [DashboardController::class, 'AdminLogin'])->name('AdminLogin')->middleware('guest');
     Route::post('/admin/login', [DashboardController::class, 'AdminLoginPost'])->name('AdminLoginPost')->middleware('guest');
     // backend route start
-    Route::middleware(['auth', 'HtmlMinify', 'checkadminpanel'])->prefix('admin')->group(function () {
+    Route::middleware(['auth','verified', 'HtmlMinify', 'checkadminpanel'])->prefix('admin')->group(function () {
         Route::get('/change-password', [DashboardController::class, 'AdminChangePassword'])->name('AdminChangePassword');
         Route::post('/change-password', [DashboardController::class, 'AdminChangePasswordPost'])->name('AdminChangePasswordPost');
         Route::resource('dashboard', DashboardController::class)->except('destroy', 'update', 'edit', 'show', 'store', 'create');
