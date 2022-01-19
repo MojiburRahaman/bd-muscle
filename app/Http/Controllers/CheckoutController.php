@@ -49,7 +49,7 @@ class CheckoutController extends Controller
         }
         $request->validate([
             'billing_user_name' => ['required', 'string', 'max:255'],
-            'billing_number' => ['required', 'numeric', 'min:9'],
+            'billing_number' => ['required', 'numeric', 'min:11'],
             'division_name' => ['required'],
             'district_name' => ['required'],
             'upozila_name' => ['required'],

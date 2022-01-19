@@ -12,8 +12,8 @@
                 <ul>
                     <li><a data-toggle="modal" data-target="#exampleModalCenter{{ $product->id }}"
                             href="javascript:void(0);"><i class="fa fa-eye"></i></a></li>
-                    <li><a href="wishlist.html"><i class="fa fa-heart"></i></a></li>
-                    <li><a href="cart.html"><i class="fa fa-shopping-bag"></i></a></li>
+                    <li><a href="{{route('SingleProductView',$product->slug)}}"><i class="fa fa-heart"></i></a></li>
+                    <li><a href="{{route('SingleProductView',$product->slug)}}"><i class="fa fa-shopping-bag"></i></a></li>
                 </ul>
             </div>
         </div>
@@ -99,6 +99,12 @@
                         <li><a
                                 href="{{route('CategorySearch',$product->Catagory->catagory_name)}}">{{ $product->Catagory->catagory_name }}</a>
                         </li>
+                    </ul>
+                    <ul class="socil-icon">
+                        <li>Share :</li>
+                        <a
+                            href="https://www.facebook.com/sharer/sharer.php?u={{route('SingleProductView',$product->slug)}}&display=popup"><i
+                                class="fa fa-facebook"></i></a>
                     </ul>
                 </div>
             </div>

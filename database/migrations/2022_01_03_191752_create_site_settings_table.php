@@ -24,7 +24,10 @@ class CreateSiteSettingsTable extends Migration
             $table->text('address');
             $table->string('facebook_link')->nullable();
             $table->string('instagram_link')->nullable();
+            $table->string('twitter_link')->nullable();
+            $table->string('youtube_link')->nullable();
             $table->text('footer_text');
+            $table->text('google_map')->nullable();
             $table->timestamps();
         });
     }

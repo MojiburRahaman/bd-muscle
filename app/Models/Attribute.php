@@ -23,4 +23,8 @@ class Attribute extends Model
     {
         return $this->belongsTo(Size::class, 'size_id');
     }
+    // function Flavour()
+    // {
+    //     return $this->hasMany(Flavour::class, 'size_id');
+    // }
 }

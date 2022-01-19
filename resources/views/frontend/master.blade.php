@@ -1,9 +1,5 @@
 <!doctype html>
 <html class="no-js" lang="en">
-    @php
-    // $setting = App\Models\SiteSetting::first();
-    // $catagory =App\Models\Catagory::select('id','catagory_name','slug')->latest('id')->take(5)->get();
-    @endphp
 
     <head>
         <meta charset="utf-8">
@@ -49,6 +45,11 @@
     </head>
 
     <body>
+        <style>
+            .dropdown_style li a:hover {
+        padding-left: 0;
+    }
+            </style>
         <!-- search-form here -->
         <div class="search-area flex-style">
             <span class="closebar">Close</span>
@@ -111,7 +112,7 @@
                                     <li>
                                         <a href="{{ route('Frontendshop') }}">Shop <i class="fa fa-angle-down"></i></a>
                                         <ul class="dropdown_style">
-                                            @forelse ($catagory_menu as $cat )
+                                            @forelse ($catagory_menu->take(5) as $cat )
                                             <li>
                                                 <a
                                                     href="{{route('CategorySearch',$cat->slug)}}">{{$cat->catagory_name}}</a>
@@ -346,7 +347,7 @@
                                         <li><a href="{{route('FrontendAbout')}}">about us</a></li>
                                         <li><a href="{{route('Frontendshop')}}">shop</a></li>
                                         <li><a href="{{route('Frontendblog')}}">blog</a></li>
-                                        {{-- <li><a href="contact.html">contact us</a></li> --}}
+                                        <li><a href="{{route('FrontndContact')}}">contact us</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -361,12 +362,20 @@
                             <div class="footer-icon">
                                 <ul class="d-flex">
                                     @if ($setting->facebook_link != '')
-                                    <li><a target="_blank" href="{{$setting->facebook_link}}"><i
+                                    <li><a target="_blank" href="{{$setting->facebook_link}}"><i style="font-size: large"
                                                 class="fa fa-facebook"></i></a></li>
                                     @endif
                                     @if ($setting->instagram_link != '')
-                                    <li><a target="_blank" href="{{$setting->instagram_link}}"><i
+                                    <li><a target="_blank" href="{{$setting->instagram_link}}"><i  style="font-size: large"
                                                 class="fa fa-instagram"></i></a></li>
+                                    @endif
+                                    @if ($setting->twitter_link != '')
+                                    <li><a target="_blank" href="{{$setting->twitter_link}}"><i  style="font-size: large"
+                                                class="fa fa-twitter"></i></a></li>
+                                    @endif
+                                    @if ($setting->youtube_link != '')
+                                    <li><a target="_blank" href="{{$setting->youtube_link}}"><i  style="font-size: large"
+                                                class="fa fa-youtube"></i></a></li>
                                     @endif
                                 </ul>
                             </div>
@@ -381,8 +390,8 @@
                             <div class="footer-adress">
                                 <ul>
                                     <li><a><span>Email:</span> {{$setting->email}}</a></li>
-                                    <li><a><span>Tel:</span>{{$setting->number}}</a></li>
-                                    <li><a><span>Adress:</span> {{$setting->address}}</a>
+                                    <li><a><span>Tel: </span>{{$setting->number}}</a></li>
+                                    <li><a><span>Adress: </span> {{$setting->address}}</a>
                                     </li>
                                 </ul>
                             </div>

@@ -6,6 +6,7 @@ use App\Models\Catagory;
 use App\Models\Product;
 use App\Models\Attribute;
 use App\Models\Brand;
+use App\Models\Subcatagory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -17,13 +18,13 @@ class SearchController extends Controller
         $min_price = strip_tags($request->min_price);
         $max_price = strip_tags($request->max_price);
         $category = Catagory::where('slug', $slug)->select('id', 'catagory_name')->first();
-        $categories = Catagory::select('slug', 'catagory_name')->get();
+        $categories = Catagory::with('Subcatagory')->select('id', 'slug', 'catagory_name')->get();
 
         if ($request->ajax()) {
             $Products = Product::with('Attribute', 'Catagory:id,catagory_name,slug')
                 ->where('catagory_id', $category->id)
                 ->where('status', 1)
-                ->latest()->simplepaginate(15);
+                ->latest()->simplepaginate(18);
             $view = view('frontend.search.pagination-data', compact('Products'))->render();
             return response()->json(['html' => $view,]);
         }
@@ -48,8 +49,34 @@ class SearchController extends Controller
         $Products = Product::with('Attribute', 'Catagory:id,catagory_name,slug')
             ->where('catagory_id', $category->id)
             ->where('status', 1)
-            ->latest('id')->simplepaginate(15);
+            ->latest('id')->simplepaginate(18);
         $category = $category->catagory_name;
+        return view('frontend.search.search-data', [
+            'Products' => $Products,
+            'Categories' => $categories,
+            'category' => $category,
+            'search' => $search,
+        ]);
+    }
+    public function SubCategorySearch(Request $request, $slug)
+    {
+        $search = '';
+        $subcatagory = Subcatagory::where('slug', $slug)->first();
+        if ($request->ajax()) {
+            $Products = Product::with('Attribute', 'Catagory:id,catagory_name,slug')
+                ->where('subcatagory_id', $subcatagory->id)
+                ->where('status', 1)
+                ->latest('id')->simplepaginate(18);
+            $view = view('frontend.search.pagination-data', compact('Products'))->render();
+            return response()->json(['html' => $view,]);
+        }
+        $categories = Catagory::with('Subcatagory')->select('id', 'slug', 'catagory_name')->get();
+        $Products = Product::with('Attribute', 'Catagory:id,catagory_name,slug')
+            ->where('subcatagory_id', $subcatagory->id)
+            ->where('status', 1)
+            ->latest('id')->simplepaginate(18);
+        $category = $subcatagory->subcatagory_name;
+
         return view('frontend.search.search-data', [
             'Products' => $Products,
             'Categories' => $categories,

@@ -16,7 +16,8 @@ class CreateFlavoursTable extends Migration
         Schema::create('flavours', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id');
-            $table->string('flavour_name')->nullable();
+            $table->foreignId('flavour_name')->nullable();
+            $table->foreignId('size_id');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -6,6 +6,7 @@ use App\Models\Catagory;
 use App\Models\Subcatagory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 class CatagoryController extends Controller
 {
@@ -17,7 +18,7 @@ class CatagoryController extends Controller
     public function index()
     {
         if (auth()->user()->can('View Category')) {
-            $catagoreis = Catagory::select('id', 'catagory_name', 'created_at')->latest('id')->paginate();
+            $catagoreis = Catagory::select('id', 'home_page', 'catagory_name', 'created_at')->latest('id')->paginate(15);
             return view('backend.catagory.index', [
                 'catagoreis' => $catagoreis,
             ]);
@@ -50,15 +51,21 @@ class CatagoryController extends Controller
     public function store(Request $request)
     {
         if (auth()->user()->can('Create Category')) {
-
             $request->validate([
-                'catagory_name' => ['required', 'string', 'unique:catagories,catagory_name']
+                'catagory_name' => ['required', 'string', 'unique:catagories,catagory_name'],
+                'catagory_image' => ['required', 'mimes:png,jpg']
             ]);
-
-            // return 1;
             $catagory = new Catagory;
             $catagory->catagory_name = strip_tags($request->catagory_name);
             $catagory->slug = strip_tags(Str::slug($request->catagory_name));
+
+            if ($request->hasFile('catagory_image')) {
+                $product_thumbnail = $request->file('catagory_image');
+                $extension = Str::slug($request->catagory_name) . '-' . Str::random(1) . '.' . 'webP';
+                // $extension = Str::slug($request->catagory_name) . '-' . Str::random(1) . '.' . $product_thumbnail->getClientOriginalExtension();
+                Image::make($product_thumbnail)->save(public_path('category_images/' . $extension), 90);
+            }
+            $catagory->catagory_image = $extension;
             $catagory->save();
             return redirect()->route('catagory.index')->with('success', 'Catagory Added Succesfully');
         } else {
@@ -74,7 +81,19 @@ class CatagoryController extends Controller
      */
     public function show($id)
     {
-        //
+        if (auth()->user()->can('View Category')) {
+            $catagory = Catagory::findorfail($id);
+            if ($catagory->home_page == 1) {
+                $catagory->home_page = 2;
+                $catagory->save();
+                return back()->with('warning', 'Inactive Successfully');
+            }
+            $catagory->home_page = 1;
+            $catagory->save();
+            return back()->with('success', 'Active Successfully');
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -111,6 +130,21 @@ class CatagoryController extends Controller
             $catagory =  Catagory::findorfail($id);
             $catagory->catagory_name = $request->catagory_name;
             $catagory->slug = Str::slug($request->catagory_name);
+
+            if ($request->hasFile('catagory_image')) {
+                if ($catagory->catagory_image != '') {
+                    $old_thumbnail = public_path('category_images/' . $catagory->catagory_image);
+                    if (file_exists($old_thumbnail)) {
+                        unlink($old_thumbnail);
+                    }
+                }
+                $product_thumbnail = $request->file('catagory_image');
+                $extension = Str::slug($request->catagory_name) . '-' . Str::random(1) . '.' . 'webP';
+                // $extension = Str::slug($request->catagory_name) . '-' . Str::random(1) . '.' . $product_thumbnail->getClientOriginalExtension();
+                Image::make($product_thumbnail)->save(public_path('category_images/' . $extension), 90);
+                $catagory->catagory_image = $extension;
+            }
+
             $catagory->save();
             return redirect()->route('catagory.index')->with('warning', 'Catagory Updated Succesfully');
         } else {
@@ -132,7 +166,12 @@ class CatagoryController extends Controller
             if ($subcatagory > 0) {
                 return back()->with('warning', "There's a Subcatagory Under This Catagory");
             } else {
-                Catagory::findorfail($id)->delete();
+                $catagory =  Catagory::findorfail($id);
+                $old_thumbnail = public_path('category_images/' . $catagory->catagory_image);
+                if (file_exists($old_thumbnail)) {
+                    unlink($old_thumbnail);
+                }
+                $catagory->delete();
                 return back()->with('delete', 'Catagory Deleted Succesfully');
             }
         } else {
@@ -154,7 +193,12 @@ class CatagoryController extends Controller
                     } else {
                         // if theres no subcatagory under this catafory id
 
-                        Catagory::findorfail($value)->delete();
+                        $catagory =  Catagory::findorfail($value);
+                        $old_thumbnail = public_path('category_images/' . $catagory->catagory_image);
+                        if (file_exists($old_thumbnail)) {
+                            unlink($old_thumbnail);
+                        }
+                        $catagory->delete();
                     }
                 }
                 return back()->with('delete', 'Catagory Deleted Succesfully');

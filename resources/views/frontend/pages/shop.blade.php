@@ -1,8 +1,30 @@
 @extends('frontend.master')
 @section('title')
-BD Muscle - Shop
+{{config('app.name')}} - Shop
 @endsection
 @section('content')
+<!-- .breadcumb-area start -->
+<style>
+    .bg-img-4 {
+        background-image: url('{{asset('banner_image/blog.jpeg')}}');
+        padding: 120px 0;
+    }
+</style>
+<div class="breadcumb-area bg-img-4 ">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcumb-wrap text-center">
+                    <h2>Shop</h2>
+                    <ul>
+                        <li><a href="{{route('Frontendhome')}}">Home</a></li>
+                        <li><span>Shop</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <style>
     .loadMore_btn {
         display: inline-block;
@@ -24,7 +46,6 @@ BD Muscle - Shop
     }
 
 </style>
-
 <!-- product-area start -->
 <div class="product-area pt-100">
     <div class="container">
@@ -60,8 +81,10 @@ BD Muscle - Shop
                                     <ul>
                                         <li><a data-toggle="modal" data-target="#exampleModalCenter{{ $product->id }}"
                                                 href="javascript:void(0);"><i class="fa fa-eye"></i></a></li>
-                                        <li><a href="wishlist.html"><i class="fa fa-heart"></i></a></li>
-                                        <li><a href="cart.html"><i class="fa fa-shopping-bag"></i></a></li>
+                                        <li><a href="{{route('SingleProductView',$product->slug)}}"><i
+                                                    class="fa fa-heart"></i></a></li>
+                                        <li><a href="{{route('SingleProductView',$product->slug)}}"><i
+                                                    class="fa fa-shopping-bag"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -84,7 +107,6 @@ BD Muscle - Shop
                                 </p>
                                 @endif
                                 @if ($product->product_review_count)
-                                            
                                 <ul class="pull-right d-flex">
                                     <li><i class="fa fa-star"></i></li>
                                     <li><i class="fa fa-star"></i></li>
@@ -93,7 +115,6 @@ BD Muscle - Shop
                                     <li><i class="fa fa-star-half-o"></i></li>
                                 </ul>
                                 @endif
-                              
                             </div>
                         </div>
                     </li>
@@ -153,11 +174,9 @@ BD Muscle - Shop
                                         </ul>
                                         <ul class="socil-icon">
                                             <li>Share :</li>
-                                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                            <a
+                                                href="https://www.facebook.com/sharer/sharer.php?u={{route('SingleProductView',$product->slug)}}&display=popup"><i
+                                                    class="fa fa-facebook"></i></a>
                                         </ul>
                                     </div>
                                 </div>
@@ -201,8 +220,10 @@ BD Muscle - Shop
                                     <ul>
                                         <li><a data-toggle="modal" data-target="#ModalCenter{{$product->id}}"
                                                 href="javascript:void(0);"><i class="fa fa-eye"></i></a></li>
-                                        <li><a href="wishlist.html"><i class="fa fa-heart"></i></a></li>
-                                        <li><a href="cart.html"><i class="fa fa-shopping-bag"></i></a></li>
+                                        <li><a href="{{route('SingleProductView',$product->slug)}}"><i
+                                                    class="fa fa-heart"></i></a></li>
+                                        <li><a href="{{route('SingleProductView',$product->slug)}}"><i
+                                                    class="fa fa-shopping-bag"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -224,13 +245,6 @@ BD Muscle - Shop
                                     {{$regular}}
                                 </p>
                                 @endif
-                                <ul class="pull-right d-flex">
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star-half-o"></i></li>
-                                </ul>
                             </div>
                         </div>
                     </li>
@@ -263,14 +277,6 @@ BD Muscle - Shop
                                                 }
                                                 @endphp
                                             </span>
-                                            <ul class="rating pull-right">
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li>(05 Customar Review)</li>
-                                            </ul>
                                         </div>
                                         <p>{{ $product->product_summary }}</p>
                                         <ul class="input-style">
@@ -288,19 +294,15 @@ BD Muscle - Shop
                                         </ul>
                                         <ul class="socil-icon">
                                             <li>Share :</li>
-                                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                            <a
+                                                href="https://www.facebook.com/sharer/sharer.php?u={{route('SingleProductView',$product->slug)}}&display=popup"><i
+                                                    class="fa fa-facebook"></i></a>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    @else
-                    <li>No Product</li>
                     @endif
                     @empty
                     <li>No Product</li>
@@ -314,7 +316,6 @@ BD Muscle - Shop
 <!-- product-area end -->
 
 @endsection
-
 
 @section('script_js')
 
@@ -341,8 +342,6 @@ function loadMoreData(page){
            
             return;
         }
-        // $(".result").html( val +data.total);
-        // $(".result").load(location.href + " .result");
         $('#ajax-data').append(data.html);
         $('.load_image').hide();
         $('.loadMore_btn').show();

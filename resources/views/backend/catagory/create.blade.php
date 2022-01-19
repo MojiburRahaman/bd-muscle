@@ -30,17 +30,26 @@ menu-open
     <section class="content">
         <div class="container-fluid">
             <div class="col-12">
-                <form action="{{route('catagory.store')}}" method="POST">
+                <form action="{{route('catagory.store')}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <input name="catagory_name" type="text" placeholder="Catagory Name" autocomplete="none" class="form-control @error('catagory_name') is-invalid                                
                             @enderror">
+                            @error('catagory_name')
+                            <div class="alert alert-danger">
+                                {{$message}}
+                            </div>
+                            @enderror
                     </div>
-                    @error('catagory_name')
-                    <div class="alert alert-danger">
-                        {{$message}}
+                    <div class="form-group">
+                        <input name="catagory_image" type="file" autocomplete="none" class="form-control @error('catagory_image') is-invalid                                
+                            @enderror">
+                            @error('catagory_image')
+                            <div class="alert alert-danger">
+                                {{$message}}
+                            </div>
+                            @enderror
                     </div>
-                    @enderror
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>

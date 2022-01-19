@@ -9,6 +9,15 @@ active
 menu-open
 @endsection
 @section('content')
+
+<style>
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+
+        padding-left: 20px;
+    }
+
+</style>
+
 <div class="content-wrapper">
     <!-- Main content -->
     <!-- Content Header (Page header) -->
@@ -44,7 +53,7 @@ menu-open
                     <div class="form-group">
                         <label for="meta_description">Meta Description</label>
                         <input value="{{old('meta_description')}}" name="meta_description" type="text"
-                            placeholder="Meta Description" id="meta_description"  class="form-control @error('meta_description') is-invalid                                
+                            placeholder="Meta Description" id="meta_description" class="form-control @error('meta_description') is-invalid                                
                             @enderror">
                         @error('meta_description')
                         <div class="alert alert-danger">
@@ -152,7 +161,8 @@ menu-open
                     </div>
                     <div class="form-group">
                         <label for="product_description">Description</label>
-                        <textarea id="product_description" class="form-control @error('product_description') is-invalid @enderror"
+                        <textarea id="product_description"
+                            class="form-control @error('product_description') is-invalid @enderror"
                             name="product_description" id="product_description"></textarea>
                         @error('product_description')
                         <div class="alert alert-danger">
@@ -161,27 +171,10 @@ menu-open
                         @enderror
                     </div>
 
-
-                    <div class="form-group">
-                        <label for="">Flavour Name</label>
-                        <div class="input-group mb-3">
-                            <input type="text" name="flavour_name[]" class="form-control m-input 
-                            @error('flavour_name[]') is-invalid @enderror" placeholder="Enter Flavour Name"
-                                autocomplete="off">
-                            <div class="input-group-append">
-                                <button id="removeRow" type="button" class="btn btn-danger">Remove</button>
-                            </div>
-                        </div>
-
-                        <div id="newRow"></div>
-                        <button id="addRow" type="button" class="btn-sm btn-info">Add Row</button>
-                    </div>
-
-
                     <div class="form-group ">
                         <div id="dynamic-field-1" class="form-group dynamic-field mt-4">
                             <div class="row">
-                                <div class="col-lg-3 col-6">
+                                <div class="col-lg-4 col-4">
                                     <label for="color_id" class="font-weight-bold">Color</label>
                                     <select class="form-control " name="color_id[]" id="color_id">
                                         @foreach ($colors as $color)
@@ -190,17 +183,20 @@ menu-open
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-lg-3 col-6">
+                                <div class="col-lg-4 col-4">
                                     <label for="size_id" class="font-weight-bold">Size</label>
                                     <select class="form-control " name="size_id[]" id="size_id">
-                                        {{-- <option value>Select One</option> --}}
                                         @foreach ($sizes as $size)
                                         <option value="{{ $size->id }}">{{ $size->size_name }}
                                         </option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-lg-2 col-4">
+                                <div class="col-lg-4 col-4">
+                                    <label for="flavour_name" class="font-weight-bold">Flavour</label>
+                                   <input type="text" class="form-control" name="flavour_name[]">
+                                </div>
+                                <div class="col-lg-4 col-4">
                                     <label for="quantity" class="font-weight-bold">Quantity</label>
                                     <input required type="number" id="quantity"
                                         class="form-control @error('quantity[]') is-invalid  @enderror"
@@ -209,7 +205,7 @@ menu-open
                                     <span style="color: red">*{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-lg-2 col-4">
+                                <div class="col-lg-4 col-4">
                                     <label for="regular_price" class="font-weight-bold ">Regular Price</label>
                                     <input required type="number" id="regular_price"
                                         class="form-control required  @error('regular_price[]') is-invalid  @enderror"
@@ -218,9 +214,11 @@ menu-open
                                     <span style="color: red">*{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-lg-2 col-4">
+                                <div class="col-lg-4 col-4">
                                     <label for="selling_price" class="font-weight-bold">Discount(%)</label>
-                                    <input  type="number" id="discount" class="form-control  @error('discount.*') is-invalid  @enderror" name="discount[]">
+                                    <input type="number" id="discount"
+                                        class="form-control  @error('discount.*') is-invalid  @enderror"
+                                        name="discount[]">
                                     @error('discount.*')
                                     <span style="color: red">*{{ $message }}</span>
                                     @enderror
@@ -284,26 +282,6 @@ menu-open
 
         
 
-        $("#addRow").click(function () {
-        var html = '';
-        html += '<div id="inputFormRow">';
-        html += '<div class="input-group mb-3">';
-        html += '<input type="text" name="flavour_name[]" class="form-control m-input " placeholder="Enter Flavour Name" autocomplete="off">';
-        html += '<div class="input-group-append">';
-        html += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
-        html += '</div>';
-        html += '</div>';
-
-        $('#newRow').append(html);
-    });
-
-    // remove row
-    $(document).on('click', '#removeRow', function () {
-        $(this).closest('#inputFormRow').remove();
-    });
-
-
-
 // dynamic add remove function
         $(document).ready(function() {
             var buttonAdd = $("#add-button");
@@ -323,6 +301,7 @@ menu-open
                 field.attr("id", "dynamic-field-" + count);
                 field.children("label").text("Field " + count);
                 field.find("input").val("");
+                field.find("select").val("1");
                 $(className + ":last").after($(field));
             }
 

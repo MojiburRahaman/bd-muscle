@@ -34,14 +34,14 @@ menu-open
         <div class="container-fluid">
             <div class="col-12">
                 {{-- <form action="{{route('Markdeletebrand')}}" method="post"> --}}
-                @csrf
-                @can('Create Color')
+                {{-- @csrf --}}
+                {{-- @can('Create Color') --}}
 
                 <div class="text-right">
 
                     <a data-toggle="modal" data-target="#exampleModal" class="btn-sm btn-info">Add Banner</a>
                 </div>
-                @endcan
+                {{-- @endcan --}}
                 <div class="card-body table-responsive p-0">
                     <table class="table table-hover text-nowrap">
                         <thead>
@@ -52,10 +52,10 @@ menu-open
                                 </th>
                                 <th>Banner Preview</th>
                                 <th>Created At</th>
-                                @if (auth()->user()->can('Delete Color') || auth()->user()->can('Edit Color'))
+                                {{-- @if (auth()->user()->can('Delete Color') || auth()->user()->can('Edit Color')) --}}
 
                                 <th>Action</th>
-                                @endif
+                                {{-- @endif --}}
                             </tr>
                         </thead>
                         <tbody>

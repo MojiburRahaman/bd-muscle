@@ -200,166 +200,174 @@ menu-open
                         @enderror
                     </div>
 
-                    @forelse ($product->Flavour as $flavour)
+                    {{-- @forelse ($product->Flavour as $flavour)
 
                     <div class="form-group">
                         <label for="">Flavour Name</label>
                         <div class="input-group mb-3">
                             <input type="hidden" value="{{$flavour->id}}" name="flavour_id[]">
-                            <input type="text" name="flavour_name[]" class="form-control m-input
+                    <input type="text" name="flavour_name[]" class="form-control m-input
                           @error('flavour_name[]') is-invalid @enderror" value="{{$flavour->flavour_name}}"
-                                placeholder="Enter Flavour Name" autocomplete="off">
-                            <div class="input-group-append">
-                                <a href="{{route('ProductFlavourDelete',    $flavour->id)}}" id="removeRow"
-                                    type="button" class="btn btn-danger">Remove</a>
-                            </div>
-                        </div>
+                        placeholder="Enter Flavour Name" autocomplete="off">
+                    <div class="input-group-append">
+                        <a href="{{route('ProductFlavourDelete',    $flavour->id)}}" id="removeRow" type="button"
+                            class="btn btn-danger">Remove</a>
                     </div>
-                    @empty
-                    <div class="form-group">
-                        <input type="hidden" value="" name="flavour_id[]">
-                        <label for="">Flavour Name</label>
-                        <div class="input-group mb-3">
-                            <input type="text" name="flavour_name[]" class="form-control m-input
+            </div>
+        </div>
+        @empty
+        <div class="form-group">
+            <input type="hidden" value="" name="flavour_id[]">
+            <label for="">Flavour Name</label>
+            <div class="input-group mb-3">
+                <input type="text" name="flavour_name[]" class="form-control m-input
                           @error('flavour_name[]') is-invalid @enderror" placeholder="Enter Flavour Name"
-                                autocomplete="off">
-                            <div class="input-group-append">
-                                <a id="removeRow" type="button" class="btn btn-danger">Remove</a>
-                            </div>
-                        </div>
+                    autocomplete="off">
+                <div class="input-group-append">
+                    <a id="removeRow" type="button" class="btn btn-danger">Remove</a>
+                </div>
+            </div>
+        </div>
+        @endforelse
+        <div id="newRow"></div>
+        <button id="addRow" type="button" class="btn-sm btn-info">Add Row</button> --}}
+
+
+        <div class="form-group ">
+            @forelse ($product->Attribute as $Attribute)
+            <div id="dynamic-field-1" class="form-group dynamic-field  mt-4">
+                <div class="row">
+                    <div class="col-lg-4 col-4">
+                        <label for="color_id" class="font-weight-bold">Color</label>
+                        <select class="form-control " name="color_id[]" id="color_id">
+                            @foreach ($colors as $color)
+                            <option {{($Attribute->color_id == $color->id)? 'selected': ''}} value="{{
+                                $color->id }}">{{ $color->color_name }}
+                            </option>
+                            @endforeach
+                        </select>
                     </div>
-                    @endforelse
-                    <div id="newRow"></div>
-                    <button id="addRow" type="button" class="btn-sm btn-info">Add Row</button>
-
-
-                    <div class="form-group ">
-                        @forelse ($product->Attribute as $Attribute)
-                        <div id="dynamic-field-1" class="form-group dynamic-field  mt-4">
+                    <div class="col-lg-4 col-4">
+                        <label for="size_id" class="font-weight-bold">Size</label>
+                        <select class="form-control " name="size_id[]" id="size_id">
+                            @foreach ($sizes as $size)
+                            <option {{($Attribute->size_id == $size->id)? 'selected': ''}} value="{{
+                                $size->id }}">{{ $size->size_name }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-lg-4 col-4">
+                        @php
+                        $flavour =
+                        App\Models\Flavour::where('size_id',$Attribute->size_id)->where('product_id',$product->id)->get()
+                        @endphp
+                        <label for="flavour_name" class="font-weight-bold">Flavour</label>
+                        <input type="text" class="form-control" name="flavour_name[]"
+                            value="@forelse($flavour as $f){{$f->flavour_name}} @empty @endforelse">
+                    </div>
+                    <div class="col-lg-4 col-4">
+                        <input type="hidden" value="{{$Attribute->id}}" name="attribute_id[]">
+                        <label for="quantity" class="font-weight-bold">Quantity</label>
+                        <input required type="number" id="quantity" value="{{$Attribute->quantity}}"
+                            class="form-control  @error('quantity[]') is-invalid  @enderror" name="quantity[]">
+                        @error('quantity[]')
+                        <span style="color: red">*{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="col-lg-4 col-4">
+                        <label for="regular_price" class="font-weight-bold ">Regular Price</label>
+                        <input required type="number" id="regular_price" value="{{$Attribute->regular_price}}"
+                            class="form-control  @error('regular_price[]') is-invalid  @enderror"
+                            name="regular_price[]">
+                        @error('regular_price[]')
+                        <span style="color: red">*{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="col-lg-3 col-3">
+                        <label for="selling_price" class="font-weight-bold">Discount(%)</label>
+                        <input value="{{$Attribute->discount}}" type="number" id="discount"
+                            class="form-control  @error('discount.*') is-invalid  @enderror" name="discount[]">
+                        @error('discount.*')
+                        <span style="color: red">*{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="col-lg-1 pl-4 col-1 delete_btn" style="padding-top: 38px" id="test">
+                        <a href="{{route('ProducvtAtributeDelete',$Attribute->id)}}" class="btn-sm btn-danger" ">Delete</a>
+                                    </div>
+                                </div>
+                        </div>
+                        @empty
+                        <div id="dynamic-field-1" class="form-group dynamic-field mt-4">
                             <div class="row">
-                                <div class="col-lg-3 col-6">
+                                <input type="hidden" value="" name="attribute_id[]">
+                                <div class="col-lg-4 col-4">
                                     <label for="color_id" class="font-weight-bold">Color</label>
                                     <select class="form-control " name="color_id[]" id="color_id">
                                         @foreach ($colors as $color)
-                                        <option {{($Attribute->color_id == $color->id)? 'selected': ''}} value="{{
-                                            $color->id }}">{{ $color->color_name }}
+                                        <option value="{{ $color->id }}">{{ $color->color_name }}
                                         </option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-lg-2 col-6">
+                                <div class="col-lg-4 col-4">
                                     <label for="size_id" class="font-weight-bold">Size</label>
                                     <select class="form-control " name="size_id[]" id="size_id">
                                         @foreach ($sizes as $size)
-                                        <option {{($Attribute->size_id == $size->id)? 'selected': ''}} value="{{
-                                            $size->id }}">{{ $size->size_name }}
+                                        <option value="{{ $size->id }}">{{ $size->size_name }}
                                         </option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-lg-2 col-6">
-                                    <input type="hidden" value="{{$Attribute->id}}" name="attribute_id[]">
+                                <div class="col-lg-4 col-4">
+                                    <label for="flavour_name" class="font-weight-bold">Flavour</label>
+                                   <input type="text" class="form-control" name="flavour_name[]">
+                                </div>
+                                <div class="col-lg-4 col-4">
                                     <label for="quantity" class="font-weight-bold">Quantity</label>
-                                    <input required type="number" id="quantity" value="{{$Attribute->quantity}}"
-                                        class="form-control  @error('quantity[]') is-invalid  @enderror"
+                                    <input required type="number" id="quantity"
+                                        class="form-control @error('quantity[]') is-invalid  @enderror"
                                         name="quantity[]">
                                     @error('quantity[]')
                                     <span style="color: red">*{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-lg-2 col-6">
+                                <div class="col-lg-4 col-4">
                                     <label for="regular_price" class="font-weight-bold ">Regular Price</label>
                                     <input required type="number" id="regular_price"
-                                        value="{{$Attribute->regular_price}}"
-                                        class="form-control  @error('regular_price[]') is-invalid  @enderror"
+                                        class="form-control required  @error('regular_price[]') is-invalid  @enderror"
                                         name="regular_price[]">
                                     @error('regular_price[]')
                                     <span style="color: red">*{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-lg-2 col-4">
+                                <div class="col-lg-4 col-4">
                                     <label for="selling_price" class="font-weight-bold">Discount(%)</label>
-                                    <input value="{{$Attribute->discount}}" type="number" id="discount"
+                                    <input type="number" id="discount"
                                         class="form-control  @error('discount.*') is-invalid  @enderror"
                                         name="discount[]">
                                     @error('discount.*')
                                     <span style="color: red">*{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-lg-1 pl-4 col-6 delete_btn" style="padding-top: 38px" id="test">
-                                    <a href="{{route('ProducvtAtributeDelete',$Attribute->id)}}"
-                                        class="btn-sm btn-danger" ">Delete</a>
-                                    </div>
-                                </div>
+                            </div>
                         </div>
-                        @empty
-                            
                         @endforelse
-                        {{-- <div  id=" dynamic-field-1" class="form-group dynamic-field mt-4">
-                                        <div class="row">
-                                            <div class="col-lg-3 col-6">
-                                                <label for="color_id" class="font-weight-bold">Color</label>
-                                                <select class="form-control " name="color_id[]" id="color_id">
-                                                    @foreach ($colors as $color)
-                                                    <option value="{{ $color->id }}">{{ $color->color_name }}
-                                                    </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col-lg-3 col-6">
-                                                <label for="size_id" class="font-weight-bold">Size</label>
-                                                <select class="form-control " name="size_id[]" id="size_id">
-                                                    @foreach ($sizes as $size)
-                                                    <option value="{{ $size->id }}">{{ $size->size_name }}
-                                                    </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col-lg-2 col-4">
-                                                <label for="quantity" class="font-weight-bold">Quantity</label>
-                                                <input required type="number" id="quantity"
-                                                    class="form-control @error('quantity[]') is-invalid  @enderror"
-                                                    name="quantity[]">
-                                                @error('quantity[]')
-                                                <span style="color: red">*{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                            <div class="col-lg-2 col-4">
-                                                <label for="regular_price" class="font-weight-bold ">Regular
-                                                    Price</label>
-                                                <input required type="number" id="regular_price"
-                                                    class="form-control required  @error('regular_price[]') is-invalid  @enderror"
-                                                    name="regular_price[]">
-                                                @error('regular_price[]')
-                                                <span style="color: red">*{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                            <div class="col-lg-2 col-4">
-                                                <label for="selling_price" class="font-weight-bold">Discount(%)</label>
-                                                <input type="number" id="discount"
-                                                    class="form-control  @error('discount.*') is-invalid  @enderror"
-                                                    name="discount[]">
-                                                @error('discount.*')
-                                                <span style="color: red">*{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                </div> --}}
-                                <div class=" clearfix">
-                                    <button type="button" id="remove-button" title="Remove Last added field"
-                                        style="color:red;background:none;border:1px"
-                                        class="btn-sm btn-secondary ml-2 float-right ml-1"><i
-                                            class="fa fa-minus fa-fw"></i> Remove</button>
-                                    <button title="Add new field" type="button" id="add-button"
-                                        style="background-color: #6c757d;color:white;border:none;"
-                                        class="btn-sm float-right  shadow-sm"><i class="fa fa-plus fa-fw"></i>
-                                        Add</button>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-success">Submit</button>
-                                <a href="{{route('products.index')}}" class="btn btn-primary">Cancel</a>
-                            </div>
+                    <div class=" clearfix">
+                        <button type="button" id="remove-button" title="Remove Last added field"
+                            style="color:red;background:none;border:1px"
+                            class="btn-sm btn-secondary ml-2 float-right ml-1"><i class="fa fa-minus fa-fw"></i>
+                            Remove</button>
+                        <button title="Add new field" type="button" id="add-button"
+                            style="background-color: #6c757d;color:white;border:none;"
+                            class="btn-sm float-right  shadow-sm"><i class="fa fa-plus fa-fw"></i>
+                            Add</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                    <a href="{{route('products.index')}}" class="btn btn-primary">Cancel</a>
+                </div>
                 </form>
             </div>
         </div>

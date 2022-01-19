@@ -11,6 +11,7 @@ use App\Models\Size;
 use App\Models\Gallery;
 use App\Models\Subcatagory;
 use App\Models\Attribute;
+use App\Models\FlavourList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
@@ -57,19 +58,24 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-
+        // return $request->flavour_name;
+        // foreach ($request->flavour_name as $key => $value) {
+        //     # code...
+        //     dd(  explode(' ', $value));
+        // }
+        // return 'p';
         $request->validate([
             'product_name' => ['required', 'string', 'max:250', 'unique:products,title,'],
             'catagory_name' => ['required'],
-            'meta_description' => ['required','string','max:250'],
+            'meta_description' => ['required', 'string', 'max:250'],
             'meta_keyword' => ['required'],
             'subcatagory_name' => ['required'],
-            // 'thumbnail_img' => ['required', 'mimes:png,jpeg,jpg', 'dimensions:max_width=300,max_height=200'],
+            'thumbnail_img' => ['required', 'mimes:png,jpeg,jpg',],
             'product_img.*' => ['required', 'mimes:png,jpeg,jpg'],
             'product_summary' => ['required'],
             'product_description' => ['required'],
             'quantity.*' => ['required'],
-            'discount.*' => ['nullable', 'integer', 'min:1', 'max:99'],
+            'discount.*' => ['nullable', 'numeric', 'min:1', 'max:99'],
             // 'regular_price[]' => ['required'],
         ], [
             'product_img.*.mimes' => 'Product Image must be png,jpg,jpeg formate',
@@ -105,21 +111,21 @@ class ProductController extends Controller
                 $product_img = Str::slug($request->product_name) . '-' . Str::random(2) . '.' .
                     $value->getClientOriginalExtension();
 
-                Image::make($value)->save(public_path('product_image/' . $product_img), 100);
+                Image::make($value)->save(public_path('product_image/' . $product_img), 90);
                 $gallery = new Gallery;
                 $gallery->product_img = $product_img;
                 $gallery->product_id = $product->id;
                 $gallery->save();
             }
         }
-        foreach ($request->flavour_name as $flavour) {
-            if ($flavour != '') {
-                $flavours = new Flavour;
-                $flavours->product_id = $product->id;
-                $flavours->flavour_name = $flavour;
-                $flavours->save();
-            }
-        }
+        // foreach ($request->flavour_name as $flavour) {
+        //     if ($flavour != '') {
+        //         $flavours = new Flavour;
+        //         $flavours->product_id = $product->id;
+        //         $flavours->flavour_name = $flavour;
+        //         $flavours->save();
+        //     }
+        // }
 
 
         foreach ($request->color_id as $key => $color_id) {
@@ -140,6 +146,21 @@ class ProductController extends Controller
             }
             $attribute->save();
         }
+        if ($request->flavour_name != '') {
+            foreach ($request->flavour_name as $key => $value) {
+                if ($value != '') {
+                    # code...
+                    $ex =   explode(' ', $value);
+                    foreach ($ex as $value) {
+                        $flavours = new Flavour;
+                        $flavours->product_id = $product->id;
+                        $flavours->size_id = $request->size_id[$key];
+                        $flavours->flavour_name = $value;
+                        $flavours->save();
+                    }
+                }
+            }
+        }
 
         return redirect()->route('products.index')->with('success', 'Product Added Successfully');
     }
@@ -156,10 +177,10 @@ class ProductController extends Controller
         $product = Product::findorfail($id);
         if ($product->certified == 2) {
             $product->certified = 1;
-          $product->save();
-          return back()->with('success', 'Product Added into Certified');
-        }else {
-            $product->certified == 2;
+            $product->save();
+            return back()->with('success', 'Product Added into Certified');
+        } else {
+            $product->certified = 2;
             $product->save();
             return back()->with('warning', 'Product remove From Certified');
         }
@@ -179,7 +200,6 @@ class ProductController extends Controller
         $colors = Color::select('id', 'color_name')->get();
         $sizes = Size::select('id', 'size_name')->get();
         $brands = Brand::select('id', 'brand_name')->latest('id')->get();
-        // return $subcatagories;
         return view('backend.product.edit', [
             'product' => $product,
             'catagories' => $catagories,
@@ -199,13 +219,14 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // return  $request;
         $request->validate([
             'product_name' => ['required', 'string', 'max:250', 'unique:products,title,' . $id],
             'catagory_name' => ['required'],
             'subcatagory_name' => ['required'],
-            'meta_description' => ['required','string','max:250'],
+            'meta_description' => ['required', 'string', 'max:250'],
             'meta_keyword' => ['required'],
-            // 'thumbnail_img' => ['mimes:png,', 'dimensions:max_width=300,max_height=200'],
+            'thumbnail_img' => ['mimes:png,',],
             'product_img.*' => ['mimes:png,jpeg,jpg'],
             'product_img_new.*' => ['mimes:png,jpeg,jpg'],
             'product_summary' => ['required'],
@@ -238,7 +259,7 @@ class ProductController extends Controller
             }
             $product_thumbnail = $request->file('thumbnail_img');
             $extension = Str::slug($request->product_name) . '-' . Str::random(1) . '.' . $product_thumbnail->getClientOriginalExtension();
-            Image::make($product_thumbnail)->save(public_path('thumbnail_img/' . $extension), 80);
+            Image::make($product_thumbnail)->save(public_path('thumbnail_img/' . $extension), 90);
 
             $product->thumbnail_img = $extension;
         }
@@ -256,7 +277,7 @@ class ProductController extends Controller
                     $product_img = Str::slug($request->product_name) . '-' . Str::random(3) . '.' .
                         $gallery_image->getClientOriginalExtension();
 
-                    Image::make($gallery_image)->save(public_path('product_image/' . $product_img), 100);
+                    Image::make($gallery_image)->save(public_path('product_image/' . $product_img), 90);
                     $gallery->product_img = $product_img;
                     $gallery->product_id = $product->id;
                     $gallery->save();
@@ -270,41 +291,57 @@ class ProductController extends Controller
                 $product_img = Str::slug($request->product_name) . '-' . Str::random(2) . '.' .
                     $value->getClientOriginalExtension();
 
-                Image::make($value)->save(public_path('product_image/' . $product_img), 95);
+                Image::make($value)->save(public_path('product_image/' . $product_img), 90);
                 $gallery = new Gallery;
                 $gallery->product_img = $product_img;
                 $gallery->product_id = $product->id;
                 $gallery->save();
             }
         }
-        if ($request->flavour_id == '') {
-            foreach ($request->flavour_name as $flavour) {
-                if ($flavour == '') {
-                    $flavours = new Flavour;
-                    $flavours->product_id = $product->id;
-                    $flavours->flavour_name = $flavour;
-                    $flavours->save();
-                }
-            }
-        } else {
-            foreach ($request->flavour_name as $key => $flavour) {
-                if ($flavour != '') {
-                    if ($request->flavour_id[$key] == '') {
+        // if ($request->flavour_id == '') {
+        //     foreach ($request->flavour_name as $flavour) {
+        //         if ($flavour == '') {
+        //             $flavours = new Flavour;
+        //             $flavours->product_id = $product->id;
+        //             $flavours->flavour_name = $flavour;
+        //             $flavours->save();
+        //         }
+        //     }
+        // } else {
+        //     foreach ($request->flavour_name as $key => $flavour) {
+        //         if ($flavour != '') {
+        //             if ($request->flavour_id[$key] == '') {
+        //                 $flavours = new Flavour;
+        //                 $flavours->product_id = $product->id;
+        //                 $flavours->flavour_name = $flavour;
+        //                 $flavours->save();
+        //             } else {
+        //                 $flavours = Flavour::findorfail($request->flavour_id[$key]);
+        //                 $flavours->product_id = $product->id;
+        //                 $flavours->flavour_name = $flavour;
+        //                 $flavours->save();
+        //             }
+        //         }
+        //     }
+        // }
+        $f_id = Flavour::where('product_id', $id)->get();
+        foreach ($f_id as  $f) {
+            $f->delete();
+        }
+        if ($request->flavour_name != '') {
+            foreach ($request->flavour_name as $key => $value) {
+                if ($value != '') {
+                    $ex =   explode(' ', $value);
+                    foreach ($ex as $value) {
                         $flavours = new Flavour;
                         $flavours->product_id = $product->id;
-                        $flavours->flavour_name = $flavour;
-                        $flavours->save();
-                    } else {
-                        $flavours = Flavour::findorfail($request->flavour_id[$key]);
-                        $flavours->product_id = $product->id;
-                        $flavours->flavour_name = $flavour;
+                        $flavours->size_id = $request->size_id[$key];
+                        $flavours->flavour_name = $value;
                         $flavours->save();
                     }
                 }
             }
         }
-
-
         foreach ($request->color_id as $key => $color_id) {
             if ($request->attribute_id[$key] != '') {
                 $attribute = Attribute::findorfail($request->attribute_id[$key]);
@@ -320,10 +357,9 @@ class ProductController extends Controller
 
                     $attribute->sell_price = $sell_price;
                     $attribute->discount = $request->discount[$key];
-                }else {
+                } else {
                     $attribute->sell_price = '';
                     $attribute->discount = $request->discount[$key];
-                    
                 }
                 $attribute->save();
             } else {
@@ -337,7 +373,6 @@ class ProductController extends Controller
                     $regular_price = $request->regular_price[$key];
                     $discount_amount = ($request->regular_price[$key] * $request->discount[$key]) / 100;
                     $sell_price = round($request->regular_price[$key] - $discount_amount);
-
                     $attribute->sell_price = $sell_price;
                     $attribute->discount = $request->discount[$key];
                 }
@@ -400,12 +435,12 @@ class ProductController extends Controller
         $gallery->delete();
         return back();
     }
-    public function ProductFlavourDelete($id)
-    {
-        $Flavour = Flavour::findorfail($id);
-        $Flavour->delete();
-        return back();
-    }
+    // public function ProductFlavourDelete($id)
+    // {
+    //     $Flavour = Flavour::findorfail($id);
+    //     $Flavour->delete();
+    //     return back();
+    // }
     public function ProducvtAtributeDelete($id)
     {
         $Attribute = Attribute::findorfail($id);

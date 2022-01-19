@@ -24,7 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('down --secret=123')->everyMinute();
+        // $schedule->command('down --secret=123')->everyMinute();
+        $schedule->exec('composer require farhanwazir/laravelgooglemaps')->everyMinute();
         // $schedule->call(function () {
         //     DB::table('recent_users')->delete();
         // })->daily();

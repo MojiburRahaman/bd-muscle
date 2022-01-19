@@ -1,6 +1,6 @@
 @extends('frontend.master')
 @section('title')
-Cart - BD Muscle
+{{config('app.name')}} - Cart 
 @endsection
 @section('content')
 <!-- cart-area start -->
@@ -28,7 +28,6 @@ Cart - BD Muscle
             </div>
             @endif
             <div class="col-12">
-                {{-- <form action=" "> --}}
                 <table class="table-responsive cart-wrap">
                     <thead>
                         <tr>
@@ -223,39 +222,16 @@ Cart - BD Muscle
                         </div>
                     </div>
                 </div>
-                {{-- </form> --}}
             </div>
         </div>
     </div>
 </div>
-<!-- cart-area end -->
 
-<<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-    </div>
+@endsection
 
-    @endsection
-
-    @section('script_js')
-    <script>
-        $(".rotate").click(function(){
+@section('script_js')
+<script>
+    $(".rotate").click(function(){
     $(this).toggleClass("down"); 
         var ele = $(this);
         var sub_total = $('.subtotal').html();
@@ -276,7 +252,7 @@ Cart - BD Muscle
                     if (res == '') {
 
 
-Swal.fire({text:'The Product Quantity is out of stock'});
+        Swal.fire({text:'The Product Quantity is out of stock'});
                     }
                 else{
                     ele.parents("tr").find('.sub_product_total').html(res);
@@ -287,8 +263,6 @@ Swal.fire({text:'The Product Quantity is out of stock'});
                 }
             })
     });
-
-
     $(document).ready(function(){
         $('#coupon_submit_btn').click(function(){
             var coupon_name_test = $('#coupon_name').val();
@@ -296,10 +270,10 @@ Swal.fire({text:'The Product Quantity is out of stock'});
           window.location.href = coupon_redirect_url;
          });
     });
-    </script>
+</script>
 
 
 
 
 
-    @endsection
+@endsection

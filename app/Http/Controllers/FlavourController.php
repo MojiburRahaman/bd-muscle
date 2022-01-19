@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Flavour;
+use App\Models\FlavourList;
 use Illuminate\Http\Request;
 
 class FlavourController extends Controller
@@ -14,7 +15,7 @@ class FlavourController extends Controller
      */
     public function index()
     {
-        $flavours = Flavour::where('id','!=',1)->latest()->paginate(15);
+        $flavours = FlavourList::where('id', '!=', 1)->latest()->paginate(15);
         return view('backend.flavour.index', compact('flavours'));
     }
 
@@ -39,7 +40,7 @@ class FlavourController extends Controller
         $request->validate([
             'flavour_name' => ['required', 'string', 'max:200', 'unique:flavours,flavour_name']
         ]);
-        $flavour = new Flavour;
+        $flavour = new FlavourList;
         $flavour->flavour_name = $request->flavour_name;
         $flavour->save();
         return redirect()->route('flavour.index')->with('success', 'Flavour Added Successfully');
@@ -54,7 +55,7 @@ class FlavourController extends Controller
     public function show($id)
     {
     }
-    
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -63,8 +64,8 @@ class FlavourController extends Controller
      */
     public function edit($id)
     {
-        $flavour = Flavour::findorfail($id);
-        return view('backend.flavour.edit',compact('flavour'));
+        $flavour = FlavourList::findorfail($id);
+        return view('backend.flavour.edit', compact('flavour'));
     }
 
     /**
@@ -77,9 +78,9 @@ class FlavourController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'flavour_name' => ['required', 'string', 'max:200', 'unique:flavours,flavour_name,'.$id]
+            'flavour_name' => ['required', 'string', 'max:200', 'unique:flavours,flavour_name,' . $id]
         ]);
-        $flavour =  Flavour::findorfail($id);
+        $flavour =  FlavourList::findorfail($id);
         $flavour->flavour_name = $request->flavour_name;
         $flavour->save();
         return redirect()->route('flavour.index')->with('warning', 'Flavour Edited Successfully');
@@ -93,6 +94,7 @@ class FlavourController extends Controller
      */
     public function destroy($id)
     {
-        //
+        FlavourList::findorfail($id)->delete();
+        return back()->with('delete', 'Deleted Successfully');
     }
 }

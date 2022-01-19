@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Brand;
 use App\Models\Catagory;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Auth\Notifications\VerifyEmail;
@@ -29,7 +30,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         View::share('setting', SiteSetting::first());
-        View::share('catagory_menu', Catagory::select('id','catagory_name','slug')->latest('id')->take(5)->get());
+        View::share('catagory_menu', Catagory::select('id','catagory_name','catagory_image','slug')->latest('id')->get());
+        View::share('brands', Brand::latest('id')->get());
         VerifyEmail::toMailUsing(function ($notifiable, $url) {
             return (new MailMessage)
                 ->subject(' Email Address')

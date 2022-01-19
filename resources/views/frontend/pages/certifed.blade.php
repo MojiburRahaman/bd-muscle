@@ -12,7 +12,7 @@
 <div class="ptb-100">
     <div class="container">
         <ul class="row">
-            @foreach ($products as $product)
+            @forelse ($products as $product)
             <li class="col-xl-3 col-lg-4 col-sm-6 col-12">
                 <div class="product-wrap">
                     <div class="product-img">
@@ -122,7 +122,9 @@
                     </div>
                 </div>
             </div>
-            @endforeach
+            @empty
+            {{-- <li class="text-center">No product</li> --}}
+            @endforelse
         </ul>
         <div class="mt-4">
             {{$products->links('frontend.paginator')}}

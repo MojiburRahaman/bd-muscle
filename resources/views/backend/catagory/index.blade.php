@@ -52,6 +52,7 @@ menu-open
                                     <th>SL</th>
                                     <th>Catagory Name</th>
                                     <th>Created At</th>
+                                    <th>add to home page</th>
                                     @if (auth()->user()->can('Delete Category') || auth()->user()->can('Edit Category'))
 
                                     <th>Action</th>s
@@ -75,8 +76,18 @@ menu-open
                 <td>{{$item->catagory_name}}</td>
                 <form action="{{route('catagory.destroy',$item->id)}}" method="post">
                     <td>{{$item->created_at->diffForHumans()}}</td>
+                   <td>
+                    @if ($item->home_page == 1)
+                        
+                    <a href="{{route('catagory.show',$item->id)}}" class="btn-sm btn-success">Active</a> &nbsp;
+                    @endif
+                    @if($item->home_page == 2)
+                    <a href="{{route('catagory.show',$item->id)}}" class="btn-sm btn-warning">Inactive</a> &nbsp;
+                    @endif
+                   </td>
                     @if (auth()->user()->can('Delete Category') || auth()->user()->can('Edit Category'))
                     <td>
+                        
                         @can('Edit Category')
                         <a style="padding: 7px 8px" href="{{route('catagory.edit',$item->id)}}"
                             class="btn-sm btn-primary">Edit</a>
@@ -97,6 +108,9 @@ menu-open
                 </table>
             </div>
             <!-- /.card -->
+            <div class="mt-5">
+                {{$catagoreis->links()}}
+            </div>
         </div>
 </div>
 </section>

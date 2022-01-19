@@ -124,9 +124,11 @@
 
                         </tbody>
                     </table>
+                    @if ($orders->links() != '')
                     <div class="mt-2 text-center">
                         <a href="javascript:void(0);" class="loadMore_btn">Load More</a>
                     </div>
+                    @endif
                     <li class="col-12 text-center">
                         <div class="load_image" style="display: none">
                             <p>

@@ -16,20 +16,20 @@
                                         <h2 class="text-left">{{$banner->Product->title}}</h2>
                                         @if (collect($banner->Product->Attribute)->max('discount') != '')
                                         <h6>
-                                            <p style="padding-bottom: 0"> 
+                                            <p style="padding-bottom: 0">
                                                 <span style="color: red;font-size:25px">
-                                                   ৳  {{collect($banner->product->Attribute)->min('sell_price')}}
-                                               </span>
-                                               <span style="font-size:25px;text-decoration:line-through" class="pl-2">
-                                                   ৳  {{collect($banner->Product->Attribute)->min('regular_price')}}
-                                           </span>
-                                        </p>
-                                        <br>
-                                             <span style="color: red;font-size:25px" >
+                                                    ৳ {{collect($banner->product->Attribute)->min('sell_price')}}
+                                                </span>
+                                                <span style="font-size:25px;text-decoration:line-through" class="pl-2">
+                                                    ৳ {{collect($banner->Product->Attribute)->min('regular_price')}}
+                                                </span>
+                                            </p>
+                                            <br>
+                                            <span style="color: red;font-size:25px">
                                                 {{collect($banner->Product->Attribute)->max('discount')}}%
                                             </span>
-                                            Discount 
-                                           
+                                            Discount
+
                                         </h6>
                                         @else
                                         <h6>
@@ -61,7 +61,9 @@
 
             @if ($banner->banner_image != '')
             <style>
-                .slide{{$loop->index+1}} {
+                .slide{{$loop->index+1}}
+
+                    {
                     background-image: url('{{asset('banner_image/'.$banner->banner_image)}}');
                     background-position: center;
                     background-size: cover;
@@ -82,21 +84,32 @@
 <!-- slider-area end -->
 <!-- featured-area start -->
 <div class="featured-area featured-area2">
-    <div class="container">
+    <div class="fluid-container">
         <div class="row">
             <div class="col-12">
-                <div class="featured-active2 owl-carousel next-prev-style">
-                    @foreach ($latest_product as $Product)
-                    <div class="featured-wrap">
-                        <div class="featured-img">
-                            <img loading="lazy" src="{{asset('thumbnail_img/'.$Product->thumbnail_img)}}" alt="">
-                            <div class="featured-content">
-                                <a style="padding: 12px 15px"
-                                    href="{{route('CategorySearch',$Product->Catagory->slug)}}">{{$Product->Catagory->catagory_name}}</a>
+                <div class="section-title">
+                    <h2>Categories</h2>
+                    <img src="{{asset('front/images/section-title.png')}}" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="featured-active2 owl-carousel next-prev-style">
+                        @foreach ($catagory_menu as $cat)
+                        <div class="featured-wrap">
+                            <div class="featured-img">
+                                <img loading="lazy" src="{{asset('category_images/'.$cat->catagory_image)}}"
+                                    alt="{{$cat->catagory_name}}">
+                                <div class="featured-content">
+                                    <a style="padding: 12px 15px"
+                                        href="{{route('CategorySearch',$cat->slug)}}">{{$cat->catagory_name}}</a>
+                                </div>
                             </div>
                         </div>
+                        @endforeach
                     </div>
-                    @endforeach
                 </div>
             </div>
         </div>
@@ -107,12 +120,9 @@
 @if ($deal != '')
 <style>
     .count-down-area {
-        @if ($deal->deal_banner != '')
-            
-        background-image: url('{{asset('deal_banner/'.$deal->deal_banner)}}')
-        @else
-        background-image: none;
-            background-color:@php echo $deal->deal_backgraound_color; @endphp;
+        @if ($deal->deal_banner !='') background-image: url('{{asset('deal_banner/'.$deal->deal_banner)}}') @else background-image: none;
+        background-color: @php echo $deal->deal_backgraound_color;
+        @endphp;
         @endif
     }
 
@@ -130,7 +140,7 @@
                         <div id="clock">
                         </div>
                     </div>
-                    <a  class="loadmore-btn" href="{{route('FrontendDeals')}}">View Items</a>
+                    <a class="loadmore-btn" href="{{route('FrontendDeals')}}">View Items</a>
                 </div>
             </div>
             <!-- end row -->
@@ -140,6 +150,135 @@
 </div>
 @endif
 <!-- end count-down-section -->
+
+<!--latest product-area start -->
+<div class="product-area">
+    <div class="fluid-container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title">
+                    <h2>Our Latest Product</h2>
+                    <img src="{{asset('front/images/section-title.png')}}" alt="">
+                </div>
+            </div>
+        </div>
+        <ul class="row">
+            @forelse ($latest_product as $product)
+            <li class="mb-4 col-xl-3 col-lg-4 col-sm-6 col-12">
+                <div class="product-wrap">
+                    <div class="product-img">
+                        @if (collect($product->Attribute)->min('discount') != '')
+                        <span class="mt-5" style=" z-index: 2">{{collect($product->Attribute)->min('discount')}}%</span>
+                        @endif
+                        <span style="z-index: 2">New</span>
+                        <img lazy="loading" src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}"
+                            alt="{{ $product->title }}">
+                        <div class="product-icon flex-style">
+                            <ul>
+                                <li><a data-toggle="modal" data-target="#exampleModalCenter{{ $product->id }}"
+                                        href="javascript:void(0);"><i class="fa fa-eye"></i></a></li>
+                                <li><a href="{{route('SingleProductView',$product->slug)}}"><i
+                                            class="fa fa-heart"></i></a></li>
+                                <li><a href="{{route('SingleProductView',$product->slug)}}"><i
+                                            class="fa fa-shopping-bag"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="product-content">
+                        <h3><a href="{{route('SingleProductView',$product->slug)}}">{{ $product->title }}</a></h3>
+                        @php
+                        $sale = collect($product->Attribute)->min('sell_price');
+                        $regular = collect($product->Attribute)->min('regular_price');
+                        @endphp
+                        @if ($sale == '')
+                        <p class="pull-left"> ৳
+                            {{$regular}}
+                        </p>
+                        @else
+                        <p class="pull-left "> ৳
+                            {{$sale}}
+                        </p>
+                        <p style="text-decoration:line-through" class="pull-left pl-2"> ৳
+                            {{$regular}}
+                        </p>
+                        @endif
+                    </div>
+                </div>
+            </li>
+            <div class="modal fade" id="exampleModalCenter{{ $product->id }}" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div class="modal-body d-flex">
+                            <div class="product-single-img w-50">
+                                <img src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}"
+                                    alt="{{ $product->title }}">
+                            </div>
+                            <div class="product-single-content w-50">
+                                <h3>{{ $product->title }}</h3>
+                                <div class="rating-wrap fix">
+                                    <span class="pull-left">৳
+                                        @php
+                                        $sale = collect($product->Attribute)->min('sell_price');
+                                        $regular = collect($product->Attribute)->min('regular_price');
+                                        if ($sale == '') {
+                                        echo $regular;
+                                        } else {
+                                        echo $sale;
+                                        }
+                                        @endphp
+                                    </span>
+                                    @if ($product->product_review_count > 0)
+                                    <ul class="rating pull-right">
+                                        <li><i class="fa fa-star"></i></li>
+                                        <li><i class="fa fa-star"></i></li>
+                                        <li><i class="fa fa-star"></i></li>
+                                        <li><i class="fa fa-star"></i></li>
+                                        <li><i class="fa fa-star"></i></li>
+                                        <li>({{$product->product_review_count}} Customar Review)</li>
+                                    </ul>
+                                    @endif
+                                </div>
+                                <p>{{ $product->product_summary }}</p>
+                                <ul class="input-style">
+                                    <li class="quantity cart-plus-minus">
+                                        <input type="text" value="1" />
+                                    </li>
+                                    <li><a href="{{route('SingleProductView',$product->slug)}}">Add to Cart</a></li>
+                                </ul>
+                                <ul class="cetagory">
+                                    <li>Categories:</li>
+                                    <li>
+                                        <a href="{{route('CategorySearch',$product->Catagory->slug)}}">
+                                            {{ $product->Catagory->catagory_name }}
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="socil-icon">
+                                    <li>Share :</li>
+                                    <li>
+                                        <a target="_blank"
+                                            href="https://www.facebook.com/sharer/sharer.php?u={{route('SingleProductView',$product->slug)}}&display=popup"><i
+                                                class="fa fa-facebook"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @empty
+            @endforelse
+            <li class="col-12 text-center">
+                <a class="loadmore-btn" href="{{route('Frontendshop')}}">Load More</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- product-area end -->
+
 <!-- product-area start -->
 <div class="product-area product-area-2">
     <div class="fluid-container">
@@ -190,13 +329,6 @@
                             {{$regular}}
                         </p>
                         @endif
-                        <ul class="pull-right d-flex">
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star-half-o"></i></li>
-                        </ul>
                     </div>
                 </div>
             </li>
@@ -250,14 +382,14 @@
                                 <ul class="cetagory">
                                     <li>Categories:</li>
                                     <li>
-                                        <a href="{{route('CategorySearch',$product->Catagory->catagory_name)}}">
+                                        <a href="{{route('CategorySearch',$product->Catagory->slug)}}">
                                             {{ $product->Catagory->catagory_name }}
                                         </a>
                                     </li>
                                 </ul>
                                 <ul class="socil-icon">
                                     <li>Share :</li>
-                                    <li><a
+                                    <li><a target="_blank"
                                             href="https://www.facebook.com/sharer/sharer.php?u={{route('SingleProductView',$product->slug)}}&display=popup"><i
                                                 class="fa fa-facebook"></i></a></li>
                                 </ul>
@@ -267,61 +399,59 @@
                 </div>
             </div>
             @empty
-            No Product
             @endforelse
         </ul>
     </div>
 </div>
-<!-- product-area end -->
+
 @forelse ($banners as $center_image)
-    @if ($center_image->center_banner != '')
-        <style>
-            .bg-img-8{
-                background-image: url('{{asset('banner_image/'.$center_image->center_banner)}}')
-            }
-        </style>
-    <div class="banner-area bg-img-8">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 offset-lg-6 col-md-8 offset-md-4">
-                    <div class="banner-wrap">
-                        <a style="margin:135px 0 0px" href="{{route('Frontendshop')}}">Shop Now</a>
-                    </div>
+@if ($center_image->center_banner != '')
+<style>
+    .bg-img-8 {
+        background-image: url('{{asset('banner_image/'.$center_image->center_banner)}}')
+    }
+</style>
+<div class="banner-area bg-img-8">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-6 col-md-8 offset-md-4">
+                <div class="banner-wrap">
+                    <a style="margin:135px 0 0px" href="{{route('Frontendshop')}}">Shop Now</a>
                 </div>
             </div>
         </div>
     </div>
-    @endif
+</div>
+@endif
 @empty
-    
+
 @endforelse
 
-
-<!-- product-area start -->
-<div class="product-area">
+@forelse ($category_wise_product as $cat_product)
+<div class="product-area product-area-2">
     <div class="fluid-container">
         <div class="row">
             <div class="col-12">
                 <div class="section-title">
-                    <h2>Our Latest Product</h2>
+                    <h2>{{$cat_product->catagory_name}}</h2>
                     <img src="{{asset('front/images/section-title.png')}}" alt="">
                 </div>
             </div>
         </div>
         <ul class="row">
-            @forelse ($latest_product as $product)
-            <li class="mb-4 col-xl-3 col-lg-4 col-sm-6 col-12">
+            @forelse ($cat_product->Product->take(4) as $product )
+            @if ($product->status == 1)
+            <li class="col-xl-3 col-lg-4 col-sm-6 col-12">
                 <div class="product-wrap">
                     <div class="product-img">
                         @if (collect($product->Attribute)->min('discount') != '')
-                        <span class="mt-5" style=" z-index: 2">{{collect($product->Attribute)->min('discount')}}%</span>
+                        <span style=" z-index: 2">{{collect($product->Attribute)->max('discount')}}%</span>
                         @endif
-                        <span style="z-index: 2">New</span>
-                        <img lazy="loading" src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}"
+                        <img loading="lazy" src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}"
                             alt="{{ $product->title }}">
                         <div class="product-icon flex-style">
                             <ul>
-                                <li><a data-toggle="modal" data-target="#exampleModalCenter{{ $product->id }}"
+                                <li><a data-toggle="modal" data-target="#product_modal{{ $product->id }}"
                                         href="javascript:void(0);"><i class="fa fa-eye"></i></a></li>
                                 <li><a href="{{route('SingleProductView',$product->slug)}}"><i
                                             class="fa fa-heart"></i></a></li>
@@ -348,17 +478,11 @@
                             {{$regular}}
                         </p>
                         @endif
-                        <ul class="pull-right d-flex">
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star"></i></li>
-                            <li><i class="fa fa-star-half-o"></i></li>
-                        </ul>
                     </div>
                 </div>
             </li>
-            <div class="modal fade" id="exampleModalCenter{{ $product->id }}" tabindex="-1">
+
+            <div class="modal fade" id="product_modal{{ $product->id }}" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -366,7 +490,10 @@
                         </button>
                         <div class="modal-body d-flex">
                             <div class="product-single-img w-50">
-                                <img src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}"
+                                @if (collect($product->Attribute)->max('discount') != '')
+                                <span class="discount_tag">{{collect($product->Attribute)->min('discount')}}%</span>
+                                @endif
+                                <img loading="lazy" src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}"
                                     alt="{{ $product->title }}">
                             </div>
                             <div class="product-single-content w-50">
@@ -404,35 +531,32 @@
                                 <ul class="cetagory">
                                     <li>Categories:</li>
                                     <li>
-                                        <a href="{{route('CategorySearch',$product->Catagory->catagory_name)}}">
+                                        <a href="{{route('CategorySearch',$product->Catagory->slug)}}">
                                             {{ $product->Catagory->catagory_name }}
                                         </a>
                                     </li>
                                 </ul>
                                 <ul class="socil-icon">
                                     <li>Share :</li>
-                                    <li>
-                                        <a
+                                    <li><a target="_blank"
                                             href="https://www.facebook.com/sharer/sharer.php?u={{route('SingleProductView',$product->slug)}}&display=popup"><i
-                                                class="fa fa-facebook"></i></a>
-                                    </li>
-
+                                                class="fa fa-facebook"></i></a></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            @endif
             @empty
             @endforelse
-            <li class="col-12 text-center">
-                <a class="loadmore-btn" href="{{route('Frontendshop')}}">Load More</a>
-            </li>
         </ul>
     </div>
 </div>
-<!-- product-area end -->
+@empty
 
+@endforelse
+<!-- product-area end -->
 <section id="blog_part" class="mb-5">
     <div class="container">
         <div class="row">
@@ -442,10 +566,9 @@
                 </div>
             </div>
         </div>
-
         <div class="row">
             @forelse ($blogs as $blog)
-            <div class="col-lg-4 mb-md-30px mb-lm-30px">
+            <div class="col-lg-4 col-6 mb-md-30px mb-lm-30px">
                 <div class="single-blog ">
                     <div class="blog-image">
                         <a href="{{route('FrontenblogView',$blog->slug)}}">
@@ -506,13 +629,25 @@
             <div class="secure-box">
 
                 <i class="fa fa-truck"></i>
-                <h4>Fast Delivery <Service></Service>
+                <h4>Fast Delivery Service
                 </h4>
                 <p>Fast delivery, competitive prices and excellent services.</p>
             </div>
         </div>
     </div>
 </section>
+<div class="container mb-2">
+    <div class="your-class one-time responsive">
+        @foreach ($brands as $brand)
+        <div>
+            <a href="{{route('BrandSearch',$brand->slug)}}">
+                <img title="{{$brand->brand_name}}" loading="lazy" src="{{asset('brand_img/'.$brand->brand_img)}}"
+                    alt="{{$brand->brand_name}}">
+            </a>
+        </div>
+        @endforeach
+    </div>
+</div>
 
 @endsection
 @section('script_js')
@@ -531,7 +666,6 @@
      'success'
    )
    @endif
-
     @if ($deal != '') 
    if ($("#clock").length) {
         $('#clock').countdown('{{$deal->expire_date .','. $deal->expire_time}}', function(event) {

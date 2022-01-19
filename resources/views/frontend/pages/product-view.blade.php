@@ -78,8 +78,9 @@
                             {{-- quantity section --}}
                             @if ($product->Attribute->sum('quantity') != 0)
 
-                            (<span class="available">{{ $product->Attribute->sum('quantity') }}</span> &nbsp;Product
-                            Available)
+                            <span style="display:none">(<span
+                                    class="available">{{ $product->Attribute->sum('quantity') }}</span> &nbsp;Product
+                                Available)</span>
                             @else
                             (<span>Out of Stock</span>)
                             @endif
@@ -160,14 +161,14 @@
                         <ul class="cetagory" style="margin-bottom: 10px">
                             <li>Flavour:</li>
                             <li>
-                                <select name="flavour_id"
+                                <select name="flavour_id" disabled id="flavour_id"
                                     class="form-control ml-2 @error('flavour_id') is-invalid @enderror">
-                                    @if ($product->flavour_count != 1)
+                                    {{-- @if ($product->flavour_count != 1)
                                     <option value="">Select One</option>
                                     @endif
                                     @foreach ($product->Flavour as $Flavour)
                                     <option value="{{$Flavour->id}}">{{$Flavour->flavour_name}}</option>
-                                    @endforeach
+                                    @endforeach --}}
                                 </select>
                             </li>
                         </ul>
@@ -175,7 +176,6 @@
                         @endif
 
                         @if ($product->brand_id != '')
-
                         <ul class="cetagory" style="margin-bottom: 10px">
                             <li>Brand:</li>
                             <li>
@@ -222,7 +222,7 @@
                         <div class="review-wrap">
                             <ul>
                                 @forelse ($product->ProductReview as $review)
-                                    
+
                                 <li class="review-items">
                                     <div class="review-content">
                                         <h3><a href="#">{{$review->name}}</a></h3>
@@ -230,35 +230,35 @@
                                         <span>{{$review->created_at->format('d M, Y') }}</span>
                                         <p>{{$review->message}}</p>
                                         <ul class="rating">
-                                            @if ($review->rating ==1)    
+                                            @if ($review->rating ==1)
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star-o"></i></li>
                                             <li><i class="fa fa-star-o"></i></li>
                                             <li><i class="fa fa-star-o"></i></li>
                                             <li><i class="fa fa-star-o"></i></li>
                                             @endif
-                                            @if ($review->rating ==2)    
+                                            @if ($review->rating ==2)
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star-o"></i></li>
                                             <li><i class="fa fa-star-o"></i></li>
                                             <li><i class="fa fa-star-o"></i></li>
                                             @endif
-                                            @if ($review->rating ==3)    
+                                            @if ($review->rating ==3)
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star-o"></i></li>
                                             <li><i class="fa fa-star-o"></i></li>
                                             @endif
-                                            @if ($review->rating ==4)    
+                                            @if ($review->rating ==4)
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star-o"></i></li>
                                             @endif
-                                            @if ($review->rating ==5)    
+                                            @if ($review->rating ==5)
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star"></i></li>
                                             <li><i class="fa fa-star"></i></li>
@@ -269,9 +269,9 @@
                                     </div>
                                 </li>
                                 @empty
-                                    <li>
-                                        No Review
-                                    </li>
+                                <li>
+                                    No Review
+                                </li>
                                 @endforelse
                             </ul>
                         </div>
@@ -582,6 +582,36 @@
             })
         });
       // if therese only size available end
+
+      $('.SizebyPrice').change(function() {
+        //   alert('ok');
+          var size = $(this).val();
+            var product = $(this).attr('data-product');
+              $.ajaxSetup({
+        headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+                     }),
+            $.ajax({
+                type: "POST",
+            url:"/product/get-flavour",
+           data:{product_id:product, size_id:size},
+                    success: function(res) {
+                        if (res != '') {
+                            $('#flavour_id').removeAttr('disabled');
+                            $("#flavour_id").empty();
+                            $("#flavour_id").append('<option value=>Select One</option>');
+                            $.each(res, function(key, value) {
+                                $("#flavour_id").append('<option value="' + value.id + '" >' +
+                                    value.flavour_name + '</option>');
+                            });
+                        } else {
+                            $("#flavour_id").empty();
+                        }
+                    }
+        })
+        });
+
 
 </script>
 @endsection

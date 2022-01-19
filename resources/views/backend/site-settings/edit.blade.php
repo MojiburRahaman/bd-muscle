@@ -110,6 +110,20 @@ menu-open
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
+                                    <label for="twitter_link">Twitter Link</label>
+                                    <input value="{{$setting->twitter_link}}" type="text" name="twitter_link" id="twitter_link"
+                                        placeholder="Twitter Link" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="youtube_link">Youtube Link</label>
+                                    <input value="{{$setting->youtube_link}}" type="text" name="youtube_link" id="twitter_link"
+                                        placeholder="Youtube Link" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
                                     <label for="instagram_link">Instagram Link</label>
                                     <input value="{{$setting->instagram_link}}" type="text" name="instagram_link" id="instagram_link"
                                         placeholder="Instagram Link" class="form-control">
@@ -119,6 +133,12 @@ menu-open
                                 <div class="form-group">
                                     <label  for="footer_text">Footer Text</label>
                                     <textarea class="form-control" name="footer_text" id="footer_text">{{$setting->footer_text}}</textarea>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label  for="google_map">Google Maps Link</label>
+                                    <textarea class="form-control" name="google_map" id="google_map">{{$setting->google_map}}</textarea>
                                 </div>
                             </div>
                             <div class="form-group">

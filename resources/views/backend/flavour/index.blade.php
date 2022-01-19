@@ -37,7 +37,7 @@ menu-open
                 @csrf
                 <div class="text-right">
 
-                    <a href="{{route('flavour.create')}}" class="btn-sm btn-info">Add Color</a>
+                    <a href="{{route('flavour.create')}}" class="btn-sm btn-info">Add Flavour</a>
                 </div>
                 <div class="card-body table-responsive p-0">
                     <table class="table table-hover text-nowrap">

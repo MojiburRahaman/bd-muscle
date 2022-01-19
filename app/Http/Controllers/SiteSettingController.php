@@ -133,6 +133,7 @@ class SiteSettingController extends Controller
                 'address' => ['required', 'string', 'max:250'],
                 'facebook_link' => ['max:250'],
                 'instagram_link' => ['max:250'],
+                'twitter_link' => ['max:250'],
                 'footer_text' => ['required', 'string'],
                 'site_logo' => ['mimes:png'],
             ]);
@@ -146,7 +147,10 @@ class SiteSettingController extends Controller
             $setting->address = $request->address;
             $setting->facebook_link = $request->facebook_link;
             $setting->instagram_link = $request->instagram_link;
+            $setting->twitter_link = $request->twitter_link;
+            $setting->youtube_link = $request->youtube_link;
             $setting->footer_text = $request->footer_text;
+            $setting->google_map = $request->google_map;
 
             if ($request->hasFile('site_logo')) {
                 $old_thumbnail = public_path('logo/' . $setting->site_logo);

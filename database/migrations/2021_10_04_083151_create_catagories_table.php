@@ -17,6 +17,8 @@ class CreateCatagoriesTable extends Migration
             $table->id();
             $table->string('catagory_name');
             $table->string('slug');
+            $table->string('home_page')->default('2')->comment('1=active,2=inactive');
+            $table->string('catagory_image');
             $table->timestamps();
             $table->softDeletes();
         });

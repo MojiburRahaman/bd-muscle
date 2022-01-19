@@ -24,7 +24,7 @@ class UserProfileController extends Controller
                 ])->render();
                 return response()->json(['html' => $view,]);
             }
-            $orders = billing_details::where('user_id', auth()->id())
+           $orders = billing_details::where('user_id', auth()->id())
                 ->with('order_summaries')->latest('id')->paginate(10);
         return view('frontend.Profile.customer-profile', [
             'orders' => $orders,

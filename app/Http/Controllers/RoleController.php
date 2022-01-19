@@ -42,6 +42,8 @@ class RoleController extends Controller
     public function create()
     {
         if (auth()->user()->can('Create Role')) {
+            $permission = Permission::create(['name' => 'Create Brand']);
+            $permission = Permission::create(['name' => 'View Brand']);
             // $permission = Permission::create(['name' => 'About']);
             // $permission = Permission::create(['name' => 'Subscriber']);
             // $permission = Permission::create(['name' => 'Add User']);
