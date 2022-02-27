@@ -1,4 +1,12 @@
 @extends('frontend.master')
+@section('social_thumbnail')
+<meta property="og:image" content="{{ asset('logo/'.$setting->site_logo) }}" />
+<meta property="og:image:url" content="{{ asset('logo/'.$setting->site_logo) }}" />
+<meta property="og:image:secure_url" content="{{ asset('logo/'.$setting->site_logo) }}" />
+<meta property="og:image:height" content="640" />
+<meta property="og:image:height" content="640" />
+<meta property="og:image:alt" content="{{$setting->meta_title}}" />
+@endsection
 @section('content')
 <!-- slider-area start -->
 <div class="slider-area">
@@ -62,7 +70,6 @@
             @if ($banner->banner_image != '')
             <style>
                 .slide{{$loop->index+1}}
-
                     {
                     background-image: url('{{asset('banner_image/'.$banner->banner_image)}}');
                     background-position: center;
@@ -164,7 +171,7 @@
         </div>
         <ul class="row">
             @forelse ($latest_product as $product)
-            <li class="mb-4 col-xl-3 col-lg-4 col-sm-6 col-12">
+            <li class="mb-4 col-xl-3 col-lg-4 col-sm-6 col-6">
                 <div class="product-wrap">
                     <div class="product-img">
                         @if (collect($product->Attribute)->min('discount') != '')
@@ -213,6 +220,10 @@
                         </button>
                         <div class="modal-body d-flex">
                             <div class="product-single-img w-50">
+                                @if (collect($product->Attribute)->max('discount') != '')
+                                        <span
+                                            class="discount_tag">{{collect($product->Attribute)->max('discount')}}%</span>
+                                        @endif
                                 <img src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}"
                                     alt="{{ $product->title }}">
                             </div>
@@ -292,7 +303,7 @@
         </div>
         <ul class="row">
             @forelse ($best_seller as $product )
-            <li class="col-xl-3 col-lg-4 col-sm-6 col-12">
+            <li class="col-xl-3 col-lg-4 col-sm-6 col-6">
                 <div class="product-wrap">
                     <div class="product-img">
                         @if (collect($product->Attribute)->min('discount') != '')
@@ -441,7 +452,7 @@
         <ul class="row">
             @forelse ($cat_product->Product->take(4) as $product )
             @if ($product->status == 1)
-            <li class="col-xl-3 col-lg-4 col-sm-6 col-12">
+            <li class="col-xl-3 col-lg-4 col-sm-6 col-6">
                 <div class="product-wrap">
                     <div class="product-img">
                         @if (collect($product->Attribute)->min('discount') != '')
@@ -568,7 +579,7 @@
         </div>
         <div class="row">
             @forelse ($blogs as $blog)
-            <div class="col-lg-4 col-6 mb-md-30px mb-lm-30px">
+            <div class="col-lg-3 col-6 col-sm-6 mb-md-30px mb-lm-30px mb-2">
                 <div class="single-blog ">
                     <div class="blog-image">
                         <a href="{{route('FrontenblogView',$blog->slug)}}">
@@ -581,21 +592,14 @@
                             <a class="blog-date height-shape" href="#"><i class="fa fa-calendar" aria-hidden="true"></i>
                                 {{$blog->created_at->format('d M, Y')}}
                             </a>
-                            <a class="blog-mosion" href="#"><i class="fa fa-commenting" aria-hidden="true"></i>
-                                @if ($blog->blog_comment_count > 999)
-                                {{number_format($comments->count(),2)}}k
-                                @else
-                                {{$blog->blog_comment_count }}
-                                @endif
-                            </a>
                         </div>
-                        <h5 class="blog-heading mt-2">
+                        <h5 style="font-size: large" class="blog-heading mt-2">
                             <a class="blog-heading-link" href="{{route('FrontenblogView',$blog->slug)}}">
                                 {{Str::ucfirst($blog->title)}}
                             </a>
                         </h5>
 
-                        <a href="{{route('FrontenblogView',$blog->slug)}}" class="btn btn-primary blog-btn"> Read More<i
+                        <a href="{{route('FrontenblogView',$blog->slug)}}" class="btn btn-primary mt-2 blog-btn"> Read More<i
                                 class="fa fa-arrow-right ml-5px" aria-hidden="true"></i></a>
                     </div>
                 </div>
@@ -639,7 +643,7 @@
 <div class="container mb-2">
     <div class="your-class one-time responsive">
         @foreach ($brands as $brand)
-        <div>
+        <div class="col-12 col-sm-6 col-lg-12 m-auto">
             <a href="{{route('BrandSearch',$brand->slug)}}">
                 <img title="{{$brand->brand_name}}" loading="lazy" src="{{asset('brand_img/'.$brand->brand_img)}}"
                     alt="{{$brand->brand_name}}">
@@ -652,13 +656,7 @@
 @endsection
 @section('script_js')
 <script>
-    @if (session('subscribe'))
-   Swal.fire(
-     'Thanks',
-    '{{session("subscribe")}}',
-     'success'
-   )
-   @endif
+  
     @if (session('orderPlace'))
    Swal.fire(
      'Thanks',

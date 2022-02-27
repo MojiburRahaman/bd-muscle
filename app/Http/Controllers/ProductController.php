@@ -25,7 +25,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('Attribute.Color', 'Attribute.Size')->latest('id')->cursorPaginate(10)->fragment('Product');
+        $products = Product::with('Attribute.Color', 'Attribute.Size')->latest('id')->get();
+        // $products = Product::with('Attribute.Color', 'Attribute.Size')->latest('id')->cursorPaginate(10)->fragment('Product');
         return view('backend.product.index', [
             'products' => $products,
         ]);
@@ -422,7 +423,7 @@ class ProductController extends Controller
     public function GetSubcatbyAjax($cat_id)
     {
         // dependency dropdown by catagory
-        $subcatagories  = Subcatagory::select('id', 'subcatagory_name')->where('catagory_id', $cat_id)->latest('id')->get();
+     return   $subcatagories  = Subcatagory::select('id', 'subcatagory_name')->where('catagory_id', $cat_id)->latest('id')->get();
         return response()->json($subcatagories);
     }
     public function ProductImagesDelete($id)

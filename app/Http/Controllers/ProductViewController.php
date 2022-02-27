@@ -14,11 +14,11 @@ class ProductViewController extends Controller
     function SingleProductView($slug)
     {
         // $brands = Brand::latest('id')->get();
-        $Product = Product::with('Catagory.Product:id,title,slug,thumbnail_img,catagory_id', 'Catagory:id,catagory_name,slug', 'Gallery:product_id,product_img', 'Attribute.Color:color_name,id', 'Attribute.Size:id,size_name',)
+        $Product = Product::with('Catagory.Product:id,title,slug,thumbnail_img,catagory_id,status', 'Catagory:id,catagory_name,slug', 'Gallery:product_id,product_img', 'Attribute.Color:color_name,id', 'Attribute.Size:id,size_name',)
             ->withCount('Flavour')
             ->where('slug', $slug)
             ->where('status', 1)
-            ->select('id', 'most_view', 'meta_description', 'meta_keyword', 'brand_id', 'title', 'product_summary', 'product_description', 'slug', 'catagory_id')
+            ->select('id', 'most_view', 'meta_description','thumbnail_img', 'meta_keyword', 'brand_id', 'title', 'product_summary', 'product_description', 'slug', 'catagory_id')
             ->withCount('Flavour')
             ->first();
         $Product->increment('most_view', 1);

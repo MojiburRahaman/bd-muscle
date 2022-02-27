@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Newsletter as ModelsNewsletter;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -49,6 +50,10 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
         
+        $newsletter = new ModelsNewsletter;
+        $newsletter->email = $request->email;
+        $newsletter->save();
+
         $user->assignrole('Customer');
         Auth::login($user);
 

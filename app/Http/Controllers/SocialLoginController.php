@@ -21,7 +21,6 @@ class SocialLoginController extends Controller
     function GoogleCallbackUrlRegister()
     {
         $user_detail = Socialite::driver('google')->user();
-
         $users =   User::where('email', $user_detail->getEmail())->first();
         if ($users == '') {
             $user = new User;

@@ -5,6 +5,13 @@
 {{$product->meta_description}} @endsection
 @section('meta_keyword')
 {{$product->meta_keyword}} @endsection
+@section('social_thumbnail')
+<meta property="og:image" content="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}" />
+<meta property="og:image:url" content="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}" />
+<meta property="og:image:secure_url" content="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}" />
+<meta property="og:image:height" content="640" />
+<meta property="og:image:height" content="640" />
+@endsection
 @section('content')
 <!-- .breadcumb-area end -->
 <!-- single-product-area start-->
@@ -379,8 +386,9 @@
                 </div>
             </div>
             <div class="row">
-                @foreach ($product->Catagory->Product as $Catgory_wise_product)
+                @foreach ($product->Catagory->Product->take(8) as $Catgory_wise_product)
                 @if ($Catgory_wise_product->id != $product->id)
+                @if ($Catgory_wise_product->status == 1)
                 <div class="col-lg-3 col-sm-6 col-12">
                     <div class="featured-product-wrap">
                         <div class="featured-product-img">
@@ -397,8 +405,8 @@
                                     </h3>
                                     <p>৳
                                         @php
-                                        $sale = collect($product->Attribute)->min('sell_price');
-                                        $regular = collect($product->Attribute)->min('regular_price');
+                                        $sale = collect($Catgory_wise_product->Attribute)->min('sell_price');
+                                        $regular = collect($Catgory_wise_product->Attribute)->min('regular_price');
                                         if ($sale == '') {
                                         echo $regular;
                                         } else {
@@ -420,6 +428,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
                 @endif
                 @endforeach
             </div>

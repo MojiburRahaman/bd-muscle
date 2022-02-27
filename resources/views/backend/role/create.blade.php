@@ -45,12 +45,14 @@ active
                     <div class="form-group">
                         <label class="mb-2">Choose Permissions:</label>
                         @foreach ($Permissions as $permission)
+                        @if ($permission->name != 'Customer Dashboard Access')
                         <div>
                             <input id="permission_name{{$permission->id}}" name="permission[]" type="checkbox"
                                 value="{{$permission->id}}">
                             &nbsp; <label for="permission_name{{$permission->id}}">{{$permission->name}}</label>
-                            @endforeach
                         </div>
+                        @endif
+                        @endforeach
                     </div>
 
                     <div class="form-group mt-2">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Newsletter;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -71,6 +72,11 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
         $user->assignrole('Customer');
+
+        $newsletter = new Newsletter;
+        $newsletter->email = $data['email'];
+        $newsletter->save();
+        
         return $user;
     }
 }

@@ -135,7 +135,7 @@ class SiteSettingController extends Controller
                 'instagram_link' => ['max:250'],
                 'twitter_link' => ['max:250'],
                 'footer_text' => ['required', 'string'],
-                'site_logo' => ['mimes:png'],
+                // 'site_logo' => ['mimes:png'],
             ]);
 
             $setting = SiteSetting::findorfail($id);

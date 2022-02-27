@@ -42,8 +42,8 @@ class RoleController extends Controller
     public function create()
     {
         if (auth()->user()->can('Create Role')) {
-            $permission = Permission::create(['name' => 'Create Brand']);
-            $permission = Permission::create(['name' => 'View Brand']);
+            // $permission = Permission::create(['name' => 'Create Brand']);
+            // $permission = Permission::create(['name' => 'View Brand']);
             // $permission = Permission::create(['name' => 'About']);
             // $permission = Permission::create(['name' => 'Subscriber']);
             // $permission = Permission::create(['name' => 'Add User']);
@@ -157,7 +157,7 @@ class RoleController extends Controller
         if (auth()->user()->can('Edit Role')) {
             $role = Role::findorfail($id);
             $role->syncPermissions($request->permission);
-            $role->name = $request->role_name;
+            // $role->name = $request->role_name;
             $role->save();
             return redirect('/admin/roles')->with('success', 'Role Edited Successfully');
         } else {
@@ -182,14 +182,14 @@ class RoleController extends Controller
     }
     public function AssignUser()
     {
-        // if (auth()->user()->can('Assign User')) {
+        if (auth()->user()->can('Assign User')) {
             return view('backend.role.assign-user', [
                 'users' => User::with('Roles.permissions:name')->select('name', 'email', 'id')->get(),
                 'roles' => Role::latest('id')->get(),
             ]);
-        // } else {
-            // abort('404');
-        // }
+        } else {
+            abort('404');
+        }
     }
     public function AssignUserPost(RequirdRequest  $request)
     {
@@ -206,7 +206,7 @@ class RoleController extends Controller
             // 
             // $user->assignRole($request->role_name);
             $user->syncRoles($request->role_name);
-            return back();
+            return back()->with('success','User Role Assign Successfully');
             // return 'ok';
             // }
             // return 'yes';
@@ -252,7 +252,7 @@ class RoleController extends Controller
             'role_name' => ['required',],
         ]);
         $random_pass_genarate = Str::random(10);
-        // return $random_pass_genarate;
+
         $user = new User;
         $user->name = $request->user_name;
         $user->email = $request->user_email;

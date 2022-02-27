@@ -47,7 +47,7 @@ menu-open
                     </div>
                     @endcan
                     <div class="card-body table-responsive p-0">
-                        <table class="table table-bordered table-hover">
+                        <table class="table table-bordered table-hover" id="order_table">
                             <thead>
                                 <tr>
                                     <th>SL</th>
@@ -140,9 +140,9 @@ menu-open
                 </tbody>
                 </table>
             </div>
-            <div class="text-right mt-2">
+            {{-- <div class="text-right mt-2">
                 {{$products->links()}}
-            </div>
+            </div> --}}
             <!-- /.card -->
         </div>
 </div>
@@ -151,6 +151,10 @@ menu-open
 @endsection
 @section('script_js')
 <script>
+$(document).ready( function () {
+    $('#order_table').DataTable();
+} );
+
     $("#select_all").click(function(){
         $("input[class=checkbox]").prop('checked', $(this).prop('checked'));
 

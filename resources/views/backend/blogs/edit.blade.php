@@ -91,15 +91,5 @@ active
 </div>
 @endsection
 @section('script_js')
-
-<script>
-    ClassicEditor
-            .create( document.querySelector( '#editor' ) )
-            .then( editor => {
-                    console.log( editor );
-            } )
-            .catch( error => {
-                    console.error( error );
-            } );
-</script>
+@include('backend.ckeditor')
 @endsection

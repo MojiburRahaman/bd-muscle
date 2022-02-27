@@ -132,7 +132,7 @@
         Route::get('orders/status/{id}', [OrderController::class, 'DeliveryStatus'])->name('DeliveryStatus');
         Route::get('orders/download-invoice/{id}', [OrderController::class, 'InvoiceDownload'])->name('InvoiceDownload');
         Route::resource('/orders', OrderController::class)->except('create', 'store', 'edit', 'destroy', 'update');
-
+        
         Route::get('settings/about/{id}', [SiteSettingController::class, 'SiteAbout'])->name('SiteAbout');
         Route::post('settings/about', [SiteSettingController::class, 'SiteAboutUpdate'])->name('SiteAboutUpdate');
         Route::get('settings/banner-status/{id}', [SiteSettingController::class, 'SiteBannerStatus'])->name('SiteBannerStatus');
@@ -140,12 +140,14 @@
         Route::post('settings/banner-post', [SiteSettingController::class, 'SiteBannerPost'])->name('SiteBannerPost');
         Route::get('settings/banner', [SiteSettingController::class, 'SiteBanner'])->name('SiteBanner');
         Route::post('settings/subscriber', [SiteSettingController::class, 'SiteSubscriber'])->name('SiteSubscriber');
-
+        
         Route::resource('/settings', SiteSettingController::class)->except('show', 'destroy', 'index', 'store');
         Route::resource('/coupons', CouponController::class);
         Route::resource('/color', ColorController::class)->except('show');
         Route::resource('/size', SizeController::class)->except('show');
         Route::resource('/flavour', FlavourController::class)->except('create', 'index', 'store', 'edit', 'show', 'destroy', 'update');
+       
+        Route::post('blogs/ck-editor-upload', [BlogController::class, 'CkfileUpload'])->name('CkfileUpload');
         Route::resource('/blogs', BlogController::class);
         Route::resource('/deals', BestDealController::class)->except('edit', 'update');
     });

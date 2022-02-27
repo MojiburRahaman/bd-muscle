@@ -2,6 +2,9 @@
 <li class="col-lg-4 col-sm-6 col-12">
     <div class="product-wrap">
         <div class="product-img">
+            @if (collect($product->Attribute)->max('discount') != '')
+            <span style=" z-index: 2">{{collect($product->Attribute)->max('discount')}}%</span>
+            @endif
             <img src="{{ asset('thumbnail_img/' . $product->thumbnail_img) }}" alt="{{ $product->title }}">
             <div class="product-icon flex-style">
                 <ul>

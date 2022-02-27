@@ -28,6 +28,6 @@ class Order_Details extends Model
     }
     function Flavour()
     {
-        return $this->belongsTo(Flavour::class, 'flavour_id');
+        return $this->belongsTo(Flavour::class, 'flavour_id')->withTrashed();
     }
 }

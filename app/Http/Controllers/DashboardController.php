@@ -28,7 +28,8 @@ class DashboardController extends Controller
         $subscribes = Newsletter::count();
         $ProductReview = ProductReview::count();
         $product = Product::where('status', 1)->count();
-        $user = Role::where('name', 'Customer')->count();
+        $user = User::role('Customer')->get()->count();
+        // $user = Role::where('name', 'Customer')->count();
         return view('backend.main', [
             'order' => $order,
             'Blog' => $Blog,

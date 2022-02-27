@@ -167,9 +167,11 @@ class CatagoryController extends Controller
                 return back()->with('warning', "There's a Subcatagory Under This Catagory");
             } else {
                 $catagory =  Catagory::findorfail($id);
-                $old_thumbnail = public_path('category_images/' . $catagory->catagory_image);
-                if (file_exists($old_thumbnail)) {
-                    unlink($old_thumbnail);
+                if ($catagory->catagory_image != '') {
+                    $old_thumbnail = public_path('category_images/' . $catagory->catagory_image);
+                    if (file_exists($old_thumbnail)) {
+                        unlink($old_thumbnail);
+                    }
                 }
                 $catagory->delete();
                 return back()->with('delete', 'Catagory Deleted Succesfully');
@@ -194,9 +196,11 @@ class CatagoryController extends Controller
                         // if theres no subcatagory under this catafory id
 
                         $catagory =  Catagory::findorfail($value);
-                        $old_thumbnail = public_path('category_images/' . $catagory->catagory_image);
-                        if (file_exists($old_thumbnail)) {
-                            unlink($old_thumbnail);
+                        if ($catagory->catagory_image != '') {
+                            $old_thumbnail = public_path('category_images/' . $catagory->catagory_image);
+                            if (file_exists($old_thumbnail)) {
+                                unlink($old_thumbnail);
+                            }
                         }
                         $catagory->delete();
                     }

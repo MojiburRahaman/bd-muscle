@@ -36,7 +36,9 @@ active
                       <select class="form-control @error('user_name') is-invalid  @enderror" name="user_name" id="user">
                           <option value>Select User</option>
                           @foreach ($users as $user)
+                          @if (auth()->user()->email != $user->email)
                           <option value="{{$user->id}}">{{$user->name}} ({{$user->email}})</option>
+                          @endif
                           @endforeach
                       </select>
                         @error('user_name')
@@ -48,9 +50,17 @@ active
                     <div class="form-group">
                         <label for="color_name">Role</label>
                       <select class="form-control @error('role_name') is-invalid  @enderror" name="role_name" id="user">
-                          <option value>Select User</option>
+                          <option value>Select Role</option>
                           @foreach ($roles as $role)
+                          @if (auth()->user()->roles->first()->name == 'Super Admin')
                           <option value="{{$role->id}}">{{$role->name}}</option>
+                          @else
+                          @if ($role->name != 'Super Admin')
+                              
+                          <option value="{{$role->id}}">{{$role->name}}</option>
+                          @endif
+                              
+                          @endif
                           @endforeach
                       </select>
                         @error('role_name')
@@ -65,6 +75,7 @@ active
                     </div>
                 </form>
             </div>
+            @if (auth()->user()->roles->first()->name == 'Super Admin')
             <div class="row">
                 <div class="col-12">
                     <div class="card-body table-responsive table-bordered p-0">
@@ -114,6 +125,7 @@ active
                     </div>
                 </div>
             </div>
+            @endif
         </div>
     </section>
 </div>
@@ -121,6 +133,11 @@ active
 
 @section('script_js')
 <script>
+
+$(document).ready(function() {
+    $('#user').select2();
+});
+
     @if (session('delete')) 
 Command: toastr["error"]("{{session('delete')}}")
 

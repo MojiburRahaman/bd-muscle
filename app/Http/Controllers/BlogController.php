@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\CkeditorFileUpload;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Str;
@@ -141,6 +142,7 @@ class BlogController extends Controller
             ]);
             $Blog = Blog::findorfail($id);
             $Blog->title = $request->title;
+            $Blog->slug = Str::slug($request->title);
             $Blog->meta_description = $request->meta_description;
             $Blog->blog_description = $request->blog_description;
 
@@ -186,6 +188,20 @@ class BlogController extends Controller
             return back()->with('delete', 'Blog Deleted Successfully');
         } else {
             abort('404');
+        }
+    }
+    function CkfileUpload(Request $request)
+    {
+        if ($request->hasFile('upload')) {
+            $blog_image = $request->file('upload');
+            $Blog_image_extension = Str::random(5) . '.' . $blog_image->getClientOriginalExtension();
+            $url = public_path('blogs/ckeditor/' . $Blog_image_extension);
+            Image::make($blog_image)->save($url, 100);
+            $ckeditor = new CkeditorFileUpload;
+            $ckeditor->ckeditor_image = $Blog_image_extension;
+            $ckeditor->save();
+            $image_url = asset('blogs/ckeditor/' . $Blog_image_extension);
+            return response()->json(['url' => $image_url]);
         }
     }
 }

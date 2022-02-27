@@ -13,7 +13,9 @@
         <meta property="og:title" content="@yield('title',$setting->meta_title)" />
         <meta property="og:description" content="@yield('meta_description',$setting->meta_description)" />
         <meta property="og:url" content="{{url()->current()}}" />
-        <meta property="og:site_name" content="{{route('Frontendhome')}}" />
+        <meta property="og:site_name" content="@yield('title',$setting->meta_title)" />
+        <meta property="og:type" content="website" />
+        @yield('social_thumbnail')
         <link rel="canonical" href="{{url()->current()}}">
         <link rel="shortcut icon" type="image/png" href="{{ asset('logo/'.$setting->site_logo) }}">
         <!-- Place favicon.ico in the root directory -->
@@ -47,9 +49,13 @@
     <body>
         <style>
             .dropdown_style li a:hover {
-        padding-left: 0;
-    }
-            </style>
+                padding-left: 0;
+            }
+            .logo a img{
+                width: 55%;
+            }
+
+        </style>
         <!-- search-form here -->
         <div class="search-area flex-style">
             <span class="closebar">Close</span>
@@ -68,29 +74,60 @@
         </div>
         <!-- search-form here -->
         <!-- header-area start -->
-        <header class="header-area">
-            <div class="header-top bg-2">
+        <header class="header-area" id="sticky-header">
+            {{-- <div class="header-top bg-2">
                 <div class="fluid-container">
                     <div class="row">
                         <div class="col-md-6 col-12">
                             <ul class="d-flex header-contact">
                                 <li><i class="fa fa-phone"></i> {{$setting->number}}</li>
-                                <li><i class="fa fa-envelope"></i> {{$setting->email}} </li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6 col-12">
-                            <ul class="d-flex account_login-area">
-                                @auth
-                                <li>
-                                    <a href="{{route('FrontendProfile')}}">
-                                        <i class="fa fa-user "><span class="pl-2">Profile</span></i>
-                                    </a>
-                                </li>
-                                @else
-                                <li><a href="{{ route('login') }}"> Login/Register </a></li>
-                                @endauth
-                            </ul>
-                        </div>
+            <li><i class="fa fa-envelope"></i> {{$setting->email}} </li>
+            </ul>
+            </div>
+            <div class="col-md-6 col-12">
+                <ul class="d-flex account_login-area">
+                    @auth
+                    <li>
+                        <a href="{{route('FrontendProfile')}}">
+                            <i class="fa fa-user "><span class="pl-2">Profile</span></i>
+                        </a>
+                    </li>
+                    @else
+                    <li><a href="{{ route('login') }}"> Login/Register </a></li>
+                    @endauth
+                </ul>
+            </div>
+            </div>
+            </div>
+            </div> --}}
+            <div class="container">
+
+                <div class="row mt-2">
+                    <div class="col-lg-3 mb-2 col-12 col-sm-12">
+                        <i style="font-size: medium" class="fa fa-mobile"> : {{$setting->number}}</i>
+                    </div>
+                    <div class="col-lg-3 col-6 col-sm-6">
+                        <ul class="d-flex">
+                            @if ($setting->facebook_link != '')
+                            <li><a class="pr-2 ml-2" target="_blank" href="{{$setting->facebook_link}}"><i
+                                        style="font-size: small" class="fa fa-facebook"></i></a></li>
+                            @endif
+                            @if ($setting->instagram_link != '')
+                            <li><a class="pr-2" target="_blank" href="{{$setting->instagram_link}}"><i
+                                        style="font-size: small" class="fa fa-instagram"></i></a></li>
+                            @endif
+                            @if ($setting->twitter_link != '')
+                            <li><a class="pr-2" target="_blank" href="{{$setting->twitter_link}}"><i
+                                        style="font-size: small" class="fa fa-twitter"></i></a></li>
+                            @endif
+                            @if ($setting->youtube_link != '')
+                            <li><a class="pr-2" target="_blank" href="{{$setting->youtube_link}}"><i
+                                        style="font-size: small" class="fa fa-youtube"></i></a></li>
+                            @endif
+                        </ul>
+                    </div>
+                    <div class=" text-right col-lg-6 col-6 col-sm-6">
+                        <a class="ml-2" href="{{route('login')}}">Login/Register</a>
                     </div>
                 </div>
             </div>
@@ -362,19 +399,19 @@
                             <div class="footer-icon">
                                 <ul class="d-flex">
                                     @if ($setting->facebook_link != '')
-                                    <li><a target="_blank" href="{{$setting->facebook_link}}"><i style="font-size: large"
-                                                class="fa fa-facebook"></i></a></li>
+                                    <li><a target="_blank" href="{{$setting->facebook_link}}"><i
+                                                style="font-size: large" class="fa fa-facebook"></i></a></li>
                                     @endif
                                     @if ($setting->instagram_link != '')
-                                    <li><a target="_blank" href="{{$setting->instagram_link}}"><i  style="font-size: large"
-                                                class="fa fa-instagram"></i></a></li>
+                                    <li><a target="_blank" href="{{$setting->instagram_link}}"><i
+                                                style="font-size: large" class="fa fa-instagram"></i></a></li>
                                     @endif
                                     @if ($setting->twitter_link != '')
-                                    <li><a target="_blank" href="{{$setting->twitter_link}}"><i  style="font-size: large"
+                                    <li><a target="_blank" href="{{$setting->twitter_link}}"><i style="font-size: large"
                                                 class="fa fa-twitter"></i></a></li>
                                     @endif
                                     @if ($setting->youtube_link != '')
-                                    <li><a target="_blank" href="{{$setting->youtube_link}}"><i  style="font-size: large"
+                                    <li><a target="_blank" href="{{$setting->youtube_link}}"><i style="font-size: large"
                                                 class="fa fa-youtube"></i></a></li>
                                     @endif
                                 </ul>
@@ -430,7 +467,36 @@
         </div>
 
         <!-- Your Chat plugin code -->
+        <!-- Messenger Chat plugin Code -->
+        <div id="fb-root"></div>
 
+        <!-- Your Chat plugin code -->
+        <div id="fb-customer-chat" class="fb-customerchat">
+        </div>
+
+        <script>
+            var chatbox = document.getElementById('fb-customer-chat');
+  chatbox.setAttribute("page_id", "661548170721498");
+  chatbox.setAttribute("attribution", "biz_inbox");
+        </script>
+
+        <!-- Your SDK code -->
+        <script>
+            window.fbAsyncInit = function() {
+    FB.init({
+      xfbml            : true,
+      version          : 'v12.0'
+    });
+  };
+
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+        </script>
         <!-- .footer-area end -->
 
         <!-- jquery latest version -->
@@ -472,7 +538,7 @@
         <script>
             @guest
         
-        var delay = 10; //in milleseconds
+        var delay = 1000; //in milleseconds
         jQuery(document).ready(function($){
           setTimeout(function(){ showNewsletterPopup(); }, delay);
           
@@ -522,10 +588,18 @@
                     header : '<h6>Continue With Google</h6>',
                     link1: '{{route('GoogleRegister')}}',
                     colors : '#ef4836',
-                    delay:10000,    
+                    delay:70000,    
                     slide:true,
                     button1 :'Continue',
              });
+
+             @if (session('subscribe'))
+            Swal.fire(
+                'Thanks',
+                '{{session("subscribe")}}',
+                'success'
+            )
+             @endif
         @endguest
         </script>
 

@@ -31,7 +31,7 @@ active
                     @method('put')
                     <div class="form-group">
                         <label for="color_name">Role Name</label>
-                        <input id="role_name" name="role_name" type="text" placeholder="Role Name" autocomplete="none" value="{{$role->name}}"
+                        <input disabled id="role_name" name="role_name" type="text" placeholder="Role Name" autocomplete="none" value="{{$role->name}}"
                             class="form-control @error('role_name') is-invalid                                
                             @enderror">
                         @error('role_name')
@@ -43,14 +43,16 @@ active
                     <div class="form-group">
                         <label class="mb-2">Choose Permissions:</label>
                         @foreach ($permissions as $permission)
+                        @if ($permission->name != 'Customer Dashboard Access')
                         <div>
                             <input 
                             {{($role->hasPermissionTo($permission->id))? 'checked': ''}}
                             id="permission_name{{$permission->id}}" name="permission[]" type="checkbox"
                                 value="{{$permission->id}}">
                             &nbsp; <label for="permission_name{{$permission->id}}">{{$permission->name}}</label>
-                            @endforeach
                         </div>
+                        @endif
+                        @endforeach
                     </div>
 
                     <div class="form-group mt-2">

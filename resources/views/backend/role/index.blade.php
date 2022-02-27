@@ -68,10 +68,12 @@ menu-open
                                 <td>{{$role->created_at->format('D-M-Y')}}</td>
                                 <td>
                                     {{-- <form action="{{route('roles.destroy',$role->id)}}" method="post"> --}}
+                                        @if ($role->name != 'Customer' && $role->name != 'Super Admin')
                                         @can('Edit Role')
                                         <a style="padding: 7px 8px" href="{{route('roles.edit',$role->id)}}"
                                             class="btn-sm btn-primary">Edit</a>
                                         @endcan
+                                        @endif
                                         {{-- @csrf
                                         @can('Delete Role')
                                         @if ($role->id != 1)

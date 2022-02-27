@@ -266,8 +266,10 @@
     $(document).ready(function(){
         $('#coupon_submit_btn').click(function(){
             var coupon_name_test = $('#coupon_name').val();
-            var coupon_redirect_url = " {{route('CartView')}}/" + coupon_name_test;
-          window.location.href = coupon_redirect_url;
+            // var coupon_redirect_url = "{{route('CartView')}}/" + coupon_name_test;
+            var coupon_redirect_url = "{{route('CartView')}}/" + coupon_name_test;
+        //   window.location.href = coupon_redirect_url;
+        location.assign(coupon_redirect_url);
          });
     });
 </script>

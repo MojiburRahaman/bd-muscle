@@ -1,10 +1,15 @@
 @extends('frontend.master')
 @section('title') @if (url()->current() == route('Frontendhome'))
-Search Result for "{{$search}}" BD-Muscle
+Search Result for "{{$search}}" {{config('app.name')}}
 @else
-{{$category}} BD-Mucle
+{{$category}} - {{config('app.name')}}
 @endif @endsection
 @section('content')
+<style>
+    .widget_categories ul li .active {
+	color: red;
+}
+</style>
 <div class="product-area ptb-100 product-sidebar-area">
     <div class="container">
         <div class="row revarce-wrap">
@@ -21,7 +26,7 @@ Search Result for "{{$search}}" BD-Muscle
                 <h4 class="widget-title">Categories</h4>
                 <ul>
                     @foreach ($Categories as $catagori)
-                    <li class="mb-2"><a href="{{route('CategorySearch',$catagori->slug)}}">{{$catagori->catagory_name}}</a>
+                    <li class="mb-2 active"><a href="{{route('CategorySearch',$catagori->slug)}}">{{$catagori->catagory_name}}</a>
                     </li>
                     @forelse ($catagori->Subcatagory as $item)
                     <li style="margin-left: 30px;list-style-type:disc">
@@ -173,7 +178,7 @@ Search Result for "{{$search}}" BD-Muscle
                         <li class="text-center"> No Product</li>
                         @endforelse
                     </ul>
-                    <ul id="ajax-data">
+                    <ul class="row" id="ajax-data">
 
                     </ul>
                     <ul class="no_data" style="display: none">

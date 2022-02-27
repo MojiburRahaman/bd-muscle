@@ -52,9 +52,17 @@ active
                     <div class="form-group">
                         <label for="color_name">Role</label>
                       <select class="form-control @error('role_name') is-invalid  @enderror" name="role_name" id="user">
-                          <option value>Select User</option>
+                          <option value>Select Role</option>
                           @foreach ($roles as $role)
+                          @if (auth()->user()->roles->first()->name == 'Super Admin')
                           <option value="{{$role->id}}">{{$role->name}}</option>
+                          @else
+                          @if ($role->name != 'Super Admin')
+                              
+                          <option value="{{$role->id}}">{{$role->name}}</option>
+                          @endif
+                              
+                          @endif
                           @endforeach
                       </select>
                         @error('role_name')

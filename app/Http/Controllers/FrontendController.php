@@ -77,7 +77,7 @@ class FrontendController extends Controller
             $blogs = Blog::latest('id')
                 ->select('id', 'title', 'add_to_goal', 'slug', 'blog_thumbnail', 'created_at')
                 ->where('add_to_goal', 1)
-                ->withCount('BlogComment')->take(3)->get();
+                ->withCount('BlogComment')->take(4)->get();
 
             return view('frontend.main', [
                 'latest_product' => $product,

@@ -4,7 +4,11 @@
 {{$blog->title}}
 @endsection
 @section('meta_description')
-{{$blog->title}}
+{{$blog->meta_description}}
+@endsection
+@section('social_thumbnail')
+<meta property="og:image" content="{{asset('blogs/blog_image/'.$blog->blog_image)}}" />
+<meta property="og:image:url" content="{{asset('blogs/blog_image/'.$blog->blog_image)}}" />
 @endsection
 @section('content')
 <style>
