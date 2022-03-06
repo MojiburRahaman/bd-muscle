@@ -42,15 +42,15 @@ class RoleController extends Controller
     public function create()
     {
         if (auth()->user()->can('Create Role')) {
-            // $permission = Permission::create(['name' => 'Create Brand']);
-            // $permission = Permission::create(['name' => 'View Brand']);
-            // $permission = Permission::create(['name' => 'About']);
             // $permission = Permission::create(['name' => 'Subscriber']);
-            // $permission = Permission::create(['name' => 'Add User']);
-            // $permission = Permission::create(['name' => 'Admin Dashboard']);
+            // $permission = Permission::create(['name' => 'About']);
             // $permission = Permission::create(['name' => 'Setting']);
             // $permission = Permission::create(['name' => 'Banner']);
             // $permission = Permission::create(['name' => 'Order']);
+            // $permission = Permission::create(['name' => 'Create Brand']);
+            // $permission = Permission::create(['name' => 'View Brand']);
+            // $permission = Permission::create(['name' => 'Add User']);
+            // $permission = Permission::create(['name' => 'Admin Dashboard']);
             // $permission = Permission::create(['name' => 'Create Category']);
             // $permission = Permission::create(['name' => 'Edit Category']);
             // $permission = Permission::create(['name' => 'Delete Category']);

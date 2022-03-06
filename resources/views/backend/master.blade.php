@@ -251,14 +251,6 @@
                                         </a>
                                     </li>
                                     @endcan
-                                    {{-- @can('View Color') --}}
-                                    {{-- <li class="nav-item">
-                                        <a href="{{route('flavour.index')}}" class="nav-link @yield('color_view-active')">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>View Flavour</p>
-                                        </a>
-                                    </li> --}}
-                                    {{-- @endcan --}}
                                     @can('View Size')
                                     <li class="nav-item">
                                         <a href="{{route('size.index')}}" class="nav-link @yield('size_view-active')">
