@@ -28,18 +28,7 @@ class FrontendController extends Controller
         $category = '';
         $search = strip_tags($request->search);
 
-        if ($request->ajax()) {
-            $Products = Product::with('Catagory', 'Attribute')
-                ->where('title', 'LIKE', "%$search%")
-                ->where('status', 1)
-                ->select('id', 'slug', 'catagory_id', 'thumbnail_img', 'product_summary', 'title')
-                ->withCount('ProductReview')
-                ->latest()->simplePaginate(15);
-            $view = view('frontend.search.pagination-data', compact('Products'))->render();
-            return response()->json(['html' => $view,]);
-        }
-
-        if ($search == '') {
+        
             $deal = BestDeal::where('status', 1)->first();
             $category_wise_product = Catagory::with(['Product.Catagory:catagory_name,slug,id', 'Product:id,slug,catagory_id,thumbnail_img,product_summary,title,status', 'Product.Attribute:product_id,discount,regular_price,sell_price'])
                 ->where('home_page', 1)->latest('id')
@@ -88,13 +77,27 @@ class FrontendController extends Controller
                 'banners' => $banners,
                 'deal' => $deal,
             ]);
+        
+    }
+    function FrontendSearch(Request $request){
+        $category = '';
+       $search = strip_tags($request->search);
+        if ($request->ajax()) {
+            $Products = Product::with('Catagory', 'Attribute')
+                ->where('title', 'LIKE', "%$search%")
+                ->where('status', 1)
+                ->select('id', 'slug', 'catagory_id', 'thumbnail_img', 'product_summary', 'title')
+                ->withCount('ProductReview')
+                ->latest()->simplePaginate(1);
+            $view = view('frontend.search.pagination-data', compact('Products'))->render();
+            return response()->json(['html' => $view,]);
         }
         $Products = Product::with('Catagory', 'Attribute')
             ->where('title', 'LIKE', "%$search%")
             ->where('status', 1)
             ->select('id', 'slug', 'catagory_id', 'thumbnail_img', 'product_summary', 'title')
             ->withCount('ProductReview')
-            ->latest()->simplePaginate(15);
+            ->latest()->simplePaginate(1);
         $categories = Catagory::with('Subcatagory')->select('id', 'slug', 'catagory_name')->get();
 
         return view('frontend.search.search-data', [
@@ -131,7 +134,7 @@ class FrontendController extends Controller
         if ($request->ajax()) {
             $Products = Product::with('Catagory', 'Attribute')->where('status', 1)
                 ->select('id', 'slug', 'title', 'thumbnail_img', 'product_summary', 'catagory_id')
-                ->latest('id')->simplePaginate(16);
+                ->latest('id')->simplePaginate(4);
 
             $view = view('frontend.pages.shop-pagination-data', compact('Products'))->render();
             return response()->json(['html' => $view,]);
@@ -142,7 +145,7 @@ class FrontendController extends Controller
             ->select('id', 'slug', 'title', 'thumbnail_img', 'product_summary', 'catagory_id')
             ->latest('id')
             ->withCount('ProductReview')
-            ->simplePaginate(20);
+            ->simplePaginate(4);
         return view('frontend.pages.shop', [
             'catagories' => $catagories,
             'latest_product' => $product,

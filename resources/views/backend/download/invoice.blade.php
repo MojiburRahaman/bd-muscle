@@ -3,7 +3,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title>Example 1</title>
+        <title>Invoice</title>
         <style>
             .clearfix:after {
                 content: "";
@@ -175,9 +175,9 @@
                     <strong>Email</strong> : {{$order->billing_details->user_email}}
                     <br>
                     <strong>Address</strong> : <br>
-                    Division: {{$order->billing_details->Division->name}},<br>
-                    District: {{$order->billing_details->District->name}},<br>
-                    Upazila: {{$order->billing_details->Upazila->name}}
+                    {{$order->billing_details->billing_address}}
+                    {{-- Division: {{$order->billing_details->Division->name}},<br>
+                    District: {{$order->billing_details->District->name}},<br> --}}
                 </div>
             </div>
             </div>

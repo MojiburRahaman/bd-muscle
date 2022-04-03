@@ -63,7 +63,7 @@
                 <div class="row">
                     <div class="col-md-8 offset-md-2 col-12">
                         <div class="search-form">
-                            <form action="{{route('Frontendhome')}}">
+                            <form action="{{route('FrontendSearch')}}">
                                 <input name="search" type="text" placeholder="Search Here...">
                                 <button><i class="fa fa-search"></i></button>
                             </form>

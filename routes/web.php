@@ -42,12 +42,13 @@
     Route::get('login/callback', [SocialLoginController::class, 'GoogleCallbackUrlRegister'])->name('GoogleCallbackUrlRegister');
 
 
-    Auth::routes(['verify' => true]);
+    // Auth::routes(['verify' => true]);
 
     // frontend route start
     Route::middleware(['HtmlMinify', 'XssFilter'])->group(function () {
 
         Route::get('/', [FrontendController::class, 'Frontendhome'])->name('Frontendhome');
+        Route::get('/search', [FrontendController::class, 'FrontendSearch'])->name('FrontendSearch');
         Route::get('/contact', [FrontendController::class, 'FrontndContact'])->name('FrontndContact');
         Route::post('/contact', [FrontendController::class, 'FrontendContactPost'])->name('FrontendContactPost');
         Route::get('/about', [FrontendController::class, 'FrontendAbout'])->name('FrontendAbout');
@@ -92,7 +93,7 @@
         Route::get('/checkout', [CheckoutController::class, 'CheckoutView'])->name('CheckoutView');
         Route::post('/checkout-post', [CheckoutController::class, 'CheckoutPost'])->name('CheckoutPost');
         Route::post('/checkout/billing/division_id', [CheckoutController::class, 'CheckoutajaxDivid'])->name('CheckoutajaxDivid');
-        Route::post('/checkout/billing/disctrict_id', [CheckoutController::class, 'CheckoutajaxDistrictid'])->name('CheckoutajaxDistrictid');
+        // Route::post('/checkout/billing/disctrict_id', [CheckoutController::class, 'CheckoutajaxDistrictid'])->name('CheckoutajaxDistrictid');
     });
 
 

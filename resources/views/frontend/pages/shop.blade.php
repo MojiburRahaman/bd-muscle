@@ -191,6 +191,7 @@
                 <ul class="no_data" style="display: none">
                     <li class="text-center"> No More Product</li>
                 </ul>
+                {{-- {{$latest_product->links()}} --}}
                 @if ($latest_product->links() != '')
                 <li class="col-12 text-center">
                     <div class="load_image" style="display: none">
@@ -324,7 +325,6 @@
     $(document).on('click', '.loadMore_btn', function(event){
     page++;
     loadMoreData(page)
-    // alert('ok');
  });
 
 function loadMoreData(page){

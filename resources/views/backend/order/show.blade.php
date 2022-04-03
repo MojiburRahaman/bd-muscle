@@ -37,7 +37,8 @@
                     <strong>Address</strong> : <br>
                     Division: {{$order->billing_details->Division->name}},<br>
                     District: {{$order->billing_details->District->name}},<br>
-                    Upazila: {{$order->billing_details->Upazila->name}}
+
+                   Billing Address: {{$order->billing_details->billing_address}} <br>
                     <br>
                     <strong>Order Note</strong>: {{$order->billing_details->billing_order_note}}
                     <br>
@@ -48,9 +49,9 @@
 
                 <div class="col-6 col-lg-6 text-right">
                     @if ($order->delivery_status == 1)
-                    <a href="" class="btn-sm btn-danger">pending</a>
+                    <a href="{{route('DeliveryStatus',$order->id)}}" class="btn-sm btn-danger">pending</a>
                     @elseif ($order->delivery_status == 2)
-                    <a href="" class="btn-sm btn-warning">On The way</a>
+                    <a href="{{route('DeliveryStatus',$order->id)}}" class="btn-sm btn-warning">On The way</a>
                     @else
                     <a class="btn-sm btn-success">Deliverd</a>
                     @endif

@@ -21,7 +21,7 @@ class CreateBillingDetailsTable extends Migration
             $table->string('billing_number');
             $table->string('division_name');
             $table->string('district_name');
-            $table->string('upozila_name');
+            $table->string('upozila_name')->nullable();
             $table->text('billing_address');
             $table->string('billing_postcode')->nullable();
             $table->text('billing_order_note')->nullable();

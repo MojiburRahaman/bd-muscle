@@ -36,12 +36,12 @@ class CheckoutController extends Controller
             ->select('id', 'name')->get();
         return response()->json($district);
     }
-    function CheckoutajaxDistrictid(Request $request)
-    {
-        $district = Upazila::where('district_id', $request->district_id)
-            ->select('id', 'name')->get();
-        return response()->json($district);
-    }
+    // function CheckoutajaxDistrictid(Request $request)
+    // {
+    //     $district = Upazila::where('district_id', $request->district_id)
+    //         ->select('id', 'name')->get();
+    //     return response()->json($district);
+    // }
     function CheckoutPost(Request $request)
     {
         if (!session()->get('cart_total')) {
@@ -52,11 +52,11 @@ class CheckoutController extends Controller
             'billing_number' => ['required', 'numeric', 'min:11'],
             'division_name' => ['required'],
             'district_name' => ['required'],
-            'upozila_name' => ['required'],
             'billing_address' => ['required'],
             'billing_number' => ['required'],
             'payment_option' => ['required'],
         ]);
+
         // for only cash_on delivery
         abort_if($request->payment_option != 'cash_on_delivery', 404);
 

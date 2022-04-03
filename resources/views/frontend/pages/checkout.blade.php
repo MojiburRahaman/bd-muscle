@@ -1,5 +1,5 @@
 @extends('frontend.master')
-@section('title',config('app.name')) 
+@section('title',config('app.name')  . '-' . 'Checkout' ) 
 @section('content')
 <!-- header-area end -->
 <!-- checkout-area start -->
@@ -32,7 +32,7 @@
                                     type="number" name="billing_number" placeholder="Enter Your Number"
                                     autocomplete="none" value="{{old('billing_number')}}">
                             </div>
-                            <div class="col-4 m-none">
+                            <div class="col-6 col-sm-6 m-none">
                                 <p>Division <span style="color: red">*</span></p>
                                 <select name="division_name"  id="divisions_name">
                                     <option value=>Select One</option>
@@ -41,17 +41,10 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-4 ">
+                            <div class="col-6 col-sm-6">
                                 <p>District <span style="color: red">*</span></p>
                                 <select class="@error('district_name') is-invalid @enderror form-control"
                                     name="district_name" id="disctrict_name">
-
-                                </select>
-                            </div>
-                            <div class="col-4">
-                                <p>Upozila <span style="color: red">*</span></p>
-                                <select class="@error('upozila_name') is-invalid @enderror form-control"
-                                    name="upozila_name" id="upozila_name">
 
                                 </select>
                             </div>
@@ -76,35 +69,12 @@
                     <div class="order-area">
                         <h3 class="">Your Order</h3>
                         <ul class="total-cost">
-                            {{-- @foreach (cart_product_view() as $cart_product)
-
-                    <li> {{$cart_product->product->title}} <span class="pull-right">৳
-                                @php
-                                $product = App\Models\attribute::where('product_id', $cart_product->product_id)
-                                ->where('color_id', $cart_product->color_id)
-                                ->where('size_id', $cart_product->size_id)
-                                ->first();
-
-                                $sale_price = $product->selling_price;
-                                $regular_price = $product->regular_price;
-
-                                if ($sale_price) {
-                                echo $sale_price * $cart_product->quantity;
-                                }
-                                if ($sale_price == '') {
-                                echo $regular_price *$cart_product->quantity;
-                                }
-                                @endphp
-                            </span></li>
-                            @endforeach --}}
                             <li>Total <span class="pull-right"> <strong>৳{{session()->get('cart_total')}}</strong>
                                 </span>
                             </li>
-                            {{-- @if (session('cart_discount')) --}}
 
                             <li>Discount<span
                                     class="pull-right"><strong>৳{{session()->get('cart_discount')}}</strong></span></li>
-                            {{-- @endif --}}
                             <li>Shipping <span class="pull-right">৳<strong id="shipping_id">0</spstrongan></span></li>
                             <li> Subtotal<span class="pull-right"
                                     id="sub_total"><strong>৳{{session()->get('cart_subtotal')}}
@@ -141,11 +111,6 @@ allowClear: true,
 });
 $('#disctrict_name').select2({
 allowClear: true,
-// {{-- theme: "classic" --}}
-});
-$('#upozila_name').select2({
-allowClear: true,
-// {{-- theme: "classic" --}}
 });
 // #### select 2 dependency dropdown end
 
@@ -192,14 +157,9 @@ if (division_id) {
 
 // #### get district information by division end
 
-
-// #### get upozila information by district start 
-
-        $('#disctrict_name').change(function(){
-        var disctrict_id = $(this).val();
-        var total_amount = {{session()->get('cart_subtotal')}};
-        if (!disctrict_id == '') {
-           if (disctrict_id == 47) {
+$('#disctrict_name').change(function(){ 
+    var disctrict_id = $(this).val();
+        if (disctrict_id == 47) {
                $('#shipping_id').html(60);
                @php
                    session()->put('shipping',60);
@@ -214,39 +174,8 @@ if (division_id) {
                 $('#sub_total').html(100 + parseInt(total_amount));
                 
            }
-        $.ajaxSetup({
-        headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-                     }),
-            $.ajax({
-                type: "POST",
-                url: 'checkout/billing/disctrict_id',
-                data:{district_id: disctrict_id},
+});
 
-                success: function(res) {
-                    if (res) {
-                        $("#upozila_name").empty();
-                        $("#upozila_name").append('<option>Select One</option>');
-                        $.each(res, function(key, value) {
-                            $("#upozila_name").append('<option value="' + value.id + '" >' +
-                                value.name + '</option>');
-                        });
-
-                    } else {
-                        $("upozila_name").empty();
-                    }
-                }
-            });
-        } else{
-            $('#sub_total').html(parseInt(total_amount));
-            $("#upozila_name").empty();
-            $('#shipping_id').html(0);
-
-
-        }
-    });
-// #### get upozila information by district end 
 
 });
 
